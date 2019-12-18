@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 2019_12_18_025149) do
   end
 
   create_table "tasks", force: :cascade do |t|
-    t.bigint "list_id", null: false
+    t.bigint "list_id"
     t.string "title"
     t.text "description"
     t.string "tag"
