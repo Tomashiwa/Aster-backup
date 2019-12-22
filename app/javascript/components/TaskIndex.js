@@ -55,15 +55,7 @@ class TaskIndex extends React.Component {
     this.setState({"isEditing": true,});
   };
 
-  handleSubmit = () => {
-    console.log("Submitted a new task:");
-    console.log("Title: " + document.getElementById("textField_title").value);
-    console.log("Description: " + document.getElementById("textField_description").value);
-    console.log("DueDate: " + this.state.dueDate);
-    console.log("Tag: " + this.state.tag);
-
-    // const date = dateTime.getDate() + "/" + dateTime.getMonth() + "/" + dateTime.getFullYear(); 
-    
+  handleSubmit = () => { 
     const addTask = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
@@ -117,7 +109,6 @@ class TaskIndex extends React.Component {
       }
     }
 
-    console.log("Attempt to delete");
     deleteTask();
   };
 
