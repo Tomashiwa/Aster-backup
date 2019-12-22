@@ -33,8 +33,8 @@ class TaskIndex extends React.Component {
         },
       }),
       "isAdding": false, "isEditing": false,
+      "title": "", "description": "",
       "dueDate" : new Date(Date.now()).toUTCString(),
-      "dueTime" : "",
       "tag": ""
     };
   }
@@ -48,11 +48,22 @@ class TaskIndex extends React.Component {
   }
 
   handleAdd = () => {
-    this.setState({"isAdding": true,});
+    this.setState({
+      "dueDate": new Date(Date.now()).toUTCString(),
+      "isAdding": true,});
   };
 
   handleEdit = task => {
-    this.setState({"isEditing": true,});
+    console.log("task to be edited:");
+    console.log(task);
+
+    this.setState({
+      "title": task.attributes.title,
+      "description": task.attributes.description,
+      "dueDate": task.attributes.dueDate,
+      "tag": task.attributes.tag,
+      "isEditing": true
+    });
   };
 
   handleSubmit = () => { 
@@ -71,8 +82,8 @@ class TaskIndex extends React.Component {
           type: "tasks",
           attributes: {
             list: null,
-            title: document.getElementById("textField_title").value,
-            description: document.getElementById("textField_description").value,
+            title: document.getElementById("field_add_title").value,
+            description: document.getElementById("field_add_description").value,
             tag: this.state.tag,
             "due-date": this.state.dueDate
           }
@@ -86,6 +97,10 @@ class TaskIndex extends React.Component {
 
     addTask();
     this.setState({"isAdding": false, "isEditing": false});
+  };
+
+  handleConfirm = () => {
+    console.log("Confirm editing of task");
   };
 
   handleClose = () => {
@@ -168,14 +183,14 @@ class TaskIndex extends React.Component {
               Add Task
           </Button>
           <Dialog open={this.state.isAdding} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Add Task</DialogTitle>
+            <DialogTitle id="dialogTitle_addTask">Add Task</DialogTitle>
             <DialogContent>
               <DialogContentText>
                 Please fill in the information below:
               </DialogContentText>
 
-              <TextField autoFocus required={true} margin="dense" id="textField_title" label="Title" fullWidth />
-              <TextField multiline required={true} margin="dense" id="textField_description" label="Description" fullWidth />
+              <TextField autoFocus required={true} margin="dense" id="field_add_title" label="Title" fullWidth />
+              <TextField multiline required={true} margin="dense" id="field_add_description" label="Description" fullWidth />
               <br></br>
               <br></br>
 
@@ -195,10 +210,10 @@ class TaskIndex extends React.Component {
               <br></br>
               
               <FormControl>
-                <InputLabel id="inputLabel_tag">Tag</InputLabel>
+                <InputLabel id="inputLabel_add_tag">Tag</InputLabel>
                 <Select
                   labelId="select_new_labelId"
-                  id="select_tag"
+                  id="select_add_tag"
                   value={this.state.tag}
                   onChange={this.handleTagChange}
                   fullWidth={true}
@@ -219,6 +234,61 @@ class TaskIndex extends React.Component {
               </Button>
               <Button onClick={this.handleSubmit} color="primary">
                 Submit
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog open={this.state.isEditing} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+            <DialogTitle id="dialogTitle_editTask">Edit Task</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                You may edit the details of the task below:
+              </DialogContentText>
+
+              <TextField autoFocus required={true} margin="dense" id="field_edit_title" label="Title" defaultValue={this.state.title} fullWidth />
+              <TextField multiline required={true} margin="dense" id="field_edit_description" label="Description" defaultValue={this.state.description} fullWidth />
+              <br></br>
+              <br></br>
+
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDateTimePicker
+                  required={true}
+                  ampm={false}
+                  showTodayButton
+                  value={this.state.dueDate}
+                  onChange={this.handleDateChange}
+                  id="dateTimePicker_edit_dueDate"
+                  format="dd/MM/yyyy HH:mm"
+                  label="Due date"
+                />
+              </MuiPickersUtilsProvider>
+              <br></br>
+              <br></br>
+              
+              <FormControl>
+                <InputLabel id="inputLabel_edit_tag">Tag</InputLabel>
+                <Select
+                  labelId="select_new_labelId"
+                  id="select_edit_tag"
+                  value={this.state.tag}
+                  onChange={this.handleTagChange}
+                  fullWidth={true}
+                  style={{ width: 400}}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value="A">A</MenuItem>
+                  <MenuItem value="B">B</MenuItem>
+                  <MenuItem value="C">C</MenuItem>
+                </Select>
+              </FormControl>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={this.handleConfirm} color="primary">
+                Confirm
               </Button>
             </DialogActions>
           </Dialog>
