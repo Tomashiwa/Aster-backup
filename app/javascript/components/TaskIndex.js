@@ -13,10 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select'
 import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDateTimePicker
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from '@material-ui/pickers';
 
 class TaskIndex extends React.Component {
   constructor(props) {
@@ -44,7 +41,6 @@ class TaskIndex extends React.Component {
       const { data } = await response.json();
       this.setState({"tasks": data});
     });
-
   }
 
   handleAdd = () => {
