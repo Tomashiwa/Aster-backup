@@ -33,7 +33,7 @@ class TaskIndex extends React.Component {
         },
       }),
       "isAdding": false, "isEditing": false,
-      "title": "", "description": "",
+      "taskId": -1, "title": "", "description": "",
       "dueDate" : new Date(Date.now()).toUTCString(),
       "tag": ""
     };
@@ -54,13 +54,11 @@ class TaskIndex extends React.Component {
   };
 
   handleEdit = task => {
-    console.log("task to be edited:");
-    console.log(task);
-
     this.setState({
+      "taskId": task.id,
       "title": task.attributes.title,
       "description": task.attributes.description,
-      "dueDate": task.attributes.dueDate,
+      "dueDate": task.attributes["due-date"],
       "tag": task.attributes.tag,
       "isEditing": true
     });
@@ -96,11 +94,40 @@ class TaskIndex extends React.Component {
     }
 
     addTask();
-    this.setState({"isAdding": false, "isEditing": false});
+    this.handleClose();
   };
 
-  handleConfirm = () => {
-    console.log("Confirm editing of task");
+  handleConfirm = event => {
+    const saveTask = async() => {
+      const csrfToken = document.querySelector("meta[name=csrf-token").content;
+
+      const response = await fetch("/api/tasks/" + this.state.taskId, {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+          "X-CSRF-Token": csrfToken
+        },
+        body: JSON.stringify({data: {
+          id: this.state.taskId,
+          type: "tasks",
+          attributes: {
+            list: null,
+            title: document.getElementById("field_edit_title").value,
+            description: document.getElementById("field_edit_description").value,
+            tag: this.state.tag,
+            "due-date": this.state.dueDate
+          }
+        }})
+      });
+
+      if(response.status === 200) {
+        window.location.reload();
+      }
+    }
+
+    saveTask();
+    this.handleClose();
   };
 
   handleClose = () => {
