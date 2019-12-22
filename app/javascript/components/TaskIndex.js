@@ -15,8 +15,6 @@ import Select from '@material-ui/core/Select'
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
   KeyboardDateTimePicker
 } from '@material-ui/pickers';
 
@@ -35,7 +33,7 @@ class TaskIndex extends React.Component {
         },
       }),
       "isAdding": false, "isEditing": false,
-      "dueDate" : new Date(Date.now()).toLocaleString(),
+      "dueDate" : new Date(Date.now()).toUTCString(),
       "dueTime" : "",
       "tag": ""
     };
@@ -46,6 +44,7 @@ class TaskIndex extends React.Component {
       const { data } = await response.json();
       this.setState({"tasks": data});
     });
+
   }
 
   handleAdd = () => {
@@ -57,13 +56,43 @@ class TaskIndex extends React.Component {
   };
 
   handleSubmit = () => {
+    console.log("Submitted a new task:");
     console.log("Title: " + document.getElementById("textField_title").value);
     console.log("Description: " + document.getElementById("textField_description").value);
     console.log("DueDate: " + this.state.dueDate);
     console.log("Tag: " + this.state.tag);
 
     // const date = dateTime.getDate() + "/" + dateTime.getMonth() + "/" + dateTime.getFullYear(); 
+    
+    const addTask = async() => {
+      const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
+      const response = await fetch("/api/tasks", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+          "X-CSRF-Token": csrfToken
+        },
+        body: JSON.stringify({data: {
+          id: this.props.taskId,
+          type: "tasks",
+          attributes: {
+            list: null,
+            title: document.getElementById("textField_title").value,
+            description: document.getElementById("textField_description").value,
+            tag: this.state.tag,
+            "due-date": this.state.dueDate
+          }
+        }})
+      });
+
+      if(response.status === 201) {
+        window.location.reload();
+      }
+    }
+
+    addTask();
     this.setState({"isAdding": false, "isEditing": false});
   };
 
@@ -93,7 +122,7 @@ class TaskIndex extends React.Component {
   };
 
   handleDateChange = (dateTime, value) => {
-    this.setState({"dueDate": dateTime});
+    this.setState({"dueDate": dateTime.toUTCString()});
   };
 
   handleTagChange = (event, index, value) => {
@@ -109,6 +138,7 @@ class TaskIndex extends React.Component {
                       <TableRow>
                           <TableCell align = "center">Title</TableCell>
                           <TableCell align = "center">Description</TableCell>
+                          <TableCell align = "center">Due date</TableCell>
                           <TableCell align = "center">Tag</TableCell>
                           <TableCell align = "center">Action</TableCell>
                       </TableRow>
@@ -122,6 +152,9 @@ class TaskIndex extends React.Component {
                               </TableCell>
                               <TableCell align="center">
                                 {task.attributes.description}
+                              </TableCell>
+                              <TableCell align="center">
+                                {new Date(task.attributes["due-date"]).toUTCString()}
                               </TableCell>
                               <TableCell align="center">
                                 {task.attributes.tag}
