@@ -7,7 +7,10 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions, FormHelperText } from "@material-ui/core";
+import AddIcon from '@material-ui/icons/Add';
+import CloseIcon from '@material-ui/icons/Close';
+import DoneIcon from '@material-ui/icons/Done';
+import { IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions } from "@material-ui/core";
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -29,7 +32,7 @@ class TaskIndex extends React.Component {
             minWidth: 650,
         },
       }),
-      "isAdding": false, "isEditing": false,
+      "isAdding": false, "isEditing": false, "isAddingTag": false,
       "task_id": 1, "title": "", "description": "",
       "dueDate" : new Date(Date.now()).toUTCString(),
       "tag_id": 1
@@ -140,7 +143,7 @@ class TaskIndex extends React.Component {
   };
 
   handleClose = () => {
-    this.setState({"isAdding": false, "isEditing": false});
+    this.setState({"isAdding": false, "isEditing": false, "isAddingTag": false});
   };
 
   handleDelete = task => {
@@ -174,7 +177,55 @@ class TaskIndex extends React.Component {
 
   handleNewTag = () => {
     console.log("Creating new tag");
+    this.setState({"isAddingTag": true});
   };
+
+  handleSubmitTag = () => {
+    console.log("Submit Tag");
+
+    const addTag = async() => {
+      const csrfToken = document.querySelector("meta[name=csrf-token").content;
+
+      console.log("Next id:");
+      console.log(this.state.tags.length + 1);
+
+      const response = await fetch("/api/tags", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+          "X-CSRF-Token": csrfToken
+        },
+        body: JSON.stringify({data: {
+          id: this.state.tags.length + 1,
+          type: "tags",
+          attributes: {
+            name: document.getElementById("field_add_tag").value
+          }
+        }})
+      });
+
+      if(response.status === 201) {
+        fetch("/api/tags").then(async (response) => {
+          const { data } = await response.json();
+          this.setState({"tags": data});
+    
+          console.log("Fetched Tags:");
+          console.log(this.state.tags);
+        })
+
+        window.location.reload();
+      }
+    }
+
+    addTag();
+    this.setState({"isAddingTag": false});
+  }
+
+  handleCancelTag = () => {
+    console.log("Cancel New Tag");
+    this.setState({"isAddingTag": false});
+  }
 
   render() {
     return (
@@ -266,12 +317,23 @@ class TaskIndex extends React.Component {
                     )
                   }
                 </Select>
-                {/* <FormHelperText>Label + placeholder</FormHelperText> */}
               </FormControl>
 
-              <Button onClick={this.handleNewTag} color="primary">
-                New
-              </Button>
+              <IconButton color="primary" onClick={this.handleNewTag}>
+                <AddIcon />
+              </IconButton>
+
+              {this.state.isAddingTag 
+                ? <div>
+                    <TextField margin="dense" id="field_add_tag" label="New Tag" id="field_add_tag" />
+                    <IconButton color="primary" onClick={this.handleSubmitTag}>
+                      <DoneIcon />
+                    </IconButton> 
+                    <IconButton color="primary" onClick={this.handleCancelTag}>
+                      <CloseIcon />
+                    </IconButton> 
+                  </div> 
+                : <div></div>}
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="primary">
