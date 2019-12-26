@@ -39,38 +39,10 @@ class TaskIndex extends React.Component {
   componentDidMount() {
     const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
-    fetch("/api/tasks", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/vnd.api+json",
-        "X-CSRF-Token": csrfToken
-      }
-    }).then(
-      async(response) => {
-        console.log("response: ");
-        console.log(response);
-
-        const { data } = await response.json();
-        
-        console.log("data: ");
-        console.log(data);
-
-        this.setState({"tasks": data});
-      }
-    );
-    
-    // fetch("/api/tasks").then(async (response) => {
-    //   console.log("response:");
-    //   console.log(response);
-
-    //   const { data } = await response.json();
-      
-    //   console.log("data:");
-    //   console.log(data);
-
-    //   this.setState({"tasks": data});
-    // });
+    fetch("/api/tasks").then(async (response) => {
+      const { data } = await response.json();
+      this.setState({"tasks": data});
+    });
 
     // fetch("/api/tags").then(async (response) => {
     //   const { data } = await response.json();
@@ -90,7 +62,7 @@ class TaskIndex extends React.Component {
       "title": task.attributes.title,
       "description": task.attributes.description,
       "dueDate": task.attributes["due-date"],
-      "tag": task.attributes.tag_id,//tag,
+      "tag": task.attributes.tag_id,
       "isEditing": true
     });
   };
