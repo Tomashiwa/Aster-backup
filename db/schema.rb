@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_18_025149) do
+ActiveRecord::Schema.define(version: 2019_12_22_130348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,15 +39,22 @@ ActiveRecord::Schema.define(version: 2019_12_18_025149) do
     t.index ["board_id"], name: "index_lists_on_board_id"
   end
 
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.bigint "list_id"
     t.string "title"
     t.text "description"
-    t.string "tag"
+    t.bigint "tag_id"
     t.datetime "due_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["list_id"], name: "index_tasks_on_list_id"
+    t.index ["tag_id"], name: "index_tasks_on_tag_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -60,4 +67,5 @@ ActiveRecord::Schema.define(version: 2019_12_18_025149) do
   add_foreign_key "comments", "tasks"
   add_foreign_key "lists", "boards"
   add_foreign_key "tasks", "lists"
+  add_foreign_key "tasks", "tags"
 end

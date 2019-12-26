@@ -19,7 +19,7 @@ class TaskIndex extends React.Component {
   constructor(props) {
     super(props);
     
-    this.state = {"tasks": [], "classes": 
+    this.state = {"tasks": [], "tags": [], "classes": 
       makeStyles ({
         root: {
             width: '100%',
@@ -37,10 +37,45 @@ class TaskIndex extends React.Component {
   }
 
   componentDidMount() {
-    fetch("/api/tasks").then(async (response) => {
-      const { data } = await response.json();
-      this.setState({"tasks": data});
-    });
+    const csrfToken = document.querySelector("meta[name=csrf-token").content;
+
+    fetch("/api/tasks", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/vnd.api+json",
+        "X-CSRF-Token": csrfToken
+      }
+    }).then(
+      async(response) => {
+        console.log("response: ");
+        console.log(response);
+
+        const { data } = await response.json();
+        
+        console.log("data: ");
+        console.log(data);
+
+        this.setState({"tasks": data});
+      }
+    );
+    
+    // fetch("/api/tasks").then(async (response) => {
+    //   console.log("response:");
+    //   console.log(response);
+
+    //   const { data } = await response.json();
+      
+    //   console.log("data:");
+    //   console.log(data);
+
+    //   this.setState({"tasks": data});
+    // });
+
+    // fetch("/api/tags").then(async (response) => {
+    //   const { data } = await response.json();
+    //   this.setState({"tags": data});
+    // })
   }
 
   handleAdd = () => {
@@ -55,7 +90,7 @@ class TaskIndex extends React.Component {
       "title": task.attributes.title,
       "description": task.attributes.description,
       "dueDate": task.attributes["due-date"],
-      "tag": task.attributes.tag,
+      "tag": task.attributes.tag_id,//tag,
       "isEditing": true
     });
   };
@@ -158,6 +193,10 @@ class TaskIndex extends React.Component {
     this.setState({"tag": event.target.value});
   };
 
+  handleNewTag = () => {
+    console.log("Creating new tag");
+  };
+
   render() {
     return (
       <div>
@@ -186,7 +225,7 @@ class TaskIndex extends React.Component {
                                 {new Date(task.attributes["due-date"]).toUTCString()}
                               </TableCell>
                               <TableCell align="center">
-                                {task.attributes.tag}
+                                {/* {task.attributes.tag_id/*tag*/}
                               </TableCell>
                               <TableCell align="center">
                                 <Button color="primary" onClick={() => this.handleEdit(task)}>
@@ -239,8 +278,7 @@ class TaskIndex extends React.Component {
                   id="select_add_tag"
                   value={this.state.tag}
                   onChange={this.handleTagChange}
-                  fullWidth={true}
-                  style={{ width: 400}}
+                  autoWidth={true}
                 >
                   <MenuItem value="">
                     <em>None</em>
@@ -250,6 +288,10 @@ class TaskIndex extends React.Component {
                   <MenuItem value="C">C</MenuItem>
                 </Select>
               </FormControl>
+
+              <Button onClick={this.handleNewTag} color="primary">
+                New
+              </Button>
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="primary">
