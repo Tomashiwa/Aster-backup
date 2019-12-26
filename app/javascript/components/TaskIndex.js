@@ -7,7 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions } from "@material-ui/core";
+import { Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions, FormHelperText } from "@material-ui/core";
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -30,9 +30,9 @@ class TaskIndex extends React.Component {
         },
       }),
       "isAdding": false, "isEditing": false,
-      "task_id": -1, "title": "", "description": "",
+      "task_id": 1, "title": "", "description": "",
       "dueDate" : new Date(Date.now()).toUTCString(),
-      "tag_id": ""
+      "tag_id": 1
     };
   }
 
@@ -251,13 +251,14 @@ class TaskIndex extends React.Component {
               <br></br>
               
               <FormControl>
-                <InputLabel id="inputLabel_add_tag">Tag</InputLabel>
+                <InputLabel shrink id="inputLabel_add_tag">Tag</InputLabel>
                 <Select
                   labelId="select_new_labelId"
                   id="select_add_tag"
                   value={this.state.tag_id}
                   onChange={this.handleTagChange}
                   autoWidth={true}
+                  required={true}
                 >
                   {
                     this.state.tags.map(tag => 
@@ -265,6 +266,7 @@ class TaskIndex extends React.Component {
                     )
                   }
                 </Select>
+                {/* <FormHelperText>Label + placeholder</FormHelperText> */}
               </FormControl>
 
               <Button onClick={this.handleNewTag} color="primary">
