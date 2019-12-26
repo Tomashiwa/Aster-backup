@@ -42,12 +42,18 @@ class TaskIndex extends React.Component {
     fetch("/api/tasks").then(async (response) => {
       const { data } = await response.json();
       this.setState({"tasks": data});
+
+      console.log("Fetched Tasks:");
+      console.log(this.state.tasks);
     });
 
-    // fetch("/api/tags").then(async (response) => {
-    //   const { data } = await response.json();
-    //   this.setState({"tags": data});
-    // })
+    fetch("/api/tags").then(async (response) => {
+      const { data } = await response.json();
+      this.setState({"tags": data});
+
+      console.log("Fetched Tags:");
+      console.log(this.state.tags);
+    })
   }
 
   handleAdd = () => {
@@ -62,7 +68,7 @@ class TaskIndex extends React.Component {
       "title": task.attributes.title,
       "description": task.attributes.description,
       "dueDate": task.attributes["due-date"],
-      "tag": task.attributes.tag_id,
+      "tag": task.attributes["tag-id"],
       "isEditing": true
     });
   };
@@ -197,7 +203,7 @@ class TaskIndex extends React.Component {
                                 {new Date(task.attributes["due-date"]).toUTCString()}
                               </TableCell>
                               <TableCell align="center">
-                                {/* {task.attributes.tag_id/*tag*/}
+                                {this.state.tags[task.attributes["tag-id"] - 1].attributes.name}
                               </TableCell>
                               <TableCell align="center">
                                 <Button color="primary" onClick={() => this.handleEdit(task)}>
