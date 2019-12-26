@@ -204,7 +204,7 @@ class TaskIndex extends React.Component {
                                 {new Date(task.attributes["due-date"]).toUTCString()}
                               </TableCell>
                               <TableCell align="center">
-                                {task.attributes["tag-id"]} {/*this.state.tags[task.attributes["tag-id"] - 1].attributes.name*/}
+                                {this.state.tags.length > 0 ? this.state.tags[task.attributes["tag-id"] - 1].attributes.name : "Tags not loaded"}
                               </TableCell>
                               <TableCell align="center">
                                 <Button color="primary" onClick={() => this.handleEdit(task)}>
@@ -259,7 +259,6 @@ class TaskIndex extends React.Component {
                   onChange={this.handleTagChange}
                   autoWidth={true}
                 >
-                  <MenuItem value=""><em>None</em></MenuItem>
                   {
                     this.state.tags.map(tag => 
                       <MenuItem key={tag.id} value={tag.id}>{tag.attributes.name}</MenuItem>
