@@ -30,9 +30,9 @@ class TaskIndex extends React.Component {
         },
       }),
       "isAdding": false, "isEditing": false,
-      "taskId": -1, "title": "", "description": "",
+      "task_id": -1, "title": "", "description": "",
       "dueDate" : new Date(Date.now()).toUTCString(),
-      "tag": ""
+      "tag_id": ""
     };
   }
 
@@ -64,11 +64,11 @@ class TaskIndex extends React.Component {
 
   handleEdit = task => {
     this.setState({
-      "taskId": task.id,
+      "task_id": task.id,
       "title": task.attributes.title,
       "description": task.attributes.description,
       "dueDate": task.attributes["due-date"],
-      "tag": task.attributes["tag-id"],
+      "tag_id": task.attributes["tag-id"],
       "isEditing": true
     });
   };
@@ -85,13 +85,13 @@ class TaskIndex extends React.Component {
           "X-CSRF-Token": csrfToken
         },
         body: JSON.stringify({data: {
-          id: this.props.taskId,
+          id: this.props.task_id,
           type: "tasks",
           attributes: {
             list: null,
             title: document.getElementById("field_add_title").value,
             description: document.getElementById("field_add_description").value,
-            tag: this.state.tag,
+            "tag-id": this.state.tag_id,
             "due-date": this.state.dueDate
           }
         }})
@@ -110,7 +110,7 @@ class TaskIndex extends React.Component {
     const saveTask = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
-      const response = await fetch("/api/tasks/" + this.state.taskId, {
+      const response = await fetch("/api/tasks/" + this.state.task_id, {
         method: "PATCH",
         credentials: "include",
         headers: {
@@ -118,13 +118,13 @@ class TaskIndex extends React.Component {
           "X-CSRF-Token": csrfToken
         },
         body: JSON.stringify({data: {
-          id: this.state.taskId,
+          id: this.state.task_id,
           type: "tasks",
           attributes: {
             list: null,
             title: document.getElementById("field_edit_title").value,
             description: document.getElementById("field_edit_description").value,
-            tag: this.state.tag,
+            "tag-id": this.state.tag_id,
             "due-date": this.state.dueDate
           }
         }})
@@ -168,7 +168,8 @@ class TaskIndex extends React.Component {
   };
 
   handleTagChange = (event, index, value) => {
-    this.setState({"tag": event.target.value});
+    console.log("Changing tag to " + event.target.value);
+    this.setState({"tag_id": event.target.value});
   };
 
   handleNewTag = () => {
@@ -203,7 +204,7 @@ class TaskIndex extends React.Component {
                                 {new Date(task.attributes["due-date"]).toUTCString()}
                               </TableCell>
                               <TableCell align="center">
-                                {this.state.tags[task.attributes["tag-id"] - 1].attributes.name}
+                                {task.attributes["tag-id"]} {/*this.state.tags[task.attributes["tag-id"] - 1].attributes.name*/}
                               </TableCell>
                               <TableCell align="center">
                                 <Button color="primary" onClick={() => this.handleEdit(task)}>
@@ -254,16 +255,16 @@ class TaskIndex extends React.Component {
                 <Select
                   labelId="select_new_labelId"
                   id="select_add_tag"
-                  value={this.state.tag}
+                  value={this.state.tag_id}
                   onChange={this.handleTagChange}
                   autoWidth={true}
                 >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value="A">A</MenuItem>
-                  <MenuItem value="B">B</MenuItem>
-                  <MenuItem value="C">C</MenuItem>
+                  <MenuItem value=""><em>None</em></MenuItem>
+                  {
+                    this.state.tags.map(tag => 
+                      <MenuItem key={tag.id} value={tag.id}>{tag.attributes.name}</MenuItem>
+                    )
+                  }
                 </Select>
               </FormControl>
 
@@ -312,17 +313,16 @@ class TaskIndex extends React.Component {
                 <Select
                   labelId="select_new_labelId"
                   id="select_edit_tag"
-                  value={this.state.tag}
+                  value={this.state.tag_id}
                   onChange={this.handleTagChange}
                   fullWidth={true}
                   style={{ width: 400}}
                 >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value="A">A</MenuItem>
-                  <MenuItem value="B">B</MenuItem>
-                  <MenuItem value="C">C</MenuItem>
+                  {
+                    this.state.tags.map(tag => 
+                      <MenuItem key={tag.id} value={tag.id}>{tag.attributes.name}</MenuItem>
+                    )
+                  }
                 </Select>
               </FormControl>
             </DialogContent>
