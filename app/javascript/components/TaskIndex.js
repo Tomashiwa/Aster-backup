@@ -231,15 +231,13 @@ class TaskIndex extends React.Component {
         fetch("/api/tags").then(async (response) => {
           const { data } = await response.json();
           this.setState({"tags": data});
-    
-          console.log("Fetched Tags:");
-          console.log(this.state.tags);
+          this.setState({"tag_id": this.state.tags.length, "isAddingTag": false});
         })
       }
     }
 
     addTag();
-    this.setState({"isAddingTag": false});
+    
   }
 
   handleCancelTag = () => {
