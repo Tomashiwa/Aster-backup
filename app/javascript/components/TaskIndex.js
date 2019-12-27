@@ -240,50 +240,53 @@ class TaskIndex extends React.Component {
   render() {
     return (
       <div>
-          <Paper className = {this.state.classes.root}>
-              <Table className = {this.state.classes.table} aria-label = "simple table">
-                  <TableHead>
-                      <TableRow>
-                          <TableCell align = "center">Title</TableCell>
-                          <TableCell align = "center">Description</TableCell>
-                          <TableCell align = "center">Due date</TableCell>
-                          <TableCell align = "center">Tag</TableCell>
-                          <TableCell align = "center">Action</TableCell>
-                      </TableRow>
-                  </TableHead>
-                  <TableBody>
-                      {
-                        this.state.tasks.map(task => (
-                          <TableRow key={task.attributes.title}>
-                              <TableCell component="th" scope="row" align="center">
-                                {task.attributes.title}
-                              </TableCell>
-                              <TableCell align="center">
-                                {task.attributes.description}
-                              </TableCell>
-                              <TableCell align="center">
-                                {new Date(task.attributes["due-date"]).toUTCString()}
-                              </TableCell>
-                              <TableCell align="center">
-                                {this.state.tags.length > 0 ? this.state.tags[task.attributes["tag-id"] - 1].attributes.name : "Tags not loaded"}
-                              </TableCell>
-                              <TableCell align="center">
-                                <Button color="primary" onClick={() => this.handleEdit(task)}>
-                                    Edit
-                                </Button>
-                                <Button color="secondary" onClick={() => this.handleDelete(task)}>
-                                    Delete
-                                </Button>
-                              </TableCell>
-                          </TableRow>
-                        ))
-                      }
-                  </TableBody>
-              </Table>
+          <Paper elevation={3}>
+            <Table className = {this.state.classes.table} aria-label = "simple table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell align = "center">Title</TableCell>
+                        <TableCell align = "center">Description</TableCell>
+                        <TableCell align = "center">Due date</TableCell>
+                        <TableCell align = "center">Tag</TableCell>
+                        <TableCell align = "center">Action</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {
+                      this.state.tasks.map(task => (
+                        <TableRow key={task.attributes.title}>
+                            <TableCell component="th" scope="row" align="center">
+                              {task.attributes.title}
+                            </TableCell>
+                            <TableCell align="center">
+                              {task.attributes.description}
+                            </TableCell>
+                            <TableCell align="center">
+                              {new Date(task.attributes["due-date"]).toUTCString()}
+                            </TableCell>
+                            <TableCell align="center">
+                              {this.state.tags.length > 0 ? this.state.tags[task.attributes["tag-id"] - 1].attributes.name : "Tags not loaded"}
+                            </TableCell>
+                            <TableCell align="center">
+                              <Button color="primary" onClick={() => this.handleEdit(task)}>
+                                  Edit
+                              </Button>
+                              <Button color="secondary" onClick={() => this.handleDelete(task)}>
+                                  Delete
+                              </Button>
+                            </TableCell>
+                        </TableRow>
+                      ))
+                    }
+                </TableBody>
+            </Table>
+            
+            <br></br>
+            <br></br>
+            <Button variant="outlined" color="primary" onClick={this.handleAdd}>
+                Add Task
+            </Button>
           </Paper>
-          <Button variant="outlined" color="primary" onClick={this.handleAdd}>
-              Add Task
-          </Button>
           <Dialog open={this.state.isAdding} onClose={this.handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="dialogTitle_addTask">Add Task</DialogTitle>
             <DialogContent>
@@ -318,7 +321,6 @@ class TaskIndex extends React.Component {
                   id="select_add_tag"
                   value={this.state.tag_id}
                   onChange={this.handleTagChange}
-                  // autoWidth={true}
                   fullWidth={true}
                   required={true}
                 >
