@@ -80,6 +80,20 @@ class TaskIndex extends React.Component {
     const addTask = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
+      const json = JSON.stringify({data: {
+        id: this.props.task_id,
+        type: "tasks",
+        attributes: {
+          list: null,
+          title: document.getElementById("field_add_title").value,
+          description: document.getElementById("field_add_description").value,
+          "tag-id": this.state.tag_id,
+          "due-date": this.state.dueDate
+        }
+      }});
+      console.log("task to be addded:");
+      console.log(json);
+
       const response = await fetch("/api/tasks", {
         method: "POST",
         credentials: "include",
@@ -88,7 +102,6 @@ class TaskIndex extends React.Component {
           "X-CSRF-Token": csrfToken
         },
         body: JSON.stringify({data: {
-          id: this.props.task_id,
           type: "tasks",
           attributes: {
             list: null,
@@ -189,6 +202,16 @@ class TaskIndex extends React.Component {
       console.log("Next id:");
       console.log(this.state.tags.length + 1);
 
+      const json = JSON.stringify({data: {
+        id: this.state.tags.length + 1,
+        type: "tags",
+        attributes: {
+          name: document.getElementById("field_add_tag").value
+        }
+      }});
+      console.log("tag to be addded:");
+      console.log(json);
+
       const response = await fetch("/api/tags", {
         method: "POST",
         credentials: "include",
@@ -197,7 +220,6 @@ class TaskIndex extends React.Component {
           "X-CSRF-Token": csrfToken
         },
         body: JSON.stringify({data: {
-          id: this.state.tags.length + 1,
           type: "tags",
           attributes: {
             name: document.getElementById("field_add_tag").value
@@ -213,8 +235,6 @@ class TaskIndex extends React.Component {
           console.log("Fetched Tags:");
           console.log(this.state.tags);
         })
-
-        window.location.reload();
       }
     }
 
