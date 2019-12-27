@@ -60,9 +60,12 @@ class TaskIndex extends React.Component {
   }
 
   handleAdd = () => {
+    console.log("Pressed Add");
+
     this.setState({
       "dueDate": new Date(Date.now()).toUTCString(),
-      "isAdding": true,});
+      "tag_id": 1,
+      "isAdding": true});
   };
 
   handleEdit = task => {
@@ -70,7 +73,7 @@ class TaskIndex extends React.Component {
       "task_id": task.id,
       "title": task.attributes.title,
       "description": task.attributes.description,
-      "dueDate": task.attributes["due-date"],
+      "dueDate": task.attributes["due-date"], 
       "tag_id": task.attributes["tag-id"],
       "isEditing": true
     });
@@ -199,19 +202,6 @@ class TaskIndex extends React.Component {
     const addTag = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
-      console.log("Next id:");
-      console.log(this.state.tags.length + 1);
-
-      const json = JSON.stringify({data: {
-        id: this.state.tags.length + 1,
-        type: "tags",
-        attributes: {
-          name: document.getElementById("field_add_tag").value
-        }
-      }});
-      console.log("tag to be addded:");
-      console.log(json);
-
       const response = await fetch("/api/tags", {
         method: "POST",
         credentials: "include",
@@ -222,7 +212,9 @@ class TaskIndex extends React.Component {
         body: JSON.stringify({data: {
           type: "tags",
           attributes: {
-            name: document.getElementById("field_add_tag").value
+            name: document.getElementById("field_new_add_tag") !== null 
+              ? document.getElementById("field_new_add_tag").value
+              : document.getElementById("field_edit_add_tag").value
           }
         }})
       });
@@ -326,7 +318,8 @@ class TaskIndex extends React.Component {
                   id="select_add_tag"
                   value={this.state.tag_id}
                   onChange={this.handleTagChange}
-                  autoWidth={true}
+                  // autoWidth={true}
+                  fullWidth={true}
                   required={true}
                 >
                   {
@@ -343,7 +336,7 @@ class TaskIndex extends React.Component {
 
               {this.state.isAddingTag 
                 ? <div>
-                    <TextField margin="dense" id="field_add_tag" label="New Tag" id="field_add_tag" />
+                    <TextField margin="dense" id="field_new_add_tag" label="New Tag" />
                     <IconButton color="primary" onClick={this.handleSubmitTag}>
                       <DoneIcon />
                     </IconButton> 
@@ -397,7 +390,6 @@ class TaskIndex extends React.Component {
                   value={this.state.tag_id}
                   onChange={this.handleTagChange}
                   fullWidth={true}
-                  style={{ width: 400}}
                 >
                   {
                     this.state.tags.map(tag => 
@@ -406,6 +398,22 @@ class TaskIndex extends React.Component {
                   }
                 </Select>
               </FormControl>
+
+              <IconButton color="primary" onClick={this.handleNewTag}>
+                <AddIcon />
+              </IconButton>
+
+              {this.state.isAddingTag 
+                ? <div>
+                    <TextField margin="dense" id="field_edit_add_tag" label="New Tag" />
+                    <IconButton color="primary" onClick={this.handleSubmitTag}>
+                      <DoneIcon />
+                    </IconButton> 
+                    <IconButton color="primary" onClick={this.handleCancelTag}>
+                      <CloseIcon />
+                    </IconButton> 
+                  </div> 
+                : <div></div>}
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="primary">
