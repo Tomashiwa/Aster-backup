@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -40,6 +40,12 @@ class TaskIndex extends React.Component {
   }
 
   componentDidMount() {
+    console.log("Properties:");
+    console.log(this.props);
+    // for(let i = 0; i < this.props.length; i = i + 1) {
+    //   console.log(this.props[i]);
+    // }
+
     const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
     fetch("/api/tasks").then(async (response) => {
@@ -240,6 +246,7 @@ class TaskIndex extends React.Component {
   render() {
     return (
       <div>
+          <h1 align="center">{"List " + this.props.list_id}</h1>
           <Paper elevation={3}>
             <Table className = {this.state.classes.table} aria-label = "simple table">
                 <TableHead>
