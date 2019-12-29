@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import DoneIcon from '@material-ui/icons/Done';
-import { IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions } from "@material-ui/core";
+import { IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions, ListItemText, Typography, withStyles } from "@material-ui/core";
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -18,20 +18,40 @@ import Select from '@material-ui/core/Select'
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from '@material-ui/pickers';
 
+import { List, ListItem, ListItemSecondaryAction   } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+const styles = {
+  taskButtons: {
+    // marginLeft: 50,
+    // marginRight: -12
+  },
+  editDelete: {
+    top: '90%'
+  },
+  dueDate: {
+    top: '10%'
+  }
+};
+
 class TaskIndex extends React.Component {
   constructor(props) {
     super(props);
     
     this.state = {"tasks": [], "tags": [], "classes": 
-      makeStyles ({
+      makeStyles (theme => ({
         root: {
             width: '100%',
             overflowX: 'auto',
+
+            maxWidth: 360,
+            backgroundColor: theme.palette.background.paper
         },
         table: {
-            minWidth: 650,
+            minWidth: 650
         },
-      }),
+      })),
       "isAdding": false, "isEditing": false, "isAddingTag": false,
       "task_id": 1, "title": "", "description": "",
       "dueDate" : new Date(Date.now()).toUTCString(),
@@ -42,9 +62,6 @@ class TaskIndex extends React.Component {
   componentDidMount() {
     console.log("Properties:");
     console.log(this.props);
-    // for(let i = 0; i < this.props.length; i = i + 1) {
-    //   console.log(this.props[i]);
-    // }
 
     const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
@@ -100,8 +117,6 @@ class TaskIndex extends React.Component {
           "due-date": this.state.dueDate
         }
       }});
-      console.log("task to be addded:");
-      console.log(json);
 
       const response = await fetch("/api/tasks", {
         method: "POST",
@@ -193,18 +208,14 @@ class TaskIndex extends React.Component {
   };
 
   handleTagChange = (event, index, value) => {
-    console.log("Changing tag to " + event.target.value);
     this.setState({"tag_id": event.target.value});
   };
 
   handleNewTag = () => {
-    console.log("Creating new tag");
     this.setState({"isAddingTag": true});
   };
 
   handleSubmitTag = () => {
-    console.log("Submit Tag");
-
     const addTag = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
@@ -239,61 +250,58 @@ class TaskIndex extends React.Component {
   }
 
   handleCancelTag = () => {
-    console.log("Cancel New Tag");
     this.setState({"isAddingTag": false});
   }
 
   render() {
+    const { classes } = this.props;
     return (
       <div>
           <h1 align="center">{"List " + this.props.list_id}</h1>
-          <Paper elevation={3}>
-            <Table className = {this.state.classes.table} aria-label = "simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell align = "center">Title</TableCell>
-                        <TableCell align = "center">Description</TableCell>
-                        <TableCell align = "center">Due date</TableCell>
-                        <TableCell align = "center">Tag</TableCell>
-                        <TableCell align = "center">Action</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {
-                      this.state.tasks.map(task => (
-                        <TableRow key={task.attributes.title}>
-                            <TableCell component="th" scope="row" align="center">
-                              {task.attributes.title}
-                            </TableCell>
-                            <TableCell align="center">
-                              {task.attributes.description}
-                            </TableCell>
-                            <TableCell align="center">
-                              {new Date(task.attributes["due-date"]).toUTCString()}
-                            </TableCell>
-                            <TableCell align="center">
-                              {this.state.tags.length > 0 ? this.state.tags[task.attributes["tag-id"] - 1].attributes.name : "Tags not loaded"}
-                            </TableCell>
-                            <TableCell align="center">
-                              <Button color="primary" onClick={() => this.handleEdit(task)}>
-                                  Edit
-                              </Button>
-                              <Button color="secondary" onClick={() => this.handleDelete(task)}>
-                                  Delete
-                              </Button>
-                            </TableCell>
-                        </TableRow>
-                      ))
-                    }
-                </TableBody>
-            </Table>
+          <List className={this.state.classes.root}>
+            {
+              this.state.tasks.map(task => (
+                <React.Fragment key={task.id}>
+                  <ListItem alignItems="flex-start" button={true} divider={true}>
+                    <ListItemText
+                      primary={task.attributes.title}
+                      secondary={
+                        <React.Fragment>
+                          <Typography align="left" variant="subtitle2" className={this.state.classes.inline} color="textPrimary">
+                            {this.state.tags.length > 0 ? this.state.tags[task.attributes["tag-id"] - 1].attributes.name : "Tags not loaded"}
+                          </Typography>
+                          <Typography align="justify">
+                            {task.attributes.description}
+                          </Typography>
+                          
+
+                        </React.Fragment>
+                      }
+                    />
+                    <ListItemSecondaryAction classes={{ root: classes.dueDate }}>
+                      <Typography align="right" variant="subtitle1" className={this.state.classes.inline} color="textPrimary">
+                         {"Due by: " + new Date(task.attributes["due-date"]).toUTCString()}
+                      </Typography>
+                    </ListItemSecondaryAction>
+                    <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
+                      <IconButton size="small" color="primary" onClick={() => this.handleEdit(task)} classes={{ root: classes.taskButtons }}>
+                         <EditIcon />
+                       </IconButton>
+                       <IconButton size="small" color="secondary" onClick={() => this.handleDelete(task)} classes={{ root: classes.taskButtons }}>
+                         <DeleteIcon />
+                       </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </React.Fragment>
+              ))
+            }
             
-            <br></br>
-            <br></br>
-            <Button variant="outlined" color="primary" onClick={this.handleAdd}>
-                Add Task
-            </Button>
-          </Paper>
+          </List>
+          <br></br>
+          <Button variant="outlined" color="primary" onClick={this.handleAdd}>
+              Add Task
+          </Button>
+
           <Dialog open={this.state.isAdding} onClose={this.handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="dialogTitle_addTask">Add Task</DialogTitle>
             <DialogContent>
@@ -364,7 +372,7 @@ class TaskIndex extends React.Component {
               </Button>
             </DialogActions>
           </Dialog>
-          <Dialog open={this.state.isEditing} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+          <Dialog open={this.state.isEditing} onClose={this.handleClose} aria-labelledby="form-dialog-title"> 
             <DialogTitle id="dialogTitle_editTask">Edit Task</DialogTitle>
             <DialogContent>
               <DialogContentText>
@@ -438,4 +446,4 @@ class TaskIndex extends React.Component {
   }
 }
 
-export default TaskIndex;
+export default withStyles(styles)(TaskIndex);
