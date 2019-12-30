@@ -56,9 +56,6 @@ class TaskIndex extends React.Component {
 
     fetch("/api/lists").then(async (response) => {
       const { data } = await response.json();
-
-      console.log("list id: ");
-      console.log(this.props.list_id);
       this.setState({"name": data[this.props.list_id - 1].attributes.name});
     });
 
@@ -80,8 +77,6 @@ class TaskIndex extends React.Component {
   }
 
   handleAdd = () => {
-    console.log("Pressed Add");
-
     this.setState({
       "dueDate": new Date(Date.now()).toUTCString(),
       "tag_id": 1,
@@ -146,7 +141,7 @@ class TaskIndex extends React.Component {
           id: this.state.task_id,
           type: "tasks",
           attributes: {
-            list: null,
+            "list-id": this.props.list_id,
             title: document.getElementById("field_edit_title").value,
             description: document.getElementById("field_edit_description").value,
             "tag-id": this.state.tag_id,
