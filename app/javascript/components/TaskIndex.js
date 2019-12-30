@@ -23,10 +23,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = {
-  taskButtons: {
-    // marginLeft: 50,
-    // marginRight: -12
-  },
   editDelete: {
     top: '90%'
   },
