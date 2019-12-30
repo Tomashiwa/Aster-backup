@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2019_12_22_130348) do
   end
 
   create_table "lists", force: :cascade do |t|
-    t.bigint "board_id", null: false
+    t.bigint "board_id"
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
