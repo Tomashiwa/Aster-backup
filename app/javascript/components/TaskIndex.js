@@ -61,7 +61,9 @@ class TaskIndex extends React.Component {
 
     fetch("/api/tasks").then(async (response) => {
       const { data } = await response.json();
-      this.setState({"tasks": data});
+      this.setState({"tasks": data.filter(task => {
+        return task.attributes["list-id"] === this.props.list_id;
+      })});
 
       console.log("Fetched Tasks:");
       console.log(this.state.tasks);
