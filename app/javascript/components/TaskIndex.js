@@ -23,8 +23,10 @@ class TaskIndex extends React.Component {
   constructor(props) {
     super(props);
     
-    this.state = {"tasks": [], "tags": [], "classes": 
-      makeStyles (theme => ({
+    this.state = {
+      "tasks": [], 
+      "tags": [], 
+      "classes": makeStyles (theme => ({
         root: {
             width: '100%',
             overflowX: 'auto',
@@ -36,10 +38,15 @@ class TaskIndex extends React.Component {
             minWidth: 650
         },
       })),
-      "isAdding": false, "isEditing": false, "isAddingTag": false,
-      "task_id": 1, "title": "", "description": "",
+      "isAdding": false, 
+      "isEditing": false, 
+      "isAddingTag": false,
+      "task_id": 1, 
+      "title": "", 
+      "description": "",
       "dueDate" : new Date(Date.now()).toUTCString(),
-      "tag_id": 1
+      "tag_id": 1,
+      "name": ""
     };
   }
 
@@ -47,7 +54,13 @@ class TaskIndex extends React.Component {
     console.log("Properties:");
     console.log(this.props);
 
-    const csrfToken = document.querySelector("meta[name=csrf-token").content;
+    fetch("/api/lists").then(async (response) => {
+      const { data } = await response.json();
+
+      console.log("list id: ");
+      console.log(this.props.list_id);
+      this.setState({"name": data[this.props.list_id - 1].attributes.name});
+    });
 
     fetch("/api/tasks").then(async (response) => {
       const { data } = await response.json();
@@ -90,18 +103,6 @@ class TaskIndex extends React.Component {
     const addTask = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
-      const json = JSON.stringify({data: {
-        id: this.props.task_id,
-        type: "tasks",
-        attributes: {
-          list: null,
-          title: document.getElementById("field_add_title").value,
-          description: document.getElementById("field_add_description").value,
-          "tag-id": this.state.tag_id,
-          "due-date": this.state.dueDate
-        }
-      }});
-
       const response = await fetch("/api/tasks", {
         method: "POST",
         credentials: "include",
@@ -112,7 +113,7 @@ class TaskIndex extends React.Component {
         body: JSON.stringify({data: {
           type: "tasks",
           attributes: {
-            list: null,
+            "list-id": this.props.list_id,
             title: document.getElementById("field_add_title").value,
             description: document.getElementById("field_add_description").value,
             "tag-id": this.state.tag_id,
@@ -241,7 +242,7 @@ class TaskIndex extends React.Component {
     const { classes } = this.props;
     return (
       <div>
-          <h1 align="center">{"List " + this.props.list_id}</h1>
+          <h1 align="center">{this.state.name}</h1>
           <List className={this.state.classes.root}>
             {
               this.state.tasks.map(task => (

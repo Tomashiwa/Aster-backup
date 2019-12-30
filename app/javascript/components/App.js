@@ -6,7 +6,7 @@ import ListIndex from "./ListIndex";
 function App() {
   return (
     <Router>
-      <TaskIndex path="/" list_id={0} />
+      <TaskIndex path="/" list_id={1} />
       <ListIndex path="/board" />
     </Router>
   );
