@@ -6,8 +6,8 @@ import ListIndex from "./ListIndex";
 function App() {
   return (
     <Router>
-      <TaskIndex path="/" list_id={1} />
-      <ListIndex path="/board" />
+      <ListIndex path="/" />
+      {/* <TaskIndex path="/list" list_id={1} /> */}
     </Router>
   );
 }

@@ -9,6 +9,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 import DateFnsUtils from '@date-io/date-fns';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 const styles = {
   editDelete: {
@@ -185,6 +187,16 @@ class TaskIndex extends React.Component {
     deleteTask();
   };
 
+  handleDemote = task => {
+    console.log("Demoting task:");
+    console.log(task);
+  }
+
+  handlePromote = task => {
+    console.log("Promoting task:");
+    console.log(task);
+  }
+
   handleDateChange = (dateTime, value) => {
     this.setState({"dueDate": dateTime.toUTCString()});
   };
@@ -246,32 +258,37 @@ class TaskIndex extends React.Component {
                 <React.Fragment key={task.id}>
                   <ListItem alignItems="flex-start" button={true} divider={true}>
                     <ListItemText
+                      style={{textAlign:"justify"}}
                       primary={task.attributes.title}
                       secondary={
                         <React.Fragment>
-                          <Typography align="left" variant="subtitle2" className={this.state.classes.inline} color="textPrimary">
+                          <Typography component={"span"} align="left" variant="subtitle2" className={this.state.classes.inline} color="textPrimary">
                             {this.state.tags.length > 0 ? this.state.tags[task.attributes["tag-id"] - 1].attributes.name : "Tags not loaded"}
                           </Typography>
-                          <Typography align="justify">
-                            {task.attributes.description}
+                          <Typography component={"span"} style={{whiteSpace:"pre-line"}}>
+                            {"\n" + task.attributes.description}
                           </Typography>
-                          
-
                         </React.Fragment>
                       }
                     />
                     <ListItemSecondaryAction classes={{ root: classes.dueDate }}>
                       <Typography align="right" variant="subtitle1" className={this.state.classes.inline} color="textPrimary">
-                         {"Due by: " + new Date(task.attributes["due-date"]).toUTCString()}
+                         {"By: " + new Date(task.attributes["due-date"]).toUTCString()} {/*toDateString()*/}
                       </Typography>
                     </ListItemSecondaryAction>
                     <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
+                      <IconButton size="small" color="primary" onClick={() => this.handleDemote(task)} classes={{root: classes.taskButtons}}>
+                        <ChevronLeftIcon />
+                      </IconButton>
+                      <IconButton size="small" color="primary" onClick={() => this.handlePromote(task)} classes={{root: classes.taskButtons}}>
+                        <ChevronRightIcon />
+                      </IconButton>
                       <IconButton size="small" color="primary" onClick={() => this.handleEdit(task)} classes={{ root: classes.taskButtons }}>
                          <EditIcon />
-                       </IconButton>
-                       <IconButton size="small" color="secondary" onClick={() => this.handleDelete(task)} classes={{ root: classes.taskButtons }}>
-                         <DeleteIcon />
-                       </IconButton>
+                      </IconButton>
+                      <IconButton size="small" color="secondary" onClick={() => this.handleDelete(task)} classes={{ root: classes.taskButtons }}>
+                        <DeleteIcon />
+                      </IconButton>
                     </ListItemSecondaryAction>
                   </ListItem>
                 </React.Fragment>
