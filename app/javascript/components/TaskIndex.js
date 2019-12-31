@@ -312,7 +312,6 @@ class TaskIndex extends React.Component {
     }
 
     addTag();
-    
   }
 
   handleCancelTag = () => {

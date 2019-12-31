@@ -1,6 +1,5 @@
 import React from "react";
 import { Router } from "@reach/router";
-import TaskIndex from "./TaskIndex";
 import ListIndex from "./ListIndex";
 
 function App() {
