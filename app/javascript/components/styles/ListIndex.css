@@ -1,0 +1,10 @@
+section {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+section article {
+    flex-grow: 1;
+    flex-basis: 0;
+}

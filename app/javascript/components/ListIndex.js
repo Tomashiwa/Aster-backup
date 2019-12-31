@@ -1,12 +1,7 @@
 import React from "react";
+import ReactDOM from 'react-dom';
 import TaskIndex from "./TaskIndex"
-import { FormHelperText, withStyles } from "@material-ui/core";
-
-// const styles = {
-//     listsSection: {
-//         display: flex
-//     }
-// };
+import "./styles/ListIndex.css"
 
 class ListIndex extends React.Component {
     constructor(props) {
@@ -19,17 +14,17 @@ class ListIndex extends React.Component {
         return (
             <div>
                 <h1 align="center">Board</h1>
-                <section style={{display: "flex", justifyContent:"space-around", alignItems: "flex-start"}}>
-                    <article style={{flexGrow: 1, flexBasis: 0}} >
+                <section>
+                    <article>
                         <TaskIndex board_id={0} list_id={1} />
                     </article>
-                    <article style={{flexGrow: 1, flexBasis: 0}}>
+                    <article>
                         <TaskIndex board_id={0} list_id={2} />
                     </article>
-                    <article style={{flexGrow: 1, flexBasis: 0}}>
+                    <article>
                         <TaskIndex board_id={0} list_id={3} />
                     </article>
-                    <article style={{flexGrow: 1, flexBasis: 0}}>
+                    <article>
                         <TaskIndex board_id={0} list_id={4} />
                     </article>
                 </section>
@@ -39,4 +34,3 @@ class ListIndex extends React.Component {
 }
 
 export default ListIndex;
-// export default withStyles(styles)(ListIndex);
