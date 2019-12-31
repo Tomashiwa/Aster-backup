@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from 'react-dom';
 import TaskIndex from "./TaskIndex"
 import "./styles/ListIndex.css"
 
