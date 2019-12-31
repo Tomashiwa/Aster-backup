@@ -53,8 +53,8 @@ class TaskIndex extends React.Component {
   }
 
   componentDidMount() {
-    console.log("Properties:");
-    console.log(this.props);
+    // console.log("Properties:");
+    // console.log(this.props);
 
     fetch("/api/lists").then(async (response) => {
       const { data } = await response.json();
@@ -67,16 +67,16 @@ class TaskIndex extends React.Component {
         return task.attributes["list-id"] === this.props.list_id;
       })});
 
-      console.log("Fetched Tasks:");
-      console.log(this.state.tasks);
+      // console.log("Fetched Tasks:");
+      // console.log(this.state.tasks);
     });
 
     fetch("/api/tags").then(async (response) => {
       const { data } = await response.json();
       this.setState({"tags": data});
 
-      console.log("Fetched Tags:");
-      console.log(this.state.tags);
+      // console.log("Fetched Tags:");
+      // console.log(this.state.tags);
     })
   }
 
@@ -190,11 +190,83 @@ class TaskIndex extends React.Component {
   handleDemote = task => {
     console.log("Demoting task:");
     console.log(task);
+
+    if(this.props.list_id <= 1) {
+      console.log("Reached lowest list");
+    } else {
+      console.log("Demoting to list " + (this.props.list_id - 1));
+
+      const demoteTask = async() => {
+        const csrfToken = document.querySelector("meta[name=csrf-token").content;
+  
+        const response = await fetch("/api/tasks/" + task.id, {
+          method: "PATCH",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/vnd.api+json",
+            "X-CSRF-Token": csrfToken
+          },
+          body: JSON.stringify({data: {
+            id: task.id,
+            type: "tasks",
+            attributes: {
+              "list-id": this.props.list_id - 1,
+              title: task.attributes.title,
+              description: task.attributes.description,
+              "due-date": task.attributes["due-date"],
+              "tag-id": task.attributes["tag-id"]
+            }
+          }})
+        });
+  
+        if(response.status === 200) {
+          window.location.reload();
+        }
+      }
+  
+      demoteTask();
+    }
   }
 
   handlePromote = task => {
     console.log("Promoting task:");
     console.log(task);
+
+    if(this.props.list_id >= 4) {
+      console.log("Reached highest list");
+    } else {
+      console.log("Promoting to list " + (this.props.list_id + 1));
+
+      const promoteTask = async() => {
+        const csrfToken = document.querySelector("meta[name=csrf-token").content;
+  
+        const response = await fetch("/api/tasks/" + task.id, {
+          method: "PATCH",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/vnd.api+json",
+            "X-CSRF-Token": csrfToken
+          },
+          body: JSON.stringify({data: {
+            id: task.id,
+            type: "tasks",
+            attributes: {
+              "list-id": this.props.list_id + 1,
+              title: task.attributes.title,
+              description: task.attributes.description,
+              "due-date": task.attributes["due-date"],
+              "tag-id": task.attributes["tag-id"]
+            }
+          }})
+        });
+  
+        if(response.status === 200) {
+          window.location.reload();
+        }
+      }
+  
+      promoteTask();
+    }
   }
 
   handleDateChange = (dateTime, value) => {
