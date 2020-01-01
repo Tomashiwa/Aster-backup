@@ -12,6 +12,8 @@ import DateFnsUtils from '@date-io/date-fns';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
+import TagSelect from "./TagSelect";
+
 const styles = {
   editDelete: {
     top: '90%'
@@ -409,23 +411,7 @@ class TaskIndex extends React.Component {
               <br></br>
               <br></br>
               
-              <FormControl>
-                <InputLabel shrink id="inputLabel_add_tag">Tag</InputLabel>
-                <Select
-                  labelId="select_new_labelId"
-                  id="select_add_tag"
-                  value={this.state.tag_id}
-                  onChange={this.handleTagChange}
-                  fullWidth={true}
-                  required={true}
-                >
-                  {
-                    this.state.tags.map(tag => 
-                      <MenuItem key={tag.id} value={tag.id}>{tag.attributes.name}</MenuItem>
-                    )
-                  }
-                </Select>
-              </FormControl>
+              <TagSelect tags={this.state.tags} tag_id={this.state.tag_id} onChange={this.handleTagChange} />
 
               <IconButton color="primary" onClick={this.handleNewTag}>
                 <AddIcon />
@@ -479,22 +465,7 @@ class TaskIndex extends React.Component {
               <br></br>
               <br></br>
               
-              <FormControl>
-                <InputLabel id="inputLabel_edit_tag">Tag</InputLabel>
-                <Select
-                  labelId="select_new_labelId"
-                  id="select_edit_tag"
-                  value={this.state.tag_id}
-                  onChange={this.handleTagChange}
-                  fullWidth={true}
-                >
-                  {
-                    this.state.tags.map(tag => 
-                      <MenuItem key={tag.id} value={tag.id}>{tag.attributes.name}</MenuItem>
-                    )
-                  }
-                </Select>
-              </FormControl>
+              <TagSelect tags={this.state.tags} tag_id={this.state.tag_id} onChange={this.handleTagChange} />
 
               <IconButton color="primary" onClick={this.handleNewTag}>
                 <AddIcon />
