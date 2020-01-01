@@ -6,7 +6,14 @@ class ListIndex extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            tagFilterId: -1
+        };
+    }
+
+    componentDidMount() {
+        console.log("ListIndex's state:");
+        console.log(this.state);
     }
 
     render() {
@@ -15,16 +22,16 @@ class ListIndex extends React.Component {
                 <h1 align="center">Board</h1>
                 <section>
                     <article>
-                        <TaskIndex board_id={0} list_id={1} />
+                        <TaskIndex board_id={0} list_id={1} tagFilterId={this.state.tagFilterId}/>
                     </article>
                     <article>
-                        <TaskIndex board_id={0} list_id={2} />
+                        <TaskIndex board_id={0} list_id={2} tagFilterId={this.state.tagFilterId}/>
                     </article>
                     <article>
-                        <TaskIndex board_id={0} list_id={3} />
+                        <TaskIndex board_id={0} list_id={3} tagFilterId={this.state.tagFilterId}/>
                     </article>
                     <article>
-                        <TaskIndex board_id={0} list_id={4} />
+                        <TaskIndex board_id={0} list_id={4} tagFilterId={this.state.tagFilterId}/>
                     </article>
                 </section>
             </div>

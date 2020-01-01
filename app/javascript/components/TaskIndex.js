@@ -53,8 +53,8 @@ class TaskIndex extends React.Component {
   }
 
   componentDidMount() {
-    // console.log("Properties:");
-    // console.log(this.props);
+    console.log("TaskIndex " + this.props.list_id +  " Properties:");
+    console.log(this.props);
 
     fetch("/api/lists").then(async (response) => {
       const { data } = await response.json();
