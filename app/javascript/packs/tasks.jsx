@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "components/App";
+import TasksApp from "components/TasksApp";
 
 document.addEventListener("DOMContentLoaded", () => {
   ReactDOM.render(
-    <App />,
+    <TasksApp />,
     document.body.appendChild(document.createElement("div"))
   );
 });

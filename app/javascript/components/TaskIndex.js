@@ -275,6 +275,16 @@ class TaskIndex extends React.Component {
 
   handleTagChange = (event, index, value) => {
     this.setState({"tag_id": event.target.value});
+
+    console.log("event:");
+    console.log(event);
+    console.log("index:");
+    console.log(index);
+    console.log("value:");
+    console.log(value);
+  
+    console.log("Switched tag_id to:");
+    console.log(this.state.tag_id);
   };
 
   handleNewTag = () => {
