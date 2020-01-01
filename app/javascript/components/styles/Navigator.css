@@ -1,0 +1,27 @@
+#navBar {
+    background-image: linear-gradient(to bottom right, red, white);
+    display: flex;
+}
+
+#userInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#userName + #logOut {
+    margin-left: 15px;
+}
+
+#searchFilter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: auto;
+}
+
+#searchBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

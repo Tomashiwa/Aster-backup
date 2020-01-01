@@ -2,6 +2,7 @@ import React from "react";
 import { AppBar, Toolbar, Button, Typography, InputBase, IconButton, Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import "./styles/Navigator.css"
 
 class Navigator extends React.Component {
     constructor(props) {
@@ -33,44 +34,45 @@ class Navigator extends React.Component {
 
     render() {
         return(
-            <AppBar position="static">
+            <AppBar id="navBar" position="static">
                 <Toolbar>
-                    <div>
+                    <div id="userInfo">
                         <IconButton>
                             <AccountCircleIcon />
                         </IconButton>
-                        <Typography variant="h6" noWrap>
+                        <Typography id="userName" variant="h6" noWrap>
                             Username
                         </Typography>
-                        <Button onClick={this.handleLogOut}>
+                        <Button id="logOut" onClick={this.handleLogOut}>
                             Log out
                         </Button>
                     </div>
 
-                    <FormControl>
-                      <InputLabel shrink id="inputLabel_tag_filter">Filter by:</InputLabel>
-                      <Select
-                        labelId="labelId_tag_filter"
-                        id="select_tag_filter"
-                        value={this.state.tagFilterId}
-                        onChange={this.handleFilterChange}
-                      >
-                        {
-                          this.state.tags.map(tag => 
-                            <MenuItem key={tag.id} value={tag.id}>{tag.attributes.name}</MenuItem>
-                          )
-                        }
-                      </Select>
-                    </FormControl>
+                    <div id="searchFilter">
+                        <FormControl id="filterForm">
+                            <InputLabel shrink id="filterLabel">Filter by:</InputLabel>
+                            <Select
+                                id="filterSelect"
+                                value={this.state.tagFilterId}
+                                onChange={this.handleFilterChange}
+                            >
+                                {
+                                this.state.tags.map(tag => 
+                                    <MenuItem key={tag.id} value={tag.id}>{tag.attributes.name}</MenuItem>
+                                )
+                                }
+                            </Select>
+                        </FormControl>
 
-                    <div>
-                        <div>
-                            <SearchIcon />
+                        <div id="searchBar">
+                            <div>
+                                <SearchIcon />
+                            </div>
+                            <InputBase
+                                placeholder="Search..."
+                                inputProps={{ "aria-label": "search"}}
+                            />
                         </div>
-                        <InputBase
-                            placeholder="Search..."
-                            inputProps={{ "aria-label": "search"}}
-                        />
                     </div>
                 </Toolbar>
             </AppBar>
