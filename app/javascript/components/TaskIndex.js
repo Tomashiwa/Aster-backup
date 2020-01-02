@@ -1,18 +1,13 @@
 import React from "react";
-import { Select, FormControl, MenuItem, InputLabel, Button, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions, ListItemText, Typography, withStyles } from "@material-ui/core";
+import { Button, IconButton, ListItemText, Typography, withStyles } from "@material-ui/core";
 import { List, ListItem, ListItemSecondaryAction   } from '@material-ui/core';
-import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import DoneIcon from '@material-ui/icons/Done';
-import CloseIcon from '@material-ui/icons/Close';
-import DateFnsUtils from '@date-io/date-fns';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
-import TagSelect from "./TagSelect";
+import AddEditPopup from "./AddEditPopup";
 
 const styles = {
   editDelete: {
@@ -100,7 +95,12 @@ class TaskIndex extends React.Component {
     });
   };
 
-  handleSubmit = () => { 
+  handleSubmit = (newTitle, newDescription) => { 
+    console.log("newTitle:");
+    console.log(newTitle);
+    console.log("newDescription:");
+    console.log(newDescription);
+
     const addTask = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
@@ -115,8 +115,8 @@ class TaskIndex extends React.Component {
           type: "tasks",
           attributes: {
             "list-id": this.props.list_id,
-            title: document.getElementById("field_add_title").value,
-            description: document.getElementById("field_add_description").value,
+            title: newTitle,
+            description: newDescription,
             "tag-id": this.state.tag_id,
             "due-date": this.state.dueDate
           }
@@ -132,7 +132,7 @@ class TaskIndex extends React.Component {
     this.handleClose();
   };
 
-  handleConfirm = event => {
+  handleConfirm = (modifiedTitle, modifiedDescription) => event => {
     const saveTask = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
@@ -148,8 +148,8 @@ class TaskIndex extends React.Component {
           type: "tasks",
           attributes: {
             "list-id": this.props.list_id,
-            title: document.getElementById("field_edit_title").value,
-            description: document.getElementById("field_edit_description").value,
+            title: modifiedTitle,
+            description: modifiedDescription,
             "tag-id": this.state.tag_id,
             "due-date": this.state.dueDate
           }
@@ -160,6 +160,12 @@ class TaskIndex extends React.Component {
         window.location.reload();
       }
     }
+
+    console.log("Confirm clicked");
+    console.log("modfiedTitle:");
+    console.log(modifiedTitle);
+    console.log("modoifiedDescription:");
+    console.log(modifiedDescription);
 
     saveTask();
     this.handleClose();
@@ -335,6 +341,7 @@ class TaskIndex extends React.Component {
     return (
       <div>
           <h1 align="center">{this.state.name}</h1>
+          
           <List className={this.state.classes.root}>
             {
               this.state.tasks.map(task => (
@@ -354,11 +361,13 @@ class TaskIndex extends React.Component {
                         </React.Fragment>
                       }
                     />
+
                     <ListItemSecondaryAction classes={{ root: classes.dueDate }}>
                       <Typography align="right" variant="subtitle1" className={this.state.classes.inline} color="textPrimary">
                          {"By: " + new Date(task.attributes["due-date"]).toUTCString()} {/*toDateString()*/}
                       </Typography>
                     </ListItemSecondaryAction>
+
                     <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
                       <IconButton size="small" color="primary" onClick={() => this.handleDemote(task)} classes={{root: classes.taskButtons}}>
                         <ChevronLeftIcon />
@@ -377,121 +386,29 @@ class TaskIndex extends React.Component {
                 </React.Fragment>
               ))
             }
-            
           </List>
           <br></br>
+
           <Button variant="outlined" color="primary" onClick={this.handleAdd}>
               Add Task
           </Button>
 
-          <Dialog open={this.state.isAdding} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="dialogTitle_addTask">Add Task</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Please fill in the information below:
-              </DialogContentText>
-
-              <TextField autoFocus required={true} margin="dense" id="field_add_title" label="Title" fullWidth />
-              <TextField multiline required={true} margin="dense" id="field_add_description" label="Description" fullWidth />
-              <br></br>
-              <br></br>
-
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDateTimePicker
-                  required={true}
-                  ampm={false}
-                  showTodayButton
-                  value={this.state.dueDate}
-                  onChange={this.handleDateChange}
-                  id="dateTimePicker_dueDate"
-                  format="dd/MM/yyyy HH:mm"
-                  label="Due date"
-                />
-              </MuiPickersUtilsProvider>
-              <br></br>
-              <br></br>
-              
-              <TagSelect tags={this.state.tags} tag_id={this.state.tag_id} onChange={this.handleTagChange} />
-
-              <IconButton color="primary" onClick={this.handleNewTag}>
-                <AddIcon />
-              </IconButton>
-
-              {this.state.isAddingTag 
-                ? <div>
-                    <TextField margin="dense" id="field_new_add_tag" label="New Tag" />
-                    <IconButton color="primary" onClick={this.handleSubmitTag}>
-                      <DoneIcon />
-                    </IconButton> 
-                    <IconButton color="primary" onClick={this.handleCancelTag}>
-                      <CloseIcon />
-                    </IconButton> 
-                  </div> 
-                : <div></div>}
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={this.handleSubmit} color="primary">
-                Submit
-              </Button>
-            </DialogActions>
-          </Dialog>
-          <Dialog open={this.state.isEditing} onClose={this.handleClose} aria-labelledby="form-dialog-title"> 
-            <DialogTitle id="dialogTitle_editTask">Edit Task</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                You may edit the details of the task below:
-              </DialogContentText>
-
-              <TextField autoFocus required={true} margin="dense" id="field_edit_title" label="Title" defaultValue={this.state.title} fullWidth />
-              <TextField multiline required={true} margin="dense" id="field_edit_description" label="Description" defaultValue={this.state.description} fullWidth />
-              <br></br>
-              <br></br>
-
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDateTimePicker
-                  required={true}
-                  ampm={false}
-                  showTodayButton
-                  value={this.state.dueDate}
-                  onChange={this.handleDateChange}
-                  id="dateTimePicker_edit_dueDate"
-                  format="dd/MM/yyyy HH:mm"
-                  label="Due date"
-                />
-              </MuiPickersUtilsProvider>
-              <br></br>
-              <br></br>
-              
-              <TagSelect tags={this.state.tags} tag_id={this.state.tag_id} onChange={this.handleTagChange} />
-
-              <IconButton color="primary" onClick={this.handleNewTag}>
-                <AddIcon />
-              </IconButton>
-
-              {this.state.isAddingTag 
-                ? <div>
-                    <TextField margin="dense" id="field_edit_add_tag" label="New Tag" />
-                    <IconButton color="primary" onClick={this.handleSubmitTag}>
-                      <DoneIcon />
-                    </IconButton> 
-                    <IconButton color="primary" onClick={this.handleCancelTag}>
-                      <CloseIcon />
-                    </IconButton> 
-                  </div> 
-                : <div></div>}
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={this.handleConfirm} color="primary">
-                Confirm
-              </Button>
-            </DialogActions>
-          </Dialog>
+          <AddEditPopup title={this.state.title}
+            description={this.state.description}
+            isOpened={this.state.isAdding || this.state.isEditing} 
+            isAdding={this.state.isAdding} 
+            onClose={this.handleClose}
+            dueDate={this.state.dueDate}
+            onDateChange={this.handleDateChange}
+            tags={this.state.tags}
+            tag_id={this.state.tag_id}
+            onNewTag={this.handleNewTag}
+            onTagChange={this.handleTagChange}
+            isAddingTag={this.state.isAddingTag}
+            onSubmitTag={this.handleSubmitTag}
+            onCancelTag={this.handleCancelTag}
+            onSubmit={this.handleSubmit}
+            onConfirm={this.handleConfirm}/>
       </div>
     );
   }
