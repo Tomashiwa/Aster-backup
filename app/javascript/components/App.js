@@ -2,7 +2,7 @@ import React from "react";
 import { Router } from "@reach/router";
 import ListIndex from "./ListIndex";
 
-function TasksApp() {
+function App() {
   return (
     <Router>
       <ListIndex path="/" />
@@ -10,4 +10,4 @@ function TasksApp() {
   );
 }
 
-export default TasksApp;
+export default App;
