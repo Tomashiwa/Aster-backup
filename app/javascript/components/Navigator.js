@@ -1,7 +1,5 @@
 import React from "react";
-import { AppBar, Toolbar, InputBase, IconButton } from "@material-ui/core";
-
-import SearchIcon from '@material-ui/icons/Search';
+import { AppBar, Toolbar, Button } from "@material-ui/core";
 
 import UserInfo from "./UserInfo";
 import TagSelect from "./TagSelect";
@@ -22,10 +20,14 @@ class Navigator extends React.Component {
     }
 
     render() {
+        let UserInfoComponent = this.props.user
+            ? <UserInfo user={this.props.user} onLogout={this.props.onLogout} />
+            : null;
+
         return( 
             <AppBar id="navBar" position="static">
                 <Toolbar>
-                    <UserInfo user={"Username"} onLogout={this.props.onLogout} />
+                    {UserInfoComponent}
 
                     <div id="searchFilter">
                         <TagSelect tags={this.props.tags} tag_id={this.props.filterTagId} onChange={this.props.onFilter} />

@@ -1,4 +1,4 @@
-User.create!(name:"superuser");
+User.create!(name:"そたと");
 
 Board.create!(user_id: 1, name: "default");
 

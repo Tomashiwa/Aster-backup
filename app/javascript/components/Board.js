@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@material-ui/core";
 
 import TaskIndex from "./TaskIndex"
 
@@ -11,9 +12,6 @@ class Board extends React.Component {
         this.state = {
             tagFilterId: -1
         };
-    }
-
-    componentDidMount() {
     }
 
     render() {

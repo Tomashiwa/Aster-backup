@@ -50,8 +50,8 @@ class TaskIndex extends React.Component {
   }
 
   componentDidMount() {
-    console.log("TaskIndex " + this.props.list_id +  " Properties:");
-    console.log(this.props);
+    // console.log("TaskIndex " + this.props.list_id +  " Properties:");
+    // console.log(this.props);
 
     fetch("/api/lists").then(async (response) => {
       const { data } = await response.json();
@@ -283,16 +283,6 @@ class TaskIndex extends React.Component {
 
   handleTagChange = (event, index, value) => {
     this.setState({"tag_id": event.target.value});
-
-    console.log("event:");
-    console.log(event);
-    console.log("index:");
-    console.log(index);
-    console.log("value:");
-    console.log(value);
-  
-    console.log("Switched tag_id to:");
-    console.log(this.state.tag_id);
   };
 
   handleNewTag = () => {

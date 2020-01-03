@@ -11,14 +11,18 @@ class UserInfo extends React.Component {
     }
 
     render() {
+        let UsernameComponent = this.props.user 
+            ? <Typography id="userName" variant="h6" noWrap> {this.props.user.attributes.name} </Typography>
+            : null;
+
         return(
             <div id="userInfo">
                 <IconButton onClick={() => {}}>
                     <AccountCircleIcon />
                 </IconButton>
-                <Typography id="userName" variant="h6" noWrap>
-                    {this.props.user}
-                </Typography>
+                
+                {UsernameComponent}
+
                 <Button id="logOut" onClick={this.props.onLogout}>
                     Log out
                 </Button>
