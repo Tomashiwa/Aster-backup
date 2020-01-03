@@ -1,7 +1,11 @@
-List.create!(name: "Backlog");
-List.create!(name: "To-do");
-List.create!(name: "In progress");
-List.create!(name: "Completed");
+User.create!(name:"superuser");
+
+Board.create!(user_id: 1, name: "default");
+
+List.create!(board_id: 1, name: "Backlog");
+List.create!(board_id: 1, name: "To-do");
+List.create!(board_id: 1, name: "In progress");
+List.create!(board_id: 1, name: "Completed");
 
 Tag.create!(name: "None")
 Tag.create!(name: "Red")

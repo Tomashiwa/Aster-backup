@@ -1,3 +1,3 @@
 class Api::ListResource < JSONAPI::Resource
-    attributes :board, :name
+    attributes :board_id, :name
 end
