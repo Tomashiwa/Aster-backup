@@ -2,72 +2,46 @@ import React from "react";
 import { AppBar, Toolbar, Button, Typography, InputBase, IconButton, Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+
+import TagSelect from "./TagSelect";
+
 import "./styles/Navigator.css"
 
 class Navigator extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            "tags": [],
-            "tagFilterId": ""
+            filterTagId: 1
         };
     }
 
     componentDidMount() {
-        fetch("/api/tags").then(async (response) => {
-          const { data } = await response.json();
-          this.setState({
-            "tags": data,
-            "tagFilterId": data[0].id
-          });
-        })
-    }
-
-    handleFilterChange = (event, index, value) => {
-        this.setState({"tagFilterId": event.target.value});
-    }
-    
-    handleLogOut = () => {
-        console.log("tagFilterId:");
-        console.log(this.state.tagFilterId);
+        // this.setState({filterTagId: this.props.tags[0].id});
     }
 
     render() {
-        return(
+        return( 
             <AppBar id="navBar" position="static">
                 <Toolbar>
                     <div id="userInfo">
-                        <IconButton>
+                        <IconButton onClick={this.props.onLogout}>
                             <AccountCircleIcon />
                         </IconButton>
                         <Typography id="userName" variant="h6" noWrap>
                             Username
                         </Typography>
-                        <Button id="logOut" onClick={this.handleLogOut}>
+                        <Button id="logOut" onClick={this.props.onLogout}>
                             Log out
                         </Button>
                     </div>
 
                     <div id="searchFilter">
-                        <FormControl id="filterForm">
-                            <InputLabel shrink id="filterLabel">Filter by:</InputLabel>
-                            <Select
-                                id="filterSelect"
-                                value={this.state.tagFilterId}
-                                onChange={this.handleFilterChange}
-                            >
-                                {
-                                this.state.tags.map(tag => 
-                                    <MenuItem key={tag.id} value={tag.id}>{tag.attributes.name}</MenuItem>
-                                )
-                                }
-                            </Select>
-                        </FormControl>
+                        <TagSelect tags={this.props.tags} tag_id={this.props.filterTagId} onChange={this.props.onFilter} />
 
                         <div id="searchBar">
-                            <div>
+                            <IconButton onClick={this.props.onSearch}>
                                 <SearchIcon />
-                            </div>
+                            </IconButton>
                             <InputBase
                                 placeholder="Search..."
                                 inputProps={{ "aria-label": "search"}}

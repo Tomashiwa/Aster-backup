@@ -15,8 +15,8 @@ class AddEditPopup extends React.Component {
     }
 
     render() {
-        console.log("Rendered AddEditPopup:");
-        console.log(this.props);
+        // console.log("Rendered AddEditPopup:");
+        // console.log(this.props);
 
         return(
             <Dialog open={this.props.isOpened} onClose={this.props.onClose} aria-labelledby="form-dialog-title">
