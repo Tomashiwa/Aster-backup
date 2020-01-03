@@ -41,7 +41,8 @@ class App extends React.Component {
   }
 
   onSearch = (searchTerm) => {
-    console.log("Searching for: " + searchTerm);
+    console.log("Searching for:");
+    console.log(searchTerm);
   }
 
   onLogout = () => {
