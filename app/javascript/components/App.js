@@ -51,7 +51,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Navigator tags={this.state.tags} user={this.state.users} filterTagId={this.state.filterTagId} onLogout={this.onLogout} onFilter={this.onFilter} onSearch={() => console.log("Search")} />
+        <Navigator tags={this.state.tags} user={this.state.users} filterTagId={this.state.filterTagId} onLogout={this.onLogout} onFilter={this.onFilter} onSearch={this.onSearch} />
         <Board id={this.state.boardId} tasks={this.state.tasks /* REPLACE WITH OWNER'S TASKS */} users={this.state.users} filterTagId={this.state.filterTagId} filterSearchTerm={this.state.filterSearchTerm} />
         <RegisterLoginPopup users={this.state.users} isOpened={false} />
       </div>

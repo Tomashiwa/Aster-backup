@@ -3,7 +3,9 @@ import { AppBar, Toolbar, Button, Typography, InputBase, IconButton, Select, For
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
+import UserInfo from "./UserInfo";
 import TagSelect from "./TagSelect";
+import SearchBar from "./SearchBar";
 
 import "./styles/Navigator.css"
 
@@ -23,7 +25,9 @@ class Navigator extends React.Component {
         return( 
             <AppBar id="navBar" position="static">
                 <Toolbar>
-                    <div id="userInfo">
+                    <UserInfo user={"Sotato"} onLogout={this.props.onLogout} />
+
+                    {/* <div id="userInfo">
                         <IconButton onClick={this.props.onLogout}>
                             <AccountCircleIcon />
                         </IconButton>
@@ -33,7 +37,7 @@ class Navigator extends React.Component {
                         <Button id="logOut" onClick={this.props.onLogout}>
                             Log out
                         </Button>
-                    </div>
+                    </div> */}
 
                     <div id="searchFilter">
                         <TagSelect tags={this.props.tags} tag_id={this.props.filterTagId} onChange={this.props.onFilter} />

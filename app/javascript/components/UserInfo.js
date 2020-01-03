@@ -1,0 +1,30 @@
+import React from "react";
+import {IconButton, Typography, Button} from "@material-ui/core";
+
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+
+import "./styles/UserInfo.css"
+
+class UserInfo extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return(
+            <div id="userInfo">
+                <IconButton onClick={() => {}}>
+                    <AccountCircleIcon />
+                </IconButton>
+                <Typography id="userName" variant="h6" noWrap>
+                    {this.props.user}
+                </Typography>
+                <Button id="logOut" onClick={this.props.onLogout}>
+                    Log out
+                </Button>
+            </div>
+        );
+    }
+}
+
+export default UserInfo;
