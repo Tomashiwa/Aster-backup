@@ -28,7 +28,16 @@ class Board extends React.Component {
                                             ? parseInt(this.props.filterTagId) === task.attributes["tag-id"]
                                             : true;
 
-                                        return parseInt(list.id) === task.attributes["list-id"] && hasPassFilter;
+                                        // console.log("attributes.title:");
+                                        // console.log(task.attributes.title);
+                                        // console.log("toString:");
+                                        // console.log(task.attributes.title.toString().includes("Brando"));
+
+                                        const hasPassSearch = this.props.filterSearchTerm !== ""
+                                            ? task.attributes.title.toString().includes(this.props.filterSearchTerm) || task.attributes.description.toString().includes(this.props.filterSearchTerm)
+                                            : true;
+
+                                        return parseInt(list.id) === task.attributes["list-id"] && hasPassFilter && hasPassSearch;
                                     })} 
                                     tags={this.props.tags} 
                                     filterTagId={this.props.filterTagId} 
