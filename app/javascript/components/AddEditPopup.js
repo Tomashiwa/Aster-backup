@@ -11,13 +11,10 @@ import TagSelect from "./TagSelect";
 
 class AddEditPopup extends React.Component {
     constructor(props) {
-        super(props);
+      super(props);
     }
 
     render() {
-        // console.log("Rendered AddEditPopup:");
-        // console.log(this.props);
-
         return(
             <Dialog open={this.props.isOpened} onClose={this.props.onClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="dialogTitle_addTask">
@@ -58,7 +55,7 @@ class AddEditPopup extends React.Component {
                     {this.props.isAddingTag 
                         ? <div>
                             <TextField margin="dense" id="field_new_add_tag" label="New Tag" />
-                            <IconButton color="primary" onClick={this.props.onSubmitTag}>
+                            <IconButton color="primary" onClick={this.props.onAddTag}>
                               <DoneIcon />
                             </IconButton> 
                             <IconButton color="primary" onClick={this.props.onCancelTag}>

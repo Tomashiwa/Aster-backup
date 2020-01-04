@@ -6,8 +6,8 @@ class RegisterLoginPopup extends React.Component {
     }
 
     componentDidMount() {
-        console.log("RegisterLoginPopup's prop:");
-        console.log(this.props);
+        // console.log("RegisterLoginPopup's prop:");
+        // console.log(this.props);
     }
 
     render() {

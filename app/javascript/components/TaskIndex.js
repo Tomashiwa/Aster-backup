@@ -23,9 +23,7 @@ class TaskIndex extends React.Component {
     super(props);
     
     this.state = {
-      "tasks": [], 
-      "tags": [], 
-      "classes": makeStyles (theme => ({
+      classes: makeStyles (theme => ({
         root: {
             width: '100%',
             overflowX: 'auto',
@@ -37,70 +35,46 @@ class TaskIndex extends React.Component {
             minWidth: 650
         },
       })),
-      "isAdding": false, 
-      "isEditing": false, 
-      "isAddingTag": false,
-      "task_id": 1, 
-      "title": "", 
-      "description": "",
-      "dueDate" : new Date(Date.now()).toUTCString(),
-      "tag_id": 1,
-      "name": ""
+      isAdding: false, 
+      isEditing: false, 
+      isAddingTag: false,
+      task_id: 1, 
+      title: "", 
+      description: "",
+      dueDate: new Date(Date.now()).toUTCString(),
+      tag_id: 1,
+      name: ""
     };
   }
 
   componentDidMount() {
-    // console.log("TaskIndex " + this.props.list_id +  " Properties:");
-    // console.log(this.props);
-
     fetch("/api/lists").then(async (response) => {
       const { data } = await response.json();
-      this.setState({"name": data[this.props.list_id - 1].attributes.name});
+      this.setState({name: data[this.props.list_id - 1].attributes.name});
     });
-
-    fetch("/api/tasks").then(async (response) => {
-      const { data } = await response.json();
-      this.setState({"tasks": data.filter(task => {
-        return task.attributes["list-id"] === this.props.list_id;
-      })});
-
-      // console.log("Fetched Tasks:");
-      // console.log(this.state.tasks);
-    });
-
-    fetch("/api/tags").then(async (response) => {
-      const { data } = await response.json();
-      this.setState({"tags": data});
-
-      // console.log("Fetched Tags:");
-      // console.log(this.state.tags);
-    })
   }
 
   handleAdd = () => {
     this.setState({
-      "dueDate": new Date(Date.now()).toUTCString(),
-      "tag_id": 1,
-      "isAdding": true});
+      title: "",
+      description: "",
+      dueDate: new Date(Date.now()).toUTCString(),
+      tag_id: 1,
+      isAdding: true});
   };
 
   handleEdit = task => {
     this.setState({
-      "task_id": task.id,
-      "title": task.attributes.title,
-      "description": task.attributes.description,
-      "dueDate": task.attributes["due-date"], 
-      "tag_id": task.attributes["tag-id"],
-      "isEditing": true
+      task_id: task.id,
+      title: task.attributes.title,
+      description: task.attributes.description,
+      dueDate: task.attributes["due-date"], 
+      tag_id: task.attributes["tag-id"],
+      isEditing: true
     });
   };
 
-  handleSubmit = (newTitle, newDescription) => { 
-    console.log("newTitle:");
-    console.log(newTitle);
-    console.log("newDescription:");
-    console.log(newDescription);
-
+  handleSubmit = (newTitle, newDescription) => {
     const addTask = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
@@ -160,19 +134,13 @@ class TaskIndex extends React.Component {
         window.location.reload();
       }
     }
-
-    console.log("Confirm clicked");
-    console.log("modfiedTitle:");
-    console.log(modifiedTitle);
-    console.log("modoifiedDescription:");
-    console.log(modifiedDescription);
-
+    
     saveTask();
     this.handleClose();
   };
 
   handleClose = () => {
-    this.setState({"isAdding": false, "isEditing": false, "isAddingTag": false});
+    this.setState({isAdding: false, isEditing: false, isAddingTag: false});
   };
 
   handleDelete = task => {
@@ -240,6 +208,8 @@ class TaskIndex extends React.Component {
     console.log("Promoting task:");
     console.log(task);
 
+    console.log("Currently at list " + this.props.list_id);
+
     if(this.props.list_id >= 4) {
       console.log("Reached highest list");
     } else {
@@ -278,15 +248,15 @@ class TaskIndex extends React.Component {
   }
 
   handleDateChange = (dateTime, value) => {
-    this.setState({"dueDate": dateTime.toUTCString()});
+    this.setState({dueDate: dateTime.toUTCString()});
   };
 
   handleTagChange = (event, index, value) => {
-    this.setState({"tag_id": event.target.value});
+    this.setState({tag_id: event.target.value});
   };
 
   handleNewTag = () => {
-    this.setState({"isAddingTag": true});
+    this.setState({isAddingTag: true});
   };
 
   handleSubmitTag = () => {
@@ -311,30 +281,29 @@ class TaskIndex extends React.Component {
       });
 
       if(response.status === 201) {
-        fetch("/api/tags").then(async (response) => {
-          const { data } = await response.json();
-          this.setState({"tags": data});
-          this.setState({"tag_id": this.state.tags.length, "isAddingTag": false});
-        })
+        this.props.onUpdateTags();
+        this.setState({tag_id: this.props.tags.length + 1});
       }
     }
-
+    
     addTag();
+    this.handleCancelTag();
   }
 
   handleCancelTag = () => {
-    this.setState({"isAddingTag": false});
+    this.setState({isAddingTag: false});
   }
 
   render() {
     const { classes } = this.props;
+
     return (
       <div>
           <h1 align="center">{this.state.name}</h1>
           
           <List className={this.state.classes.root}>
             {
-              this.state.tasks.map(task => (
+              this.props.tasks.map(task => (
                 <React.Fragment key={task.id}>
                   <ListItem alignItems="flex-start" button={true} divider={true}>
                     <ListItemText
@@ -343,7 +312,7 @@ class TaskIndex extends React.Component {
                       secondary={
                         <React.Fragment>
                           <Typography component={"span"} align="left" variant="subtitle2" className={this.state.classes.inline} color="textPrimary">
-                            {this.state.tags.length > 0 ? this.state.tags[task.attributes["tag-id"] - 1].attributes.name : "Tags not loaded"}
+                            {this.props.tags.length > 0 ? this.props.tags[task.attributes["tag-id"] - 1].attributes.name : "Tags not loaded"}
                           </Typography>
                           <Typography component={"span"} style={{whiteSpace:"pre-line"}}>
                             {"\n" + task.attributes.description}
@@ -351,13 +320,13 @@ class TaskIndex extends React.Component {
                         </React.Fragment>
                       }
                     />
-
+  
                     <ListItemSecondaryAction classes={{ root: classes.dueDate }}>
                       <Typography align="right" variant="subtitle1" className={this.state.classes.inline} color="textPrimary">
-                         {"By: " + new Date(task.attributes["due-date"]).toUTCString()} {/*toDateString()*/}
+                        {"By: " + new Date(task.attributes["due-date"]).toUTCString()} {/*toDateString()*/}
                       </Typography>
                     </ListItemSecondaryAction>
-
+  
                     <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
                       <IconButton size="small" color="primary" onClick={() => this.handleDemote(task)} classes={{root: classes.taskButtons}}>
                         <ChevronLeftIcon />
@@ -366,7 +335,7 @@ class TaskIndex extends React.Component {
                         <ChevronRightIcon />
                       </IconButton>
                       <IconButton size="small" color="primary" onClick={() => this.handleEdit(task)} classes={{ root: classes.taskButtons }}>
-                         <EditIcon />
+                        <EditIcon />
                       </IconButton>
                       <IconButton size="small" color="secondary" onClick={() => this.handleDelete(task)} classes={{ root: classes.taskButtons }}>
                         <DeleteIcon />
@@ -380,7 +349,7 @@ class TaskIndex extends React.Component {
           <br></br>
 
           <Button variant="outlined" color="primary" onClick={this.handleAdd}>
-              Add Task
+            Add Task
           </Button>
 
           <AddEditPopup title={this.state.title}
@@ -390,12 +359,12 @@ class TaskIndex extends React.Component {
             onClose={this.handleClose}
             dueDate={this.state.dueDate}
             onDateChange={this.handleDateChange}
-            tags={this.state.tags}
+            tags={this.props.tags}
             tag_id={this.state.tag_id}
             onNewTag={this.handleNewTag}
             onTagChange={this.handleTagChange}
             isAddingTag={this.state.isAddingTag}
-            onSubmitTag={this.handleSubmitTag}
+            onAddTag={this.handleSubmitTag}
             onCancelTag={this.handleCancelTag}
             onSubmit={this.handleSubmit}
             onConfirm={this.handleConfirm}/>

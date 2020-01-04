@@ -20,14 +20,10 @@ class Navigator extends React.Component {
     }
 
     render() {
-        let UserInfoComponent = this.props.user
-            ? <UserInfo user={this.props.user} onLogout={this.props.onLogout} />
-            : null;
-
         return( 
             <AppBar id="navBar" position="static">
                 <Toolbar>
-                    {UserInfoComponent}
+                    <UserInfo user={this.props.user} onLogout={this.props.onLogout} />
 
                     <div id="searchFilter">
                         <TagSelect tags={this.props.tags} tag_id={this.props.filterTagId} onChange={this.props.onFilter} />

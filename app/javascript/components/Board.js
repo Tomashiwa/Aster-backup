@@ -8,7 +8,6 @@ import "./styles/Board.css"
 class Board extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             tagFilterId: -1
         };
@@ -18,18 +17,20 @@ class Board extends React.Component {
         return (
             <div>
                 <section>
-                    <article>
-                        <TaskIndex board_id={this.props.id} list_id={1} filterTagId={this.props.filterTagId}/>
-                    </article>
-                    <article>
-                        <TaskIndex board_id={this.props.id} list_id={2} filterTagId={this.props.filterTagId}/>
-                    </article>
-                    <article>
-                        <TaskIndex board_id={this.props.id} list_id={3} filterTagId={this.props.filterTagId}/>
-                    </article>
-                    <article>
-                        <TaskIndex board_id={this.props.id} list_id={4} filterTagId={this.props.filterTagId}/>
-                    </article>
+                    {
+                        this.props.lists.map(list => 
+                            <article key={list.id}>
+                                <TaskIndex 
+                                    board_id={this.props.id} 
+                                    list_id={parseInt(list.id)} 
+                                    tasks={this.props.tasks.filter(task => {return parseInt(list.id) === task.attributes["list-id"];})} 
+                                    tags={this.props.tags} 
+                                    filterTagId={this.props.filterTagId} 
+                                    onUpdateTags={this.props.onUpdateTags} />
+                            </article>
+                        )
+                    }
+                    
                 </section>
             </div>
         );
