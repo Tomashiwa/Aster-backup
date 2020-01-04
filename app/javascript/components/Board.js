@@ -34,7 +34,8 @@ class Board extends React.Component {
                                         // console.log(task.attributes.title.toString().includes("Brando"));
 
                                         const hasPassSearch = this.props.filterSearchTerm !== ""
-                                            ? task.attributes.title.toString().includes(this.props.filterSearchTerm) || task.attributes.description.toString().includes(this.props.filterSearchTerm)
+                                            ? task.attributes.title.toLowerCase().includes(this.props.filterSearchTerm.toLowerCase()) 
+                                                || task.attributes.description.toLowerCase().includes(this.props.filterSearchTerm.toLowerCase())
                                             : true;
 
                                         return parseInt(list.id) === task.attributes["list-id"] && hasPassFilter && hasPassSearch;
