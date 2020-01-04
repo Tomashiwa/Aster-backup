@@ -1,10 +1,8 @@
 import React from "react";
-import { Router } from "@reach/router";
 
 import Navigator from "./Navigator";
 import Board from "./Board";
 import RegisterLoginPopup from "./RegisterLoginPopup";
-import { isThisSecond } from "date-fns";
 
 class App extends React.Component {
   constructor(props) {
@@ -54,9 +52,6 @@ class App extends React.Component {
   }
 
   onSearch = (searchTerm) => {
-    console.log("Searching for:");
-    console.log(searchTerm);
-    
     this.setState({filterSearchTerm: searchTerm});
   }
 
@@ -65,8 +60,6 @@ class App extends React.Component {
   }
 
   fetchTags = () => {
-    console.log("refetch tags");
-
     fetch("/api/tags").then(async (response) => {
       const { data } = await response.json();
       this.setState({tags: data});

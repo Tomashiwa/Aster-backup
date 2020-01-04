@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "@material-ui/core";
 
 import TaskIndex from "./TaskIndex"
 
@@ -27,11 +26,6 @@ class Board extends React.Component {
                                         const hasPassFilter = this.props.filterTagId > 1
                                             ? parseInt(this.props.filterTagId) === task.attributes["tag-id"]
                                             : true;
-
-                                        // console.log("attributes.title:");
-                                        // console.log(task.attributes.title);
-                                        // console.log("toString:");
-                                        // console.log(task.attributes.title.toString().includes("Brando"));
 
                                         const hasPassSearch = this.props.filterSearchTerm !== ""
                                             ? task.attributes.title.toLowerCase().includes(this.props.filterSearchTerm.toLowerCase()) 
