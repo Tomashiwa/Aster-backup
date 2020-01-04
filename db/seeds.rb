@@ -7,7 +7,7 @@ List.create!(board_id: 1, name: "To-do");
 List.create!(board_id: 1, name: "In progress");
 List.create!(board_id: 1, name: "Completed");
 
-Tag.create!(name: "None")
+Tag.create!(name: "NIL")
 Tag.create!(name: "Red")
 Tag.create!(name: "Yellow")
 Tag.create!(name: "Green")

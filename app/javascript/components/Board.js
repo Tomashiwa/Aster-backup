@@ -23,7 +23,13 @@ class Board extends React.Component {
                                 <TaskIndex 
                                     board_id={this.props.id} 
                                     list_id={parseInt(list.id)} 
-                                    tasks={this.props.tasks.filter(task => {return parseInt(list.id) === task.attributes["list-id"];})} 
+                                    tasks={this.props.tasks.filter(task => {
+                                        const hasPassFilter = this.props.filterTagId > 1
+                                            ? parseInt(this.props.filterTagId) === task.attributes["tag-id"]
+                                            : true;
+
+                                        return parseInt(list.id) === task.attributes["list-id"] && hasPassFilter;
+                                    })} 
                                     tags={this.props.tags} 
                                     filterTagId={this.props.filterTagId} 
                                     onUpdateTags={this.props.onUpdateTags} />
