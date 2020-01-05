@@ -10,6 +10,11 @@ class TaskPopup extends React.Component {
         super(props);
     }
 
+    onClick = () => {
+        console.log("TaskPopup's task id");
+        console.log(this.props.task_id);
+    }
+
     render() {
         return(
             <Dialog fullWidth={true} maxWidth={"md"} open={this.props.isOpened} onClose={this.props.onClose} >
@@ -18,6 +23,10 @@ class TaskPopup extends React.Component {
                 </DialogTitle>
 
                 <DialogContent>
+                    <Button onClick={this.onClick}>
+                        Check Task ID
+                    </Button>
+
                     <DialogContentText>
                         {this.props.description}
                     </DialogContentText>
@@ -26,7 +35,7 @@ class TaskPopup extends React.Component {
                     
                     <UserList users={this.props.users} />
 
-                    <CommentSection />
+                    <CommentSection users={this.props.users} tags={this.props.tags} task_id={this.props.task_id}/>
                 </DialogContent>
             </Dialog>
         );

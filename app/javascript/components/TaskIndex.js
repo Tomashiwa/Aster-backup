@@ -306,6 +306,7 @@ class TaskIndex extends React.Component {
       title: task.attributes.title, 
       description: task.attributes.description,
       dueDate: task.attributes["due-date"],
+      task_id: task.id,
       tag_id: task.attributes["tag-id"]
     })
   }

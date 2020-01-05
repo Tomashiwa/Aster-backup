@@ -25,7 +25,7 @@ class UserList extends React.Component {
                 <List>
                   {
                       this.props.users.map(user => (
-                          <ListItem key={user.id} alignItems="flex-start" button={true} divider={true}>
+                          <ListItem key={user.id} alignItems="flex-start" divider={true}>
                               <UserInfo user={user} />
                           </ListItem>
                       ))

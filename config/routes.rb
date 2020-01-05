@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     jsonapi_resources :lists
     jsonapi_resources :boards
     jsonapi_resources :users
+    jsonapi_resources :comments
   end
 
   get "*path", to: "home#index", constraints: { format: "html" }
