@@ -3,16 +3,12 @@ import { List, ListItem, Button, Typography } from "@material-ui/core";
 
 import UserInfo from "./UserInfo";
 
-class UserList extends React.Component {
+class ParticipantList extends React.Component {
     constructor(props) {
         super(props);
     }
 
     onClick = () => {
-        console.log("props:");
-        console.log(this.props);
-        console.log("users:");
-        console.log(this.props.users);
     }
 
     render() {
@@ -40,4 +36,4 @@ class UserList extends React.Component {
     }
 }
 
-export default UserList;
+export default ParticipantList;

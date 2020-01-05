@@ -8,7 +8,7 @@ class TagSelect extends React.Component {
     
     render() {
         return (
-            <FormControl>
+            <FormControl style={{display:'flex'}}>
               <InputLabel shrink id="inputLabel_add_tag">Tag</InputLabel>
               <Select
                 labelId="select_new_labelId"

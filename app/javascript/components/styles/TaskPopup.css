@@ -1,0 +1,40 @@
+#popup {
+    display: flex;
+    align-content: space-around;
+    justify-content: space-around;
+}
+
+#popup #title {
+    text-align: center;
+}
+
+#popup #description { 
+    text-align: justify;
+}
+
+#popup #comments_tags_participants {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+}
+
+#comments_tags_participants #comments {
+    flex-grow: 1;
+}
+
+#comments_tags_participants #tags_participants {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: space-between;
+    flex-grow: 0;
+}
+
+#tags {
+    flex-grow: 0;
+}
+
+#participants {
+    flex-grow: 1;
+}

@@ -2,40 +2,42 @@ import React from "react";
 import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, IconButton } from "@material-ui/core";
 
 import TagSelect from "./TagSelect";
-import UserList from "./UserList";
+import ParticipantList from "./ParticipantList";
 import CommentSection from "./CommentSection";
+
+import "./styles/TaskPopup.css"
 
 class TaskPopup extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    onClick = () => {
-        console.log("TaskPopup's task id");
-        console.log(this.props.task_id);
-    }
-
     render() {
         return(
-            <Dialog fullWidth={true} maxWidth={"md"} open={this.props.isOpened} onClose={this.props.onClose} >
-                <DialogTitle>
+            <Dialog id="popup" fullWidth={true} maxWidth={"md"} open={this.props.isOpened} onClose={this.props.onClose} >
+                <DialogTitle id="title">
                     {this.props.title}
                 </DialogTitle>
 
                 <DialogContent>
-                    <Button onClick={this.onClick}>
-                        Check Task ID
-                    </Button>
-
-                    <DialogContentText>
+                    <DialogContentText id="description">
                         {this.props.description}
                     </DialogContentText>
 
-                    <TagSelect tags={this.props.tags} tag_id={this.props.tag_id} onChange={this.props.onTagChange} />
-                    
-                    <UserList users={this.props.users} />
+                    <div id="comments_tags_participants">
+                        <div id="comments">
+                            <CommentSection users={this.props.users} tags={this.props.tags} task_id={this.props.task_id}/>
+                        </div>
 
-                    <CommentSection users={this.props.users} tags={this.props.tags} task_id={this.props.task_id}/>
+                        <div id="tags_participants">
+                            <div id="tags">
+                                <TagSelect tags={this.props.tags} tag_id={this.props.tag_id} onChange={this.props.onTagChange} />                    
+                            </div>
+                            <div id="participants">
+                                <ParticipantList users={this.props.users} />
+                            </div>
+                        </div>
+                    </div>
                 </DialogContent>
             </Dialog>
         );

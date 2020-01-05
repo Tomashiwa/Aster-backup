@@ -1,9 +1,5 @@
 #userInfo {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-}
-
-#userName + #logOut {
-    margin-left: 15px;
 }

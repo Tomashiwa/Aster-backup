@@ -17,18 +17,7 @@ class CommentSection extends React.Component {
             this.setState({comments: data.filter(comment => {return comment.attributes["task-id"] === parseInt(this.props.task_id);})})
         })
     }
-
-    onClick = () => {
-        console.log("task id:");
-        console.log(this.props.task_id);
-
-        console.log("properties:");
-        console.log(this.props);
-
-        console.log("comments:");
-        console.log(this.state.comments);
-    }
-
+    
     render() {
         return (
             <div>
@@ -36,16 +25,13 @@ class CommentSection extends React.Component {
                     Comments
                 </Typography>
 
-                <Button onClick={this.onClick}>
-                    Test Comments
-                </Button>
-
                 <List>
                     {
                        this.state.comments.map(comment => (
                             <ListItem key={comment.id} alignItems="flex-start" divider={true}>
                                 <ListItemText
-                                    primary={<UserInfo user={this.props.users[comment.attributes["user-id"]]}/>}
+                                    style={{textAlign:"justify"}}
+                                    primary={<UserInfo user={this.props.users[comment.attributes["user-id"] - 1]}/>}
                                     secondary={comment.attributes.body} />
                             </ListItem>
                        ))
