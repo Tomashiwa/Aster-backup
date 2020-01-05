@@ -22,10 +22,6 @@ class UserInfo extends React.Component {
                 </IconButton>
                 
                 {UsernameComponent}
-
-                <Button id="logOut" onClick={this.props.onLogout}>
-                    Log out
-                </Button>
             </div>
         );
     }

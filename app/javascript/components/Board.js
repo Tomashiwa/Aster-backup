@@ -34,6 +34,7 @@ class Board extends React.Component {
 
                                         return parseInt(list.id) === task.attributes["list-id"] && hasPassFilter && hasPassSearch;
                                     })} 
+                                    users={this.props.users}
                                     tags={this.props.tags} 
                                     filterTagId={this.props.filterTagId} 
                                     onUpdateTags={this.props.onUpdateTags} />

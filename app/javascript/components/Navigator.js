@@ -2,7 +2,7 @@ import React from "react";
 import { AppBar, Toolbar, Button } from "@material-ui/core";
 
 import UserInfo from "./UserInfo";
-import TagSelect from "./TagSelect";
+import TagSelect from "./TagSelect";    
 import SearchBar from "./SearchBar";
 
 import "./styles/Navigator.css"
@@ -23,7 +23,11 @@ class Navigator extends React.Component {
         return( 
             <AppBar id="navBar" position="static">
                 <Toolbar>
-                    <UserInfo user={this.props.user} onLogout={this.props.onLogout} />
+                    <UserInfo user={this.props.user} />
+
+                    <Button id="logOut" onClick={this.props.onLogout}>
+                        Log out
+                    </Button>
 
                     <div id="searchFilter">
                         <TagSelect tags={this.props.tags} tag_id={this.props.filterTagId} onChange={this.props.onFilter} />

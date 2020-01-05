@@ -2,12 +2,14 @@ import React from "react";
 import { Button, IconButton, ListItemText, Typography, withStyles } from "@material-ui/core";
 import { List, ListItem, ListItemSecondaryAction   } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import AddEditPopup from "./AddEditPopup";
+import TaskPopup from "./TaskPopup";
 
 const styles = {
   editDelete: {
@@ -37,6 +39,7 @@ class TaskIndex extends React.Component {
       })),
       isAdding: false, 
       isEditing: false, 
+      isInspecting: false,
       isAddingTag: false,
       task_id: 1, 
       title: "", 
@@ -61,6 +64,9 @@ class TaskIndex extends React.Component {
       dueDate: new Date(Date.now()).toUTCString(),
       tag_id: 1,
       isAdding: true});
+
+    console.log("props:");
+    console.log(this.props);
   };
 
   handleEdit = task => {
@@ -134,13 +140,13 @@ class TaskIndex extends React.Component {
         window.location.reload();
       }
     }
-    
+
     saveTask();
     this.handleClose();
   };
 
   handleClose = () => {
-    this.setState({isAdding: false, isEditing: false, isAddingTag: false});
+    this.setState({isAdding: false, isEditing: false, isInspecting: false, isAddingTag: false});
   };
 
   handleDelete = task => {
@@ -294,6 +300,16 @@ class TaskIndex extends React.Component {
     this.setState({isAddingTag: false});
   }
 
+  onClickTask = task => {
+    this.setState({
+      isInspecting: true,
+      title: task.attributes.title, 
+      description: task.attributes.description,
+      dueDate: task.attributes["due-date"],
+      tag_id: task.attributes["tag-id"]
+    })
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -305,7 +321,7 @@ class TaskIndex extends React.Component {
             {
               this.props.tasks.map(task => (
                 <React.Fragment key={task.id}>
-                  <ListItem alignItems="flex-start" button={true} divider={true}>
+                  <ListItem alignItems="flex-start" button={true} divider={true} onClick={() => this.onClickTask(task)}>
                     <ListItemText
                       style={{textAlign:"justify"}}
                       primary={task.attributes.title}
@@ -368,6 +384,17 @@ class TaskIndex extends React.Component {
             onCancelTag={this.handleCancelTag}
             onSubmit={this.handleSubmit}
             onConfirm={this.handleConfirm}/>
+
+          <TaskPopup title={this.state.title}
+            description={this.state.description}
+            dueDate={this.state.dueDate}
+            task_id={this.state.task_id}
+            tag_id={this.state.tag_id}
+            users={this.props.users}
+            tags={this.props.tags}
+            isOpened={this.state.isInspecting}
+            onTagchange={this.handleTagChange}
+            onClose={this.handleClose} />
       </div>
     );
   }

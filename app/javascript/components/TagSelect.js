@@ -15,7 +15,6 @@ class TagSelect extends React.Component {
                 id="select_add_tag"
                 value={this.props.tag_id}
                 onChange={this.props.onChange}
-                fullWidth={true}
                 required={true}
               >
                 {
