@@ -31,7 +31,7 @@ class CommentSection extends React.Component {
                             <ListItem key={comment.id} alignItems="flex-start" divider={true}>
                                 <ListItemText
                                     style={{textAlign:"justify"}}
-                                    primary={<UserInfo user={this.props.users[comment.attributes["user-id"] - 1]}/>}
+                                    primary={<UserInfo user={this.props.users[comment.attributes["user-id"] - 1]} textVariant="h6"/>}
                                     secondary={comment.attributes.body} />
                             </ListItem>
                        ))

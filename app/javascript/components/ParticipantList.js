@@ -21,7 +21,7 @@ class ParticipantList extends React.Component {
                 <List>
                   {
                       this.props.users.map(user => (
-                          <ListItem key={user.id} alignItems="flex-start" divider={true}>
+                          <ListItem key={user.id} divider={true} style={{display:'flex', justifyContent:'flex-start'}}>
                               <UserInfo user={user} />
                           </ListItem>
                       ))

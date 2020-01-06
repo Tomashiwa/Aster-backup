@@ -23,7 +23,7 @@ class Navigator extends React.Component {
         return( 
             <AppBar id="navBar" position="static">
                 <Toolbar>
-                    <UserInfo user={this.props.user} />
+                    <UserInfo user={this.props.user} textVariant="h6"/>
 
                     <Button id="logOut" onClick={this.props.onLogout}>
                         Log out

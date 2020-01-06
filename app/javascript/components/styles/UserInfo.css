@@ -1,5 +1,11 @@
-#userInfo {
+.userInfo {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
+    justify-content: flex-start;
+    height: 28px;
+    padding: 5px;
+}
+
+.userInfo > .userName {
+    margin: 10px;
 }
