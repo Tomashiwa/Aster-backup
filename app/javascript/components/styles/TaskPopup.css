@@ -4,8 +4,14 @@
     justify-content: space-around;
 }
 
-#popup #title {
-    text-align: center;
+#popup #titleDate {
+    text-align: justify;
+}
+
+#titleDateBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 #popup #description { 
@@ -29,12 +35,25 @@
     align-items: stretch;
     align-content: space-between;
     flex-grow: 0;
+    padding: 5px;
 }
 
-#tags {
+#tags_participants > #tags {
     flex-grow: 0;
 }
 
-#participants {
+#tags_participants > #participants {
+    flex-grow: 0;
+    margin-top: 20px;
+}
+
+#tags_participants > #confirmClose {
     flex-grow: 1;
+    margin-top: 20px;
+}
+
+#confirmClose {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
 }

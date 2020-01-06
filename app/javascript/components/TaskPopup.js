@@ -10,13 +10,26 @@ import "./styles/TaskPopup.css"
 class TaskPopup extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            hasChanged: true
+        };
     }
 
     render() {
         return(
             <Dialog id="popup" fullWidth={true} maxWidth={"md"} open={this.props.isOpened} onClose={this.props.onClose} >
-                <DialogTitle id="title">
-                    {this.props.title}
+                <DialogTitle id="titleDate">
+                    <div id="titleDateBox">
+                        <div id="title">
+                            {this.props.title}
+                        </div>
+
+                        <div id="date">
+                            {"Due by: " + new Date(this.props.dueDate).toUTCString()}
+                            {/* {this.props.dueDate} */}
+                        </div>
+                    </div>
+                    {/* {this.props.title} */}
                 </DialogTitle>
 
                 <DialogContent>
@@ -35,6 +48,15 @@ class TaskPopup extends React.Component {
                             </div>
                             <div id="participants">
                                 <ParticipantList users={this.props.users} />
+                            </div>
+                            <div id="confirmClose" >
+                                {/* <Button variant="outlined" disabled={!this.state.hasChanged}>
+                                    Confirm Changes
+                                </Button>
+                                <br></br> */}
+                                <Button variant="outlined">
+                                    Close
+                                </Button>
                             </div>
                         </div>
                     </div>

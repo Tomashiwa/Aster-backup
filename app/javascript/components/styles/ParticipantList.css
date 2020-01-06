@@ -1,4 +1,9 @@
-.participant {
+#addpart_item {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
+    /* background-color: orchid; */
+}
+
+#addpart_item > #addpart_icon {
+    /* background-color: yellow; */
 }
