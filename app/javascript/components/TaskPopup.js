@@ -43,9 +43,9 @@ class TaskPopup extends React.Component {
                         {this.props.description}
                     </DialogContentText>
 
-                    <Button onClick={() => console.log(this.props.user_id)}>
+                    {/* <Button onClick={() => console.log(this.props.user_id)}>
                         test
-                    </Button>
+                    </Button> */}
 
                     <div id="comments_tags_participants">
                         <div id="comments">

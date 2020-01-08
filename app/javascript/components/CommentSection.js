@@ -125,15 +125,18 @@ class CommentSection extends React.Component {
                                     }
                                     secondary={comment.attributes.body} />
 
-                                <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
-                                    <IconButton size="small" color="primary">
-                                        <CreateIcon />
-                                    </IconButton>
-                                    <IconButton size="small" color="secondary" onClick={() => this.handleDelete(comment)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </ListItemSecondaryAction>
-
+                                {
+                                    parseInt(this.props.user.id) === comment.attributes["user-id"]
+                                        ? <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
+                                              <IconButton size="small" color="primary">
+                                                  <CreateIcon />
+                                              </IconButton>
+                                              <IconButton size="small" color="secondary" onClick={() => this.handleDelete(comment)}>
+                                                  <DeleteIcon />
+                                              </IconButton>
+                                          </ListItemSecondaryAction>
+                                        : null
+                                }
                             </ListItem>
                        ))
                     }
