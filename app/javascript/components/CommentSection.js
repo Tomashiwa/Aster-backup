@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, List, ListItem, Button, Typography, ListItemText, IconButton, ListItemSecondaryAction, withStyles } from "@material-ui/core";
+import { List, ListItem, Button, Typography, ListItemText, IconButton, ListItemSecondaryAction, withStyles, TextField } from "@material-ui/core";
 
 import UserInfo from "./UserInfo";
 
@@ -24,7 +24,8 @@ class CommentSection extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            comments: []
+            comments: [],
+            isCommenting: false
         }
     }
 
@@ -42,17 +43,14 @@ class CommentSection extends React.Component {
 
         return (
             <div>
-                <Button onClick={() => {console.log(this.state.comments)}}>
+                {/* <Button onClick={() => {console.log(this.state.comments)}}>
                     test
-                </Button>
+                </Button> */}
 
                 <div id="title">
                     <Typography id="titleText">
                         Comments
                     </Typography>
-                    <IconButton id="addButton">
-                        <AddIcon />
-                    </IconButton>
                 </div>
 
                 <List>
@@ -69,8 +67,6 @@ class CommentSection extends React.Component {
                                     }
                                     secondary={comment.attributes.body} />
 
-                                {/* <Box color="#7e57c2" width={1}></Box> */}
-                                
                                 <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
                                     <IconButton size="small" color="primary">
                                         <CreateIcon />
@@ -84,6 +80,18 @@ class CommentSection extends React.Component {
                        ))
                     }
                 </List>
+
+                <div id="input">
+                    <Typography>
+                        Post new comment:
+                    </Typography>
+                    <TextField multiline={true} size="small" fullWidth={true} variant="outlined" />
+                    <div id="submitButton">
+                        <Button variant="outlined">
+                            Submit
+                        </Button>
+                    </div>
+                </div>
             </div>
         );
     }
