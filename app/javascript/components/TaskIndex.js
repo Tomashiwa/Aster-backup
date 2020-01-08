@@ -394,7 +394,8 @@ class TaskIndex extends React.Component {
             users={this.props.users}
             tags={this.props.tags}
             isOpened={this.state.isInspecting}
-            onTagchange={this.handleTagChange}
+            onTagChange={this.handleTagChange}
+            onConfirm={this.handleConfirm(this.state.title, this.state.description)}
             onClose={this.handleClose} />
       </div>
     );

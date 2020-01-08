@@ -1,6 +1,30 @@
-#userDate {
+.userDate {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-content: center;
+}
+
+#title {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-content: center;
+    /* background-color: yellow; */
+}
+
+#title > #titleText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: turquoise; */
+}
+
+#title > #addButton {
+    /* background-color: violet; */
+}
+
+.comment {
+    /* padding-right: 0px; */
+    /* background-color: turquoise; */
 }

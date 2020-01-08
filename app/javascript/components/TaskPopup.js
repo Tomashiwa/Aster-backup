@@ -11,8 +11,14 @@ class TaskPopup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            hasChanged: true
+            hasChanged: false
         };
+    }
+
+    handleTagChange = (event, index, value) => {
+        console.log("Called handleTagChange");
+        this.props.onTagChange(event, index, value);
+        this.setState({hasChanged: true});
     }
 
     render() {
@@ -44,17 +50,17 @@ class TaskPopup extends React.Component {
 
                         <div id="tags_participants">
                             <div id="tags">
-                                <TagSelect tags={this.props.tags} tag_id={this.props.tag_id} onChange={this.props.onTagChange} />                    
+                                <TagSelect tags={this.props.tags} tag_id={this.props.tag_id} onChange={this.handleTagChange} />                    
                             </div>
                             <div id="participants">
                                 <ParticipantList users={this.props.users} />
                             </div>
                             <div id="confirmClose" >
-                                {/* <Button variant="outlined" disabled={!this.state.hasChanged}>
+                                <Button variant="outlined" disabled={!this.state.hasChanged} onClick={this.props.onConfirm}>
                                     Confirm Changes
                                 </Button>
-                                <br></br> */}
-                                <Button variant="outlined">
+                                <br></br>
+                                <Button variant="outlined" onClick={this.props.onClose}>
                                     Close
                                 </Button>
                             </div>

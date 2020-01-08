@@ -1,9 +1,24 @@
 import React from "react";
-import { List, ListItem, Button, Typography, ListItemText } from "@material-ui/core";
+import { Box, List, ListItem, Button, Typography, ListItemText, IconButton, ListItemSecondaryAction, withStyles } from "@material-ui/core";
 
 import UserInfo from "./UserInfo";
 
+import AddIcon from '@material-ui/icons/Add';
+import CreateIcon from '@material-ui/icons/Create';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 import "./styles/CommentSection.css"
+
+const styles = {
+    editDelete: {
+        top: "90%",
+        right: 0
+    },
+    removePadding: {
+        paddingLeft: 0,
+        paddingRight: 15
+    }
+};
 
 class CommentSection extends React.Component {
     constructor(props) {
@@ -23,29 +38,48 @@ class CommentSection extends React.Component {
     }
     
     render() {
+        const { classes } = this.props;
+
         return (
             <div>
                 <Button onClick={() => {console.log(this.state.comments)}}>
                     test
                 </Button>
 
-                <Typography>
-                    Comments
-                </Typography>
+                <div id="title">
+                    <Typography id="titleText">
+                        Comments
+                    </Typography>
+                    <IconButton id="addButton">
+                        <AddIcon />
+                    </IconButton>
+                </div>
 
-                <List style={{maxHeight: "100%", overflow: 'auto'}}>
+                <List>
                     {
                        this.state.comments.map(comment => (
-                            <ListItem key={comment.id} alignItems="flex-start" divider={true}>
+                            <ListItem className="comment" key={comment.id} alignItems="flex-start" divider={true} classes={{ root: classes.removePadding }}>
                                 <ListItemText
                                     style={{textAlign:"justify"}}
                                     primary={
-                                        <div id="userDate">
+                                        <div className="userDate">
                                             <UserInfo user={this.props.users[comment.attributes["user-id"] - 1]} textVariant="h6"/>
-                                            <Typography> DATE </Typography>
+                                            <Typography> {new Date(comment.attributes["updated-at"]).toUTCString()} </Typography>
                                         </div>
                                     }
                                     secondary={comment.attributes.body} />
+
+                                {/* <Box color="#7e57c2" width={1}></Box> */}
+                                
+                                <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
+                                    <IconButton size="small" color="primary">
+                                        <CreateIcon />
+                                    </IconButton>
+                                    <IconButton size="small" color="secondary">
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </ListItemSecondaryAction>
+
                             </ListItem>
                        ))
                     }
@@ -55,4 +89,5 @@ class CommentSection extends React.Component {
     }
 }
 
-export default CommentSection;
+export default withStyles(styles)(CommentSection);
+// export default CommentSection;
