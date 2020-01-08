@@ -25,11 +25,12 @@ class CommentSection extends React.Component {
         super(props);
         this.state = {
             comments: [],
-            isCommenting: false
+            isCommenting: false,
+            version: 1
         }
     }
 
-    componentDidMount() {
+    fetchComments = () => {
         fetch("/api/comments").then(async (response) => {
             const { data } = await response.json();
             this.setState({comments: data.filter(comment => {return comment.attributes["task-id"] === parseInt(this.props.task_id);})})
@@ -37,16 +38,45 @@ class CommentSection extends React.Component {
             console.log(response);
         })
     }
+
+    componentDidMount() {
+        this.fetchComments();
+    }
+
+    handleAdd = () => {
+
+    }
+
+    handleEdit = () => {
+
+    }
+
+    handleDelete = comment => {
+        const deleteComment = async() => {
+            const csrfToken = document.querySelector("meta[name=csrf-token").textContent;
+
+            const response = await fetch("/api/comments/" + comment.id, {
+                method: "DELETE",
+                credentials: "include",
+                headers: {
+                    "X-CSRF-Token": csrfToken
+                }
+            });
+
+            if(response.status === 204) {
+                console.log("Comment has been deleted");
+                this.fetchComments();
+            }
+        }
+
+        deleteComment();
+    }
     
     render() {
         const { classes } = this.props;
 
         return (
             <div>
-                {/* <Button onClick={() => {console.log(this.state.comments)}}>
-                    test
-                </Button> */}
-
                 <div id="title">
                     <Typography id="titleText">
                         Comments
@@ -71,7 +101,7 @@ class CommentSection extends React.Component {
                                     <IconButton size="small" color="primary">
                                         <CreateIcon />
                                     </IconButton>
-                                    <IconButton size="small" color="secondary">
+                                    <IconButton size="small" color="secondary" onClick={() => this.handleDelete(comment)}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </ListItemSecondaryAction>
@@ -98,4 +128,3 @@ class CommentSection extends React.Component {
 }
 
 export default withStyles(styles)(CommentSection);
-// export default CommentSection;
