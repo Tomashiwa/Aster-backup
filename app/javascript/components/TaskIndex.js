@@ -389,6 +389,7 @@ class TaskIndex extends React.Component {
           <TaskPopup title={this.state.title}
             description={this.state.description}
             dueDate={this.state.dueDate}
+            user={this.props.user}
             task_id={this.state.task_id}
             tag_id={this.state.tag_id}
             users={this.props.users}

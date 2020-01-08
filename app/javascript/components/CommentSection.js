@@ -3,15 +3,15 @@ import { List, ListItem, Button, Typography, ListItemText, IconButton, ListItemS
 
 import UserInfo from "./UserInfo";
 
-import AddIcon from '@material-ui/icons/Add';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import "./styles/CommentSection.css"
+import { isThisSecond } from "date-fns";
 
 const styles = {
     editDelete: {
-        top: "90%",
+        top: "85%",
         right: 0
     },
     removePadding: {
@@ -25,6 +25,7 @@ class CommentSection extends React.Component {
         super(props);
         this.state = {
             comments: [],
+            newComment: "",
             isCommenting: false,
             version: 1
         }
@@ -44,7 +45,34 @@ class CommentSection extends React.Component {
     }
 
     handleAdd = () => {
+        const addComment = async() => {
+            const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
+            const response = await fetch("/api/comments", {
+                method: "POST",
+                credential: "include",
+                headers: {
+                    "Content-Type": "application/vnd.api+json",
+                    "X-CSRF-Token": csrfToken
+                },
+                body: JSON.stringify({data: {
+                    type: "comments",
+                    attributes: {
+                        "user-id": this.props.user.id,
+                        "task-id": this.props.task_id,
+                        body: this.state.newComment,
+                        "updated-at": new Date(Date.now()).toUTCString()
+                    }
+                }})
+            });
+
+            if(response.status === 201) {
+                this.setState({newComment: ""});
+                this.fetchComments();
+            }
+        }
+
+        addComment();
     }
 
     handleEdit = () => {
@@ -115,9 +143,9 @@ class CommentSection extends React.Component {
                     <Typography>
                         Post new comment:
                     </Typography>
-                    <TextField multiline={true} size="small" fullWidth={true} variant="outlined" />
+                    <TextField id="field_newComment" value={this.state.newComment} onChange={event => {this.setState({newComment: event.target.value})}} multiline={true} size="small" fullWidth={true} variant="outlined" />
                     <div id="submitButton">
-                        <Button variant="outlined">
+                        <Button variant="outlined" onClick={this.handleAdd}>
                             Submit
                         </Button>
                     </div>

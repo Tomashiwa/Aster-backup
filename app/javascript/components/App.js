@@ -82,6 +82,7 @@ class App extends React.Component {
               id={this.state.boardId} 
               tasks={this.state.tasks} 
               lists={this.state.lists} 
+              user={this.state.users[this.state.userId - 1]} 
               users={this.state.users} 
               tags={this.state.tags} 
               filterTagId={this.state.filterTagId} 

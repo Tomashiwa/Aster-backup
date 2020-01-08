@@ -33,7 +33,8 @@ class Board extends React.Component {
                                             : true;
 
                                         return parseInt(list.id) === task.attributes["list-id"] && hasPassFilter && hasPassSearch;
-                                    })} 
+                                    })}
+                                    user={this.props.user}
                                     users={this.props.users}
                                     tags={this.props.tags} 
                                     filterTagId={this.props.filterTagId} 
