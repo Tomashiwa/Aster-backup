@@ -7,7 +7,6 @@ import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import "./styles/CommentSection.css"
-import { isThisSecond } from "date-fns";
 
 const styles = {
     editDelete: {
@@ -16,7 +15,8 @@ const styles = {
     },
     removePadding: {
         paddingLeft: 0,
-        paddingRight: 15
+        paddingRight: 15,
+        alignItems: "stretch"
     }
 };
 
@@ -26,8 +26,8 @@ class CommentSection extends React.Component {
         this.state = {
             comments: [],
             newComment: "",
-            isCommenting: false,
-            version: 1
+            editingCommentID: -1,
+            editedComment: "",
         }
     }
 
@@ -35,8 +35,6 @@ class CommentSection extends React.Component {
         fetch("/api/comments").then(async (response) => {
             const { data } = await response.json();
             this.setState({comments: data.filter(comment => {return comment.attributes["task-id"] === parseInt(this.props.task_id);})})
-
-            console.log(response);
         })
     }
 
@@ -75,8 +73,46 @@ class CommentSection extends React.Component {
         addComment();
     }
 
-    handleEdit = () => {
+    handleEdit = comment => {
+        console.log(comment);
 
+        this.setState({editingCommentID: comment.id, editedComment: comment.attributes.body});
+    }
+
+    handleSave = () => {
+        const saveComment = async() => {
+            const csrfToken = document.querySelector("meta[name=csrf-token").content;
+
+            const response = await fetch("/api/comments/" + this.state.editingCommentID, {
+                method: "PATCH",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/vnd.api+json",
+                    "X-CSRF-Token": csrfToken
+                },
+                body: JSON.stringify({data:{
+                    id: this.state.editingCommentID,
+                    type: "comments",
+                    attributes: {
+                        "user-id": this.props.user.id,
+                        "task-id": this.props.task_id,
+                        body: this.state.editedComment,
+                        "updated-at": new Date(Date.now()).toUTCString()
+                    }
+                }})
+            })
+
+            if(response.status === 200) {
+                this.setState({editingCommentID: -1, editedComment: ""});
+                this.fetchComments();
+            }
+        }
+
+        saveComment();
+    }
+
+    handleCancel =  () => {
+        this.setState({editingCommentID: -1, editedComment: ""});
     }
 
     handleDelete = comment => {
@@ -114,7 +150,7 @@ class CommentSection extends React.Component {
                 <List>
                     {
                        this.state.comments.map(comment => (
-                            <ListItem className="comment" key={comment.id} alignItems="flex-start" divider={true} classes={{ root: classes.removePadding }}>
+                            <ListItem className="comment" key={comment.id} divider={true} classes={{ root: classes.removePadding }}>
                                 <ListItemText
                                     style={{textAlign:"justify"}}
                                     primary={
@@ -123,12 +159,30 @@ class CommentSection extends React.Component {
                                             <Typography> {new Date(comment.attributes["updated-at"]).toUTCString()} </Typography>
                                         </div>
                                     }
-                                    secondary={comment.attributes.body} />
+                                    secondary={
+                                        this.state.editingCommentID !== comment.id ? comment.attributes.body : null
+                                } />
 
                                 {
-                                    parseInt(this.props.user.id) === comment.attributes["user-id"]
+                                    this.state.editingCommentID == comment.id
+                                        ? <div>
+                                            <TextField className="field_editComment" autoFocus={true} fullWidth={true} value={this.state.editedComment} onChange={event => {this.setState({editedComment: event.target.value})}} multiline={true} size="small" fullWidth={true} variant="outlined" />
+                                            <div className="saveCancelButtons">
+                                                <Button variant="outlined" onClick={this.handleSave}>
+                                                    Save
+                                                </Button>
+                                                <Button variant="outlined" onClick={this.handleCancel}>
+                                                    Cancel
+                                                </Button>
+                                            </div>
+                                        </div>
+                                        : null
+                                }
+
+                                {
+                                    parseInt(this.props.user.id) === comment.attributes["user-id"] && this.state.editingCommentID === -1
                                         ? <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
-                                              <IconButton size="small" color="primary">
+                                              <IconButton size="small" color="primary" onClick={() => this.handleEdit(comment)}>
                                                   <CreateIcon />
                                               </IconButton>
                                               <IconButton size="small" color="secondary" onClick={() => this.handleDelete(comment)}>

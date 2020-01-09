@@ -25,8 +25,15 @@
 }
 
 .comment {
-    /* padding-right: 0px; */
-    /* background-color: turquoise; */
+    display: flex;
+    flex-direction: column;
+}
+
+.comment .saveCancelButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 5px;
 }
 
 #input > #submitButton {
