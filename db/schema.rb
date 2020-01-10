@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 2019_12_22_130348) do
     t.text "description"
     t.bigint "tag_id"
     t.datetime "due_date"
+    t.bigint "participants", array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["list_id"], name: "index_tasks_on_list_id"

@@ -21,10 +21,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch("/api/users").then(async (response) => {
-      const { data } = await response.json();
-      this.setState({ users: data });
-    })
+    this.fetchUsers();
 
     fetch("/api/boards").then(async (response) => {
       const { data } = await response.json();
@@ -36,10 +33,7 @@ class App extends React.Component {
       this.setState({ lists: data });
     })
 
-    fetch("/api/tasks").then(async (response) => {
-      const { data } = await response.json();
-      this.setState({tasks: data});
-    });
+    this.fetchTasks();
 
     fetch("/api/tags").then(async (response) => {
       const { data } = await response.json();
@@ -57,6 +51,20 @@ class App extends React.Component {
 
   onLogout = () => {
     console.log("Log out")
+  }
+
+  fetchUsers = () => {
+    fetch("/api/users").then(async (response) => {
+      const { data } = await response.json();
+      this.setState({ users: data });
+    })
+  }
+
+  fetchTasks = callback => {
+    fetch("/api/tasks").then(async (response) => {
+      const { data } = await response.json();
+      this.setState({tasks: data}, callback);
+    });
   }
 
   fetchTags = () => {
@@ -87,7 +95,8 @@ class App extends React.Component {
               tags={this.state.tags} 
               filterTagId={this.state.filterTagId} 
               filterSearchTerm={this.state.filterSearchTerm}
-              onUpdateTags={this.fetchTags} />
+              onUpdateTags={this.fetchTags}
+              fetchTasks={this.fetchTasks} />
 
             <RegisterLoginPopup users={this.state.users} isOpened={false} />
           </div>

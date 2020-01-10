@@ -6,6 +6,7 @@ class CreateTasks < ActiveRecord::Migration[6.0]
       t.text :description
       t.references :tag, null: true, foreign_key: true
       t.datetime :due_date
+      t.bigint :participants, array: true
 
       t.timestamps
     end

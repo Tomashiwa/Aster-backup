@@ -41,41 +41,30 @@ class TaskIndex extends React.Component {
       isEditing: false, 
       isInspecting: false,
       isAddingTag: false,
-      task_id: 1, 
-      title: "", 
-      description: "",
-      dueDate: new Date(Date.now()).toUTCString(),
-      tag_id: 1,
-      name: ""
+      selectedTask: null,
+      task_id: 1,
+      newDueDate: new Date(Date.now()).toUTCString(),
+      newTagId: 1,
+      listName: ""
     };
   }
 
   componentDidMount() {
     fetch("/api/lists").then(async (response) => {
       const { data } = await response.json();
-      this.setState({name: data[this.props.list_id - 1].attributes.name});
+      this.setState({listName: data[this.props.list_id - 1].attributes.name});
     });
   }
 
   handleAdd = () => {
     this.setState({
-      title: "",
-      description: "",
-      dueDate: new Date(Date.now()).toUTCString(),
-      tag_id: 1,
+      selectedTask: null,
       isAdding: true});
-
-    console.log("props:");
-    console.log(this.props);
   };
 
   handleEdit = task => {
     this.setState({
-      task_id: task.id,
-      title: task.attributes.title,
-      description: task.attributes.description,
-      dueDate: task.attributes["due-date"], 
-      tag_id: task.attributes["tag-id"],
+      selectedTask: task,
       isEditing: true
     });
   };
@@ -97,8 +86,9 @@ class TaskIndex extends React.Component {
             "list-id": this.props.list_id,
             title: newTitle,
             description: newDescription,
-            "tag-id": this.state.tag_id,
-            "due-date": this.state.dueDate
+            "tag-id": this.state.newTagId,
+            "due-date": this.state.newDueDate,
+            participants: []
           }
         }})
       });
@@ -116,7 +106,7 @@ class TaskIndex extends React.Component {
     const saveTask = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
-      const response = await fetch("/api/tasks/" + this.state.task_id, {
+      const response = await fetch("/api/tasks/" + this.state.selectedTask.id, {
         method: "PATCH",
         credentials: "include",
         headers: {
@@ -130,8 +120,9 @@ class TaskIndex extends React.Component {
             "list-id": this.props.list_id,
             title: modifiedTitle,
             description: modifiedDescription,
-            "tag-id": this.state.tag_id,
-            "due-date": this.state.dueDate
+            "tag-id": this.state.selectedTask.attributes["tag-id"],
+            "due-date": this.state.selectedTask.attributes["due-date"],
+            participants: this.state.participants
           }
         }})
       });
@@ -196,7 +187,8 @@ class TaskIndex extends React.Component {
               title: task.attributes.title,
               description: task.attributes.description,
               "due-date": task.attributes["due-date"],
-              "tag-id": task.attributes["tag-id"]
+              "tag-id": task.attributes["tag-id"],
+              participants: task.attributes.participants
             }
           }})
         });
@@ -239,7 +231,8 @@ class TaskIndex extends React.Component {
               title: task.attributes.title,
               description: task.attributes.description,
               "due-date": task.attributes["due-date"],
-              "tag-id": task.attributes["tag-id"]
+              "tag-id": task.attributes["tag-id"],
+              participants: task.attributes.participants
             }
           }})
         });
@@ -254,11 +247,11 @@ class TaskIndex extends React.Component {
   }
 
   handleDateChange = (dateTime, value) => {
-    this.setState({dueDate: dateTime.toUTCString()});
+    this.setState({newDueDate: dateTime.toUTCString()});
   };
 
   handleTagChange = (event, index, value) => {
-    this.setState({tag_id: event.target.value});
+    this.setState({newTagId: event.target.value});
   };
 
   handleNewTag = () => {
@@ -288,7 +281,7 @@ class TaskIndex extends React.Component {
 
       if(response.status === 201) {
         this.props.onUpdateTags();
-        this.setState({tag_id: this.props.tags.length + 1});
+        this.setState({newTagId: this.props.tags.length + 1});
       }
     }
     
@@ -302,13 +295,14 @@ class TaskIndex extends React.Component {
 
   onClickTask = task => {
     this.setState({
-      isInspecting: true,
-      title: task.attributes.title, 
-      description: task.attributes.description,
-      dueDate: task.attributes["due-date"],
-      task_id: task.id,
-      tag_id: task.attributes["tag-id"]
+      selectedTask: task,
+      isInspecting: true
     })
+  }
+
+  refreshSelected = (selectedTask, callback) => {
+    const reselectedTask = this.props.tasks.filter(task => {return task.id === this.state.selectedTask.id})[0];
+    this.setState({selectedTask: reselectedTask}, callback);
   }
 
   render() {
@@ -316,7 +310,7 @@ class TaskIndex extends React.Component {
 
     return (
       <div>
-          <h1 align="center">{this.state.name}</h1>
+          <h1 align="center">{this.state.listName}</h1>
           
           <List className={this.state.classes.root}>
             {
@@ -340,7 +334,7 @@ class TaskIndex extends React.Component {
   
                     <ListItemSecondaryAction classes={{ root: classes.dueDate }}>
                       <Typography align="right" variant="subtitle1" className={this.state.classes.inline} color="textPrimary">
-                        {"By: " + new Date(task.attributes["due-date"]).toUTCString()} {/*toDateString()*/}
+                        {"By: " + new Date(task.attributes["due-date"]).toUTCString()}
                       </Typography>
                     </ListItemSecondaryAction>
   
@@ -369,35 +363,41 @@ class TaskIndex extends React.Component {
             Add Task
           </Button>
 
-          <AddEditPopup title={this.state.title}
-            description={this.state.description}
-            isOpened={this.state.isAdding || this.state.isEditing} 
-            isAdding={this.state.isAdding} 
-            onClose={this.handleClose}
-            dueDate={this.state.dueDate}
-            onDateChange={this.handleDateChange}
-            tags={this.props.tags}
-            tag_id={this.state.tag_id}
-            onNewTag={this.handleNewTag}
-            onTagChange={this.handleTagChange}
-            isAddingTag={this.state.isAddingTag}
-            onAddTag={this.handleSubmitTag}
-            onCancelTag={this.handleCancelTag}
-            onSubmit={this.handleSubmit}
-            onConfirm={this.handleConfirm}/>
+          {
+            this.state.selectedTask
+              ? <AddEditPopup task={this.state.selectedTask}
+                  newTagId={this.state.newTagId}
+                  newDueDate={this.state.newDueDate}
+                  isOpened={this.state.isAdding || this.state.isEditing} 
+                  isAdding={this.state.isAdding} 
+                  onClose={this.handleClose}
+                  tags={this.props.tags}
+                  onNewTag={this.handleNewTag}
+                  onDateChange={this.handleDateChange}
+                  onTagChange={this.handleTagChange}
+                  isAddingTag={this.state.isAddingTag}
+                  onAddTag={this.handleSubmitTag}
+                  onCancelTag={this.handleCancelTag}
+                  onSubmit={this.handleSubmit}
+                  onConfirm={this.handleConfirm}/>
+              : null
+          }
 
-          <TaskPopup title={this.state.title}
-            description={this.state.description}
-            dueDate={this.state.dueDate}
-            user={this.props.user}
-            task_id={this.state.task_id}
-            tag_id={this.state.tag_id}
-            users={this.props.users}
-            tags={this.props.tags}
-            isOpened={this.state.isInspecting}
-            onTagChange={this.handleTagChange}
-            onConfirm={this.handleConfirm(this.state.title, this.state.description)}
-            onClose={this.handleClose} />
+          {
+            this.state.selectedTask
+              ? <TaskPopup selectedTask={this.state.selectedTask}
+                  user={this.props.user}
+                  users={this.props.users}
+                  tags={this.props.tags}
+                  isOpened={this.state.isInspecting}
+                  onTagChange={this.handleTagChange}
+                  onConfirm={this.handleConfirm(this.state.title, this.state.description)}
+                  onClose={this.handleClose}
+                  fetchTasks={this.props.fetchTasks}
+                  refreshSelected={this.refreshSelected} />
+              : null
+          }
+
       </div>
     );
   }

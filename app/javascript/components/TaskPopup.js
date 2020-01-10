@@ -21,43 +21,73 @@ class TaskPopup extends React.Component {
         this.setState({hasChanged: true});
     }
 
+    addParticipant = (userId, callback) => {
+        const addParti = async() => {
+            const csrfToken = document.querySelector("meta[name=csrf-token").content;
+
+            const response = await fetch("/api/tasks/" + this.props.selectedTask.id, {
+                method: "PATCH",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/vnd.api+json",
+                    "X-CSRF-Token": csrfToken
+                },
+                body: JSON.stringify ({data: {
+                    id: this.props.selectedTask.id,
+                    type: "tasks",
+                    attributes: {
+                        title: this.props.selectedTask.attributes.title,
+                        description: this.props.selectedTask.attributes.description,
+                        "tag-id": this.props.selectedTask.attributes["tag-id"],
+                        "due-date": this.props.selectedTask.attributes["due-date"],
+                        participants: this.props.selectedTask.attributes.participants.concat([userId])
+                    }
+                }})
+            });
+
+            if(response.status === 200) {
+                this.props.fetchTasks(() => this.props.refreshSelected(this.props.selectedTask, callback));
+            }
+        }
+
+        addParti();
+    }
+
     render() {
         return(
             <Dialog id="popup" fullWidth={true} maxWidth={"md"} open={this.props.isOpened} onClose={this.props.onClose} >
                 <DialogTitle id="titleDate">
                     <div id="titleDateBox">
                         <div id="title">
-                            {this.props.title}
+                            {this.props.selectedTask.attributes.title}
                         </div>
 
                         <div id="date">
-                            {"Due by: " + new Date(this.props.dueDate).toUTCString()}
-                            {/* {this.props.dueDate} */}
+                            {"Due by: " + new Date(this.props.selectedTask.attributes["due-date"]).toUTCString()}
                         </div>
                     </div>
-                    {/* {this.props.title} */}
                 </DialogTitle>
 
                 <DialogContent>
-                    <DialogContentText id="description">
-                        {this.props.description}
-                    </DialogContentText>
+                    <Button onClick={() => console.log(this.props.selectedTask)}>
+                        test selected task
+                    </Button>
 
-                    {/* <Button onClick={() => console.log(this.props.user_id)}>
-                        test
-                    </Button> */}
+                    <DialogContentText id="description">
+                        {this.props.selectedTask.attributes.description}
+                    </DialogContentText>
 
                     <div id="comments_tags_participants">
                         <div id="comments">
-                            <CommentSection user={this.props.user} users={this.props.users} tags={this.props.tags} task_id={this.props.task_id}/>
+                            <CommentSection user={this.props.user} users={this.props.users} tags={this.props.tags} task_id={this.props.selectedTask.id}/>
                         </div>
 
                         <div id="tags_participants">
                             <div id="tags">
-                                <TagSelect tags={this.props.tags} tag_id={this.props.tag_id} onChange={this.handleTagChange} />                    
+                                <TagSelect tags={this.props.tags} tag_id={this.props.selectedTask.attributes["tag-id"]} onChange={this.handleTagChange} />                    
                             </div>
                             <div id="participants">
-                                <ParticipantList users={this.props.users} />
+                                <ParticipantList task={this.props.selectedTask} users={this.props.users} onAdd={this.addParticipant}/>
                             </div>
                             <div id="confirmClose" >
                                 <Button variant="outlined" disabled={!this.state.hasChanged} onClick={this.props.onConfirm}>

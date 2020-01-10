@@ -38,7 +38,8 @@ class Board extends React.Component {
                                     users={this.props.users}
                                     tags={this.props.tags} 
                                     filterTagId={this.props.filterTagId} 
-                                    onUpdateTags={this.props.onUpdateTags} />
+                                    onUpdateTags={this.props.onUpdateTags}
+                                    fetchTasks={this.props.fetchTasks} />
                             </article>
                         )
                     }
