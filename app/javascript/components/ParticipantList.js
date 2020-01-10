@@ -47,6 +47,14 @@ class ParticipantList extends React.Component {
         this.handleClose();
     }
 
+    handleDelete = (participant) => {
+        console.log("participant to delete:");
+        console.log(participant);
+
+        this.props.onDelete(participant, this.refreshParticipants);
+        this.handleClose();
+    }
+
     handleClose = () => {
         this.setState({isAdding: false, potentialParticipants: []});
     }
@@ -63,6 +71,9 @@ class ParticipantList extends React.Component {
                       this.state.participants.map((participant) => (
                           <ListItem key={participant} divider={true} disableGutters={true}>
                               <UserInfo user={this.props.users.filter(user => {return parseInt(user.id) === participant;})[0]} />
+                              <IconButton size="small" onClick={() => this.handleDelete(participant)}>
+                                <CloseIcon />
+                              </IconButton>
                           </ListItem>
                       ))
                   }

@@ -53,6 +53,45 @@ class TaskPopup extends React.Component {
         addParti();
     }
 
+    deleteParticipant = (userId, callback) => {
+        const deleteParti = async() => {
+            const csrfToken = document.querySelector("meta[name=csrf-token").content;
+
+            const response = await fetch("/api/tasks/" + this.props.selectedTask.id, {
+                method: "PATCH",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/vnd.api+json",
+                    "X-CSRF-Token": csrfToken
+                },
+                body: JSON.stringify ({data: {
+                    id: this.props.selectedTask.id,
+                    type: "tasks",
+                    attributes: {
+                        title: this.props.selectedTask.attributes.title,
+                        description: this.props.selectedTask.attributes.description,
+                        "tag-id": this.props.selectedTask.attributes["tag-id"],
+                        "due-date": this.props.selectedTask.attributes["due-date"],
+                        participants: this.props.selectedTask.attributes.participants.filter(participant => {return participant !== userId})
+                    }
+                }})
+            });
+
+            if(response.status === 200) {
+                this.props.fetchTasks(() => this.props.refreshSelected(this.props.selectedTask, callback));
+            }
+        }
+
+        console.log("userId");
+        console.log(userId);
+        console.log("participants pre-delete:");
+        console.log(this.props.selectedTask.attributes.participants);
+        console.log("participants post-filter:");
+        console.log(this.props.selectedTask.attributes.participants.filter(participant => {return participant !== userId}));
+
+        deleteParti();
+    }
+
     render() {
         return(
             <Dialog id="popup" fullWidth={true} maxWidth={"md"} open={this.props.isOpened} onClose={this.props.onClose} >
@@ -87,7 +126,7 @@ class TaskPopup extends React.Component {
                                 <TagSelect tags={this.props.tags} tag_id={this.props.selectedTask.attributes["tag-id"]} onChange={this.handleTagChange} />                    
                             </div>
                             <div id="participants">
-                                <ParticipantList task={this.props.selectedTask} users={this.props.users} onAdd={this.addParticipant}/>
+                                <ParticipantList task={this.props.selectedTask} users={this.props.users} onAdd={this.addParticipant} onDelete={this.deleteParticipant}/>
                             </div>
                             <div id="confirmClose" >
                                 <Button variant="outlined" disabled={!this.state.hasChanged} onClick={this.props.onConfirm}>
