@@ -82,13 +82,6 @@ class TaskPopup extends React.Component {
             }
         }
 
-        console.log("userId");
-        console.log(userId);
-        console.log("participants pre-delete:");
-        console.log(this.props.selectedTask.attributes.participants);
-        console.log("participants post-filter:");
-        console.log(this.props.selectedTask.attributes.participants.filter(participant => {return participant !== userId}));
-
         deleteParti();
     }
 
@@ -108,10 +101,6 @@ class TaskPopup extends React.Component {
                 </DialogTitle>
 
                 <DialogContent>
-                    <Button onClick={() => console.log(this.props.selectedTask)}>
-                        test selected task
-                    </Button>
-
                     <DialogContentText id="description">
                         {this.props.selectedTask.attributes.description}
                     </DialogContentText>

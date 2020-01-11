@@ -43,6 +43,8 @@ class TaskIndex extends React.Component {
       isAddingTag: false,
       selectedTask: null,
       task_id: 1,
+      newTitle: "",
+      newDescription: "",
       newDueDate: new Date(Date.now()).toUTCString(),
       newTagId: 1,
       listName: ""
@@ -364,14 +366,17 @@ class TaskIndex extends React.Component {
           </Button>
 
           {
-            this.state.selectedTask
-              ? <AddEditPopup task={this.state.selectedTask}
+              (this.state.selectedTask && this.state.isEditing) || (this.state.isAdding)
+              ? <AddEditPopup selectedTask={this.state.selectedTask}
+                  newTitle={this.state.newTitle}
+                  newDescription={this.state.description}
                   newTagId={this.state.newTagId}
                   newDueDate={this.state.newDueDate}
                   isOpened={this.state.isAdding || this.state.isEditing} 
                   isAdding={this.state.isAdding} 
                   onClose={this.handleClose}
                   tags={this.props.tags}
+                  newTagId={this.state.newTagId}
                   onNewTag={this.handleNewTag}
                   onDateChange={this.handleDateChange}
                   onTagChange={this.handleTagChange}

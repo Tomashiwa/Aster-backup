@@ -74,8 +74,6 @@ class CommentSection extends React.Component {
     }
 
     handleEdit = comment => {
-        console.log(comment);
-
         this.setState({editingCommentID: comment.id, editedComment: comment.attributes.body});
     }
 
@@ -128,7 +126,6 @@ class CommentSection extends React.Component {
             });
 
             if(response.status === 204) {
-                console.log("Comment has been deleted");
                 this.fetchComments();
             }
         }

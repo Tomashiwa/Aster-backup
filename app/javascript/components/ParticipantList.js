@@ -1,5 +1,5 @@
 import React from "react";
-import { List, ListItem, IconButton, Typography, Select, FormControl, MenuItem, InputLabel, Button } from "@material-ui/core";
+import { List, ListItem, IconButton, Typography, Select, FormControl, MenuItem, InputLabel, Button, ListItemSecondaryAction } from "@material-ui/core";
 
 import AddIcon from '@material-ui/icons/Add';
 import DoneIcon from '@material-ui/icons/Done';
@@ -16,7 +16,8 @@ class ParticipantList extends React.Component {
             isAdding: false,
             participants: [],
             potentialParticipants: [],
-            newPartiId: 1
+            newPartiId: 1,
+            hovered: null
         }
     }
 
@@ -39,7 +40,7 @@ class ParticipantList extends React.Component {
     }
 
     refreshParticipants = () => {
-        this.setState({participants: this.props.task.attributes.participants}, () => console.log(this.props.task.attributes.participants));
+        this.setState({participants: this.props.task.attributes.participants});
     }
     
     handleAdd = () => {
@@ -48,15 +49,20 @@ class ParticipantList extends React.Component {
     }
 
     handleDelete = (participant) => {
-        console.log("participant to delete:");
-        console.log(participant);
-
         this.props.onDelete(participant, this.refreshParticipants);
         this.handleClose();
     }
 
     handleClose = () => {
         this.setState({isAdding: false, potentialParticipants: []});
+    }
+
+    handleEnterHover = (value) => {
+        this.setState({hovered: value});
+    }
+
+    handleExitHover = () => {
+        this.setState({hovered: null});
     }
 
     render() {
@@ -68,14 +74,27 @@ class ParticipantList extends React.Component {
 
                 <List dense={true} disablePadding={true}>
                   {
-                      this.state.participants.map((participant) => (
-                          <ListItem key={participant} divider={true} disableGutters={true}>
-                              <UserInfo user={this.props.users.filter(user => {return parseInt(user.id) === participant;})[0]} />
-                              <IconButton size="small" onClick={() => this.handleDelete(participant)}>
-                                <CloseIcon />
-                              </IconButton>
-                          </ListItem>
-                      ))
+                    this.state.participants.map((participant) => {
+                      return (
+                        <ListItem 
+                          key={participant} 
+                          divider={true} 
+                          disableGutters={true} 
+                          onMouseOver={() => this.handleEnterHover(participant)} 
+                          onMouseLeave={() => this.handleExitHover()}>
+                            <UserInfo user={this.props.users.filter(user => {return parseInt(user.id) === participant;})[0]} />
+                            {
+                                this.state.hovered === participant
+                                    ? <ListItemSecondaryAction>
+                                        <IconButton size="small" onClick={() => this.handleDelete(participant)}>
+                                          <CloseIcon />
+                                        </IconButton>
+                                    </ListItemSecondaryAction>
+                                    : null
+                            }
+                        </ListItem>
+                      )
+                    })
                   }
 
                   {

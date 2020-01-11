@@ -26,9 +26,18 @@ class AddEditPopup extends React.Component {
                         Please fill in the information below
                     </DialogContentText>
 
-                    <TextField autoFocus required={true} margin="dense" id="field_addEdit_title" label="Title" fullWidth defaultValue={this.props.title}/>
-                    <TextField multiline required={true} margin="dense" id="field_addEdit_description" label="description" fullWidth defaultValue={this.props.description}/>
-                    <br></br>
+                    {
+                      this.props.selectedTask
+                        ? <div>
+                            <TextField autoFocus required={true} margin="dense" id="field_addEdit_title" label="Title" fullWidth defaultValue={this.props.selectedTask.attributes.title}/>
+                            <TextField multiline required={true} margin="dense" id="field_addEdit_description" label="Description" fullWidth defaultValue={this.props.selectedTask.attributes.description}/>
+                        </div>
+                        : <div>
+                            <TextField autoFocus required={true} margin="dense" id="field_addEdit_title" label="Title" fullWidth defaultValue={this.props.newTitle}/>
+                            <TextField multiline required={true} margin="dense" id="field_addEdit_description" label="Description" fullWidth defaultValue={this.props.newDescription}/>
+                        </div>
+                    }
+                    
                     <br></br>
                     
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -36,7 +45,7 @@ class AddEditPopup extends React.Component {
                         required={true}
                         ampm={false}
                         showTodayButton
-                        value={this.props.dueDate}
+                        value={this.props.selectedTask ? this.props.selectedTask.attributes["due-date"] : this.props.newDueDate}
                         onChange={this.props.onDateChange}
                         id="dateTimePicker_dueDate"
                         format="dd/MM/yyyy HH:mm"
@@ -46,7 +55,7 @@ class AddEditPopup extends React.Component {
                     <br></br>
                     <br></br>
 
-                    <TagSelect tags={this.props.tags} tag_id={this.props.tag_id} onChange={this.props.onTagChange} />
+                    <TagSelect tags={this.props.tags} tag_id={this.props.isAdding ? this.props.newTagId : this.props.selectedTask.attributes["tag-id"]} onChange={this.props.onTagChange} />
 
                     <IconButton color="primary" onClick={this.props.onNewTag}>
                       <AddIcon />
