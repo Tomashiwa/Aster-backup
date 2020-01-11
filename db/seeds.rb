@@ -1,9 +1,9 @@
-User.create!(name:"Matsuoka Tamotsu");
-User.create!(name:"Noguchi Cho");
-User.create!(name:"Nakamoto Kyoko");
-User.create!(name:"Okimoto Haru");
-User.create!(name:"Kaya Yoshiyuki");
-User.create!(name:"Nii Shigeru");
+User.create!(name:"Matsuoka Tamotsu", password: "123");
+User.create!(name:"Noguchi Cho", password: "456");
+User.create!(name:"Nakamoto Kyoko", password: "789");
+User.create!(name:"Okimoto Haru", password: "012");
+User.create!(name:"Kaya Yoshiyuki", password: "345");
+User.create!(name:"Nii Shigeru", password: "678");
 
 Board.create!(user_id: 1, name: "default");
 
