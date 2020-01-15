@@ -58,6 +58,7 @@ class App extends React.Component {
             this.fetchUsers(name);
             this.fetchBoards();
             this.fetchLists();
+            this.fetchTags();
             console.log("Logged in successfully");
         }
       })
@@ -149,7 +150,7 @@ class App extends React.Component {
     .then(async(response) => {
       console.log("lists response:");
       console.log(response);
-      
+
       return response.json();
     })
     .then(result => {
@@ -158,13 +159,40 @@ class App extends React.Component {
 
       this.setState({lists: result});
     })
-    
-    // fetch("/api/lists").then(async (response) => {
-    //   const { data } = await response.json();
-    //   this.setState({ lists: data });
-    // })
   }
 
+  fetchTags = () => {
+    let bearer = "Bearer " + localStorage.getItem("jwt");
+    console.log(bearer);
+
+    fetch("/api/tags", {
+      method: "GET",
+      withCredentials: true,
+      credentials: "include",
+      headers: {
+        "Authorization": bearer,
+        "Content-Type": "application/json"
+      }
+    })
+    .then(async(response) => {
+      console.log("tags response:");
+      console.log(response);
+
+      return response.json();
+    })
+    .then(result => {
+      console.log("tags result:");
+      console.log(result);
+
+      this.setState({tags: result});
+    })
+
+    // fetch("/api/tags").then(async (response) => {
+    //   const { data } = await response.json();
+    //   this.setState({tags: data});
+    // });
+  }
+  
   fetchTasks = callback => {
     fetch("/api/tasks").then(async (response) => {
       const { data } = await response.json();
@@ -172,12 +200,6 @@ class App extends React.Component {
     });
   }
 
-  fetchTags = () => {
-    fetch("/api/tags").then(async (response) => {
-      const { data } = await response.json();
-      this.setState({tags: data});
-    });
-  }
 
   render() {
     return (

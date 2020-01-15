@@ -19,7 +19,7 @@ class TagSelect extends React.Component {
               >
                 {
                   this.props.tags.map(tag => 
-                    <MenuItem key={tag.id} value={tag.id}>{tag.attributes.name}</MenuItem>
+                    <MenuItem key={tag.id} value={tag.id}>{tag.name}</MenuItem>
                   )
                 }
               </Select>

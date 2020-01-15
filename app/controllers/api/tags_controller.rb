@@ -6,8 +6,11 @@ class Api::TagsController < ApiController
     def index
         if current_user.admin?
             @tags = Tag.all
-            render json: @tags
+        else
+            @tags = Tag.where(:user_id => [current_user.id, nil])
         end
+
+        render json: @tags
     end
 
     #GET /tags/#
@@ -46,6 +49,6 @@ class Api::TagsController < ApiController
         end
 
         def tag_params
-            params.require(:tag).permit(:name)
+            params.require(:tag).permit(:name, :user_id)
         end
 end

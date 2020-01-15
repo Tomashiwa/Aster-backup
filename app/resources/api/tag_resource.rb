@@ -1,3 +1,3 @@
 class Api::TagResource < JSONAPI::Resource
-    attributes :name
+    attributes :name, :user_id
 end

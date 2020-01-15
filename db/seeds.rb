@@ -19,12 +19,14 @@ List.create!(board_id: 1, name: "Completed");
 List.create!(board_id: 2, name: "PLACEHOLDER 1");
 List.create!(board_id: 2, name: "PLACEHOLDER 2");
 
-Tag.create!(name: "NIL")
-Tag.create!(name: "Red")
-Tag.create!(name: "Yellow")
-Tag.create!(name: "Green")
-Tag.create!(name: "Blue")
-Tag.create!(name: "Pink")
+Tag.create!(name: "NIL", user_id: nil)
+Tag.create!(name: "Red", user_id: nil)
+Tag.create!(name: "Yellow", user_id: nil)
+Tag.create!(name: "Green", user_id: nil)
+Tag.create!(name: "Blue", user_id: nil)
+Tag.create!(name: "Pink", user_id: nil)
+Tag.create!(name: "Super Sotaro", user_id: 1)
+Tag.create!(name: "Flimsy Sotaro", user_id: 2);
 
 Task.create!(list_id: 1, title: "Johnny Joestar", description: "A former horse-racing prodigy turned paraplegic, Johnny joins the SBR race to find out the secret behind Gyro Zeppeli's Steel Balls as they're the only thing capable of healing his legs.", tag_id: 1, due_date: Time.now.utc, participants: [])
 Task.create!(list_id: 2, title: "Kishibe Rohan", description: "A successful professional mangaka, Rohan is often roped into paranormal events while conducting research for his latest manga. He is a Stand User who uses his Stand, Heaven's Door, to transform others into books and read them for inspiration.", tag_id: 2, due_date: Time.now.utc, participants: [])
