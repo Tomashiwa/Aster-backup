@@ -12,7 +12,7 @@ class UserInfo extends React.Component {
 
     render() {
         let UsernameComponent = this.props.user 
-            ? <Typography className="userName" variant={this.props.textVariant} noWrap> {this.props.user.attributes.name} </Typography>
+            ? <Typography className="userName" variant={this.props.textVariant} noWrap> {this.props.user.name} </Typography>
             : null;
 
         return(
