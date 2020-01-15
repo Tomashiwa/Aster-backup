@@ -29,8 +29,8 @@ class AddEditPopup extends React.Component {
                     {
                       this.props.selectedTask
                         ? <div>
-                            <TextField autoFocus required={true} margin="dense" id="field_addEdit_title" label="Title" fullWidth defaultValue={this.props.selectedTask.attributes.title}/>
-                            <TextField multiline required={true} margin="dense" id="field_addEdit_description" label="Description" fullWidth defaultValue={this.props.selectedTask.attributes.description}/>
+                            <TextField autoFocus required={true} margin="dense" id="field_addEdit_title" label="Title" fullWidth defaultValue={this.props.selectedTask.title}/>
+                            <TextField multiline required={true} margin="dense" id="field_addEdit_description" label="Description" fullWidth defaultValue={this.props.selectedTask.description}/>
                         </div>
                         : <div>
                             <TextField autoFocus required={true} margin="dense" id="field_addEdit_title" label="Title" fullWidth defaultValue={this.props.newTitle}/>
@@ -45,7 +45,7 @@ class AddEditPopup extends React.Component {
                         required={true}
                         ampm={false}
                         showTodayButton
-                        value={this.props.selectedTask ? this.props.selectedTask.attributes["due-date"] : this.props.newDueDate}
+                        value={this.props.selectedTask ? this.props.selectedTask.due_date : this.props.newDueDate}
                         onChange={this.props.onDateChange}
                         id="dateTimePicker_dueDate"
                         format="dd/MM/yyyy HH:mm"
@@ -55,7 +55,7 @@ class AddEditPopup extends React.Component {
                     <br></br>
                     <br></br>
 
-                    <TagSelect tags={this.props.tags} tag_id={this.props.isAdding ? this.props.newTagId : this.props.selectedTask.attributes["tag-id"]} onChange={this.props.onTagChange} />
+                    <TagSelect tags={this.props.tags} tag_id={this.props.isAdding ? this.props.newTagId : this.props.selectedTask.tag_id} onChange={this.props.onTagChange} />
 
                     <IconButton color="primary" onClick={this.props.onNewTag}>
                       <AddIcon />

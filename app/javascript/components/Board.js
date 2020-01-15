@@ -24,15 +24,15 @@ class Board extends React.Component {
                                     list_id={parseInt(list.id)} 
                                     tasks={this.props.tasks.filter(task => {
                                         const hasPassFilter = this.props.filterTagId > 1
-                                            ? parseInt(this.props.filterTagId) === task.attributes["tag-id"]
+                                            ? parseInt(this.props.filterTagId) === task.tag._id
                                             : true;
 
                                         const hasPassSearch = this.props.filterSearchTerm !== ""
-                                            ? task.attributes.title.toLowerCase().includes(this.props.filterSearchTerm.toLowerCase()) 
-                                                || task.attributes.description.toLowerCase().includes(this.props.filterSearchTerm.toLowerCase())
+                                            ? task.title.toLowerCase().includes(this.props.filterSearchTerm.toLowerCase()) 
+                                                || task.description.toLowerCase().includes(this.props.filterSearchTerm.toLowerCase())
                                             : true;
 
-                                        return parseInt(list.id) === task.attributes["list-id"] && hasPassFilter && hasPassSearch;
+                                        return parseInt(list.id) === task.list_id && hasPassFilter && hasPassSearch;
                                     })}
                                     user={this.props.user}
                                     users={this.props.users}

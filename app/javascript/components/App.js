@@ -21,7 +21,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    
+
   }
 
   onFilter = (event) => {
@@ -99,16 +99,13 @@ class App extends React.Component {
         return response.json();
     })
     .then(result => {
-      const filteredResults = result.map(user => {
-        delete user.password_digest;
-        return user;
-      });
+      console.log("result:");
+      console.log(result);
 
-      console.log("User fetched:");
-      console.log(filteredResults.filter(user => user.name === name)[0]);
+      console.log("filtered result:");
+      console.log(result.filter(user => user.name === name));
 
-
-      this.setState({users: filteredResults, user: filteredResults.filter(user => user.name === name)[0]});
+      this.setState({users: result, user: result.filter(user => user.name === name)[0]});
     })
   }
 
@@ -214,11 +211,6 @@ class App extends React.Component {
 
       this.setState({tasks: result});
     })
-
-    // fetch("/api/tasks").then(async (response) => {
-    //   const { data } = await response.json();
-    //   this.setState({tasks: data}, callback);
-    // });
   }
 
 

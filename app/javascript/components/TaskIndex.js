@@ -72,14 +72,19 @@ class TaskIndex extends React.Component {
   };
 
   handleSubmit = (newTitle, newDescription) => {
+    let bearer = "Bearer " + localStorage.getItem("jwt");
+    console.log(bearer);
+
     const addTask = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
       const response = await fetch("/api/tasks", {
         method: "POST",
+        withCredentials: true,
         credentials: "include",
         headers: {
-          "Content-Type": "application/vnd.api+json",
+          "Authorization": bearer,
+          "Content-Type": "application/json",
           "X-CSRF-Token": csrfToken
         },
         body: JSON.stringify({data: {
@@ -105,14 +110,19 @@ class TaskIndex extends React.Component {
   };
 
   handleConfirm = (modifiedTitle, modifiedDescription) => event => {
+    let bearer = "Bearer " + localStorage.getItem("jwt");
+    console.log(bearer);
+
     const saveTask = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
       const response = await fetch("/api/tasks/" + this.state.selectedTask.id, {
         method: "PATCH",
+        withCredentials: true,
         credentials: "include",
         headers: {
-          "Content-Type": "application/vnd.api+json",
+          "Authorization": bearer,
+          "Content-Type": "application/json",
           "X-CSRF-Token": csrfToken
         },
         body: JSON.stringify({data: {
@@ -122,8 +132,8 @@ class TaskIndex extends React.Component {
             "list-id": this.props.list_id,
             title: modifiedTitle,
             description: modifiedDescription,
-            "tag-id": this.state.selectedTask.attributes["tag-id"],
-            "due-date": this.state.selectedTask.attributes["due-date"],
+            "tag-id": this.state.selectedTask.tag_id,
+            "due-date": this.state.selectedTask.due_date,
             participants: this.state.participants
           }
         }})
@@ -143,15 +153,21 @@ class TaskIndex extends React.Component {
   };
 
   handleDelete = task => {
+    let bearer = "Bearer " + localStorage.getItem("jwt");
+    console.log(bearer);
+
     const deleteTask = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
       const response = await fetch("/api/tasks/" + task.id, {
-          method: "DELETE",
-          credentials: "include",
-          headers: {
-              "X-CSRF-Token": csrfToken
-          }
+        method: "DELETE",
+        withCredentials: true,
+        credentials: "include",
+        headers: {
+          "Authorization": bearer,
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken
+        }
       });
 
       if (response.status === 204) {
@@ -171,14 +187,19 @@ class TaskIndex extends React.Component {
     } else {
       console.log("Demoting to list " + (this.props.list_id - 1));
 
+      let bearer = "Bearer " + localStorage.getItem("jwt");
+      console.log(bearer);
+
       const demoteTask = async() => {
         const csrfToken = document.querySelector("meta[name=csrf-token").content;
   
         const response = await fetch("/api/tasks/" + task.id, {
           method: "PATCH",
+          withCredentials: true,
           credentials: "include",
           headers: {
-            "Content-Type": "application/vnd.api+json",
+            "Authorization": bearer,
+            "Content-Type": "application/json",
             "X-CSRF-Token": csrfToken
           },
           body: JSON.stringify({data: {
@@ -186,11 +207,11 @@ class TaskIndex extends React.Component {
             type: "tasks",
             attributes: {
               "list-id": this.props.list_id - 1,
-              title: task.attributes.title,
-              description: task.attributes.description,
-              "due-date": task.attributes["due-date"],
-              "tag-id": task.attributes["tag-id"],
-              participants: task.attributes.participants
+              title: task.title,
+              description: task.description,
+              "due-date": task.due_date,
+              "tag-id": task.tag_id,
+              participants: task.participants
             }
           }})
         });
@@ -215,14 +236,19 @@ class TaskIndex extends React.Component {
     } else {
       console.log("Promoting to list " + (this.props.list_id + 1));
 
+      let bearer = "Bearer " + localStorage.getItem("jwt");
+      console.log(bearer);
+
       const promoteTask = async() => {
         const csrfToken = document.querySelector("meta[name=csrf-token").content;
   
         const response = await fetch("/api/tasks/" + task.id, {
           method: "PATCH",
+          withCredentials: true,
           credentials: "include",
           headers: {
-            "Content-Type": "application/vnd.api+json",
+            "Authorization": bearer,
+            "Content-Type": "application/json",
             "X-CSRF-Token": csrfToken
           },
           body: JSON.stringify({data: {
@@ -230,11 +256,11 @@ class TaskIndex extends React.Component {
             type: "tasks",
             attributes: {
               "list-id": this.props.list_id + 1,
-              title: task.attributes.title,
-              description: task.attributes.description,
-              "due-date": task.attributes["due-date"],
-              "tag-id": task.attributes["tag-id"],
-              participants: task.attributes.participants
+              title: task.title,
+              description: task.description,
+              "due-date": task.due_date,
+              "tag-id": task.tag_id,
+              participants: task.participants
             }
           }})
         });
@@ -261,15 +287,19 @@ class TaskIndex extends React.Component {
   };
 
   handleSubmitTag = () => {
+    let bearer = "Bearer " + localStorage.getItem("jwt");
+    console.log(bearer);
+
     const addTag = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
       const response = await fetch("/api/tags", {
         method: "POST",
+        withCredentials: true,
         credentials: "include",
         headers: {
-          "Content-Type": "application/vnd.api+json",
-          "X-CSRF-Token": csrfToken
+          "Authorization": bearer,
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({data: {
           type: "tags",
@@ -321,14 +351,14 @@ class TaskIndex extends React.Component {
                   <ListItem alignItems="flex-start" button={true} divider={true} onClick={() => this.onClickTask(task)}>
                     <ListItemText
                       style={{textAlign:"justify"}}
-                      primary={task.attributes.title}
+                      primary={task.title}
                       secondary={
                         <React.Fragment>
                           <Typography component={"span"} align="left" variant="subtitle2" className={this.state.classes.inline} color="textPrimary">
-                            {this.props.tags.length > 0 ? this.props.tags[task.attributes["tag-id"] - 1].attributes.name : "Tags not loaded"}
+                            {this.props.tags.length > 0 ? this.props.tags[task.tag_id - 1].name : "Tags not loaded"}
                           </Typography>
                           <Typography component={"span"} style={{whiteSpace:"pre-line"}}>
-                            {"\n" + task.attributes.description}
+                            {"\n" + task.description}
                           </Typography>
                         </React.Fragment>
                       }
@@ -336,7 +366,7 @@ class TaskIndex extends React.Component {
   
                     <ListItemSecondaryAction classes={{ root: classes.dueDate }}>
                       <Typography align="right" variant="subtitle1" className={this.state.classes.inline} color="textPrimary">
-                        {"By: " + new Date(task.attributes["due-date"]).toUTCString()}
+                        {"By: " + new Date(task.due_date).toUTCString()}
                       </Typography>
                     </ListItemSecondaryAction>
   

@@ -32,9 +32,34 @@ class CommentSection extends React.Component {
     }
 
     fetchComments = () => {
-        fetch("/api/comments").then(async (response) => {
-            const { data } = await response.json();
-            this.setState({comments: data.filter(comment => {return comment.attributes["task-id"] === parseInt(this.props.task_id);})})
+        let bearer = "Bearer " + localStorage.getItem("jwt");
+        console.log(bearer);
+        
+        fetch("/api/comments", {
+          method: "GET",
+          withCredentials: true,
+          credentials: "include",
+          headers: {
+            "Authorization": bearer,
+            "Content-Type": "application/json"
+          }
+        })
+        .then(async(response) => {
+          console.log("Comments response:");
+          console.log(response);
+        
+          return response.json();
+        })
+        .then(result => {
+          console.log("Comments result:");
+          console.log(result);
+
+          const filteredResult =  result.filter(comment => {return comment.task_id === parseInt(this.props.task_id);});
+        
+          console.log("Filtered comments result:");
+          console.log(filteredResult);
+
+          this.setState({comments: filteredResult});
         })
     }
 
@@ -43,28 +68,44 @@ class CommentSection extends React.Component {
     }
 
     handleAdd = () => {
+        let bearer = "Bearer " + localStorage.getItem("jwt");
+        console.log(bearer);
+
+        console.log("user.id:");
+        console.log(this.props.user.id);
+
         const addComment = async() => {
             const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
             const response = await fetch("/api/comments", {
                 method: "POST",
-                credential: "include",
+                withCredentials: true,
+                credentials: "include",
                 headers: {
-                    "Content-Type": "application/vnd.api+json",
+                    "Authorization": bearer,
+                    "Content-Type": "application/json",
                     "X-CSRF-Token": csrfToken
                 },
-                body: JSON.stringify({data: {
-                    type: "comments",
-                    attributes: {
-                        "user-id": this.props.user.id,
-                        "task-id": this.props.task_id,
-                        body: this.state.newComment,
-                        "updated-at": new Date(Date.now()).toUTCString()
-                    }
+                // body: JSON.stringify({data: {
+                //     type: "comments",
+                //     attributes: {
+                //         "user-id": this.props.user.id,
+                //         "task-id": this.props.task_id,
+                //         body: this.state.newComment,
+                //         "updated-at": new Date(Date.now()).toUTCString()
+                //     }
+                body: JSON.stringify({comment: {
+                    "user_id": this.props.user.id,
+                    "task_id": this.props.task_id,
+                    "body": this.state.newComment
                 }})
             });
 
+            console.log("response:");
+            console.log(response);
+
             if(response.status === 201) {
+                console.log("POST comment success");
                 this.setState({newComment: ""});
                 this.fetchComments();
             }
@@ -74,7 +115,7 @@ class CommentSection extends React.Component {
     }
 
     handleEdit = comment => {
-        this.setState({editingCommentID: comment.id, editedComment: comment.attributes.body});
+        this.setState({editingCommentID: comment.id, editedComment: comment.body});
     }
 
     handleSave = () => {
@@ -152,12 +193,12 @@ class CommentSection extends React.Component {
                                     style={{textAlign:"justify"}}
                                     primary={
                                         <div className="userDate">
-                                            <UserInfo user={this.props.users[comment.attributes["user-id"] - 1]} textVariant="h6"/>
-                                            <Typography> {new Date(comment.attributes["updated-at"]).toUTCString()} </Typography>
+                                            <UserInfo user={this.props.users[comment.user_id - 1]} textVariant="h6"/>
+                                            <Typography> {new Date(comment.updated_at).toUTCString()} </Typography>
                                         </div>
                                     }
                                     secondary={
-                                        this.state.editingCommentID !== comment.id ? comment.attributes.body : null
+                                        this.state.editingCommentID !== comment.id ? comment.body : null
                                 } />
 
                                 {
@@ -177,7 +218,7 @@ class CommentSection extends React.Component {
                                 }
 
                                 {
-                                    parseInt(this.props.user.id) === comment.attributes["user-id"] && this.state.editingCommentID === -1
+                                    parseInt(this.props.user.id) === comment.user_id && this.state.editingCommentID === -1
                                         ? <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
                                               <IconButton size="small" color="primary" onClick={() => this.handleEdit(comment)}>
                                                   <CreateIcon />

@@ -91,18 +91,18 @@ class TaskPopup extends React.Component {
                 <DialogTitle id="titleDate">
                     <div id="titleDateBox">
                         <div id="title">
-                            {this.props.selectedTask.attributes.title}
+                            {this.props.selectedTask.title}
                         </div>
 
                         <div id="date">
-                            {"Due by: " + new Date(this.props.selectedTask.attributes["due-date"]).toUTCString()}
+                            {"Due by: " + new Date(this.props.selectedTask.due_date).toUTCString()}
                         </div>
                     </div>
                 </DialogTitle>
 
                 <DialogContent>
                     <DialogContentText id="description">
-                        {this.props.selectedTask.attributes.description}
+                        {this.props.selectedTask.description}
                     </DialogContentText>
 
                     <div id="comments_tags_participants">
@@ -112,7 +112,7 @@ class TaskPopup extends React.Component {
 
                         <div id="tags_participants">
                             <div id="tags">
-                                <TagSelect tags={this.props.tags} tag_id={this.props.selectedTask.attributes["tag-id"]} onChange={this.handleTagChange} />                    
+                                <TagSelect tags={this.props.tags} tag_id={this.props.selectedTask.tag_id} onChange={this.handleTagChange} />                    
                             </div>
                             <div id="participants">
                                 <ParticipantList task={this.props.selectedTask} users={this.props.users} onAdd={this.addParticipant} onDelete={this.deleteParticipant}/>

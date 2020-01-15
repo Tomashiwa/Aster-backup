@@ -23,7 +23,7 @@ class Api::TagsController < ApiController
         @tag = Tag.new(tag_params)
 
         if @tag.save
-            render json: @tag, status: :create, location: @tag
+            render json: @tag, status: :created
         else
             render json: @tag.errors, status: :unprocessable_entity
         end

@@ -23,7 +23,7 @@ class Api::BoardsController < ApiController
         @board = Board.new(board_params)
 
         if @board.save
-            render json: @board, status: :create, location: @board
+            render json: @board, status: :created
         else
             render json: @board.errors, status: :unprocessable_entity
         end

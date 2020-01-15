@@ -22,7 +22,7 @@ class ParticipantList extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({participants: this.props.task.attributes.participants});
+        this.setState({participants: this.props.task.participants});
     }
 
     handleClick = () => {
@@ -40,7 +40,7 @@ class ParticipantList extends React.Component {
     }
 
     refreshParticipants = () => {
-        this.setState({participants: this.props.task.attributes.participants});
+        this.setState({participants: this.props.task.participants});
     }
     
     handleAdd = () => {

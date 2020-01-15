@@ -4,10 +4,8 @@ class Api::CommentsController < ApiController
 
     #GET /comments
     def index
-        if current_user.admin?
-            @comments = Comment.all
-            render json: @comments
-        end
+        @comments = Comment.all
+        render json: @comments 
     end
 
     #GET /comments/#
@@ -20,7 +18,7 @@ class Api::CommentsController < ApiController
         @comment = Comment.new(comment_params)
 
         if @comment.save
-            render json: @comment, status: :create, location: @comment
+            render json: @comment, status: :created
         else
             render json: @comment.errors, status: :unprocessable_entity
         end
