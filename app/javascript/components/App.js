@@ -37,9 +37,6 @@ class App extends React.Component {
     const password = document.getElementById("field_password").value;
     const request = {"auth": {"name": name, "password": password}};
 
-    console.log("request:");
-    console.log(request);
-
     const attemptLogin = async() => {
       const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     
@@ -58,39 +55,10 @@ class App extends React.Component {
       .then(result => {
         if(result !== null) {
             localStorage.setItem("jwt", result.jwt);
-            fetchUsers();
+            this.fetchUsers(name);
+            this.fetchBoards();
             console.log("Logged in successfully");
         }
-      })
-    }
-
-    const fetchUsers = async() => {
-      let bearer = "Bearer " + localStorage.getItem("jwt");
-
-      console.log(bearer);
-
-      fetch("/api/users", {
-        method: "GET",
-        withCredentials: true,
-        credentials: "include",
-        headers: {
-          "Authorization": bearer,
-          "Content-Type": "application/json"
-        }
-      })
-      .then(async(response) => {
-          console.log("Users fetch response:");
-          console.log(response);
-
-          return response.json();
-      })
-      .then(result => {
-        const filteredResults = result.map(user => {
-          delete user.password_digest;
-          return user;
-        });
-
-        this.setState({users: filteredResults, user: filteredResults.filter(user => user.name === name)[0]});
       })
     }
 
@@ -107,11 +75,70 @@ class App extends React.Component {
     console.log("Register");
   }
 
+  fetchUsers = (name) => {
+    let bearer = "Bearer " + localStorage.getItem("jwt");
+
+    console.log(bearer);
+
+    fetch("/api/users", {
+      method: "GET",
+      withCredentials: true,
+      credentials: "include",
+      headers: {
+        "Authorization": bearer,
+        "Content-Type": "application/json"
+      }
+    })
+    .then(async(response) => {
+        console.log("Users fetch response:");
+        console.log(response);
+
+        return response.json();
+    })
+    .then(result => {
+      const filteredResults = result.map(user => {
+        delete user.password_digest;
+        return user;
+      });
+
+      console.log("User fetched:");
+      console.log(filteredResults.filter(user => user.name === name)[0]);
+
+
+      this.setState({users: filteredResults, user: filteredResults.filter(user => user.name === name)[0]});
+    })
+  }
+
   fetchBoards = () => {
-    // fetch("/api/boards").then(async (response) => {
-    //   const { data } = await response.json();
-    //   this.setState({ boards: data });
-    // })
+    let bearer = "Bearer " + localStorage.getItem("jwt");
+
+    console.log(bearer);
+
+    fetch("/api/boards", {
+      method: "GET",
+      withCredentials: true,
+      credentials: "include",
+      headers: {
+        "Authorization": bearer,
+        "Content-Type": "application/json"
+      }
+    })
+    .then(async(response) => {
+        console.log("Board fetch response:");
+        console.log(response);
+
+        return response.json();
+    })
+    .then(result => {
+      // const filteredResults = result.filter(board => board.user_id === this.state.user.id);
+      console.log("result:");
+      console.log(result);
+      // console.log("filteredResults:");
+      // console.log(filteredResults);
+
+      this.setState({boards: result});
+      // this.setState({boards: filteredResults});
+    })
   }
 
   fetchLists = () => {

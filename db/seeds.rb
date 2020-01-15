@@ -1,5 +1,6 @@
 User.create!(name: "superuser", password: "superpass", password_confirmation: "superpass", admin: true)
 User.create!(name: "user", password: "pass", password_confirmation: "pass", admin: false)
+# User.create!(name: "dummy", password: "pass", password_confirmation: "pass", admin: false)
 # User.create!(name:"Matsuoka Tamotsu", password: "123");
 # User.create!(name:"Noguchi Cho", password: "456");
 # User.create!(name:"Nakamoto Kyoko", password: "789");
@@ -8,6 +9,8 @@ User.create!(name: "user", password: "pass", password_confirmation: "pass", admi
 # User.create!(name:"Nii Shigeru", password: "678");
 
 Board.create!(user_id: 1, name: "default");
+Board.create!(user_id: 2, name: "placeholder");
+# Board.create!(user_id: 3, name: "placeholder 2");
 
 List.create!(board_id: 1, name: "Backlog");
 List.create!(board_id: 1, name: "To-do");
