@@ -16,6 +16,8 @@ List.create!(board_id: 1, name: "Backlog");
 List.create!(board_id: 1, name: "To-do");
 List.create!(board_id: 1, name: "In progress");
 List.create!(board_id: 1, name: "Completed");
+List.create!(board_id: 2, name: "PLACEHOLDER 1");
+List.create!(board_id: 2, name: "PLACEHOLDER 2");
 
 Tag.create!(name: "NIL")
 Tag.create!(name: "Red")

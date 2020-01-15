@@ -6,8 +6,12 @@ class Api::ListsController < ApiController
     def index
         if current_user.admin?
             @lists = List.all
-            render json: @lists
+        else
+            @board = Board.where(:user_id => current_user.id).first
+            @lists = List.where(:board_id => @board.id)
         end
+        
+        render json: @lists
     end
 
     #GET /lists/#

@@ -57,6 +57,7 @@ class App extends React.Component {
             localStorage.setItem("jwt", result.jwt);
             this.fetchUsers(name);
             this.fetchBoards();
+            this.fetchLists();
             console.log("Logged in successfully");
         }
       })
@@ -111,7 +112,7 @@ class App extends React.Component {
 
   fetchBoards = () => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
-    
+
     fetch("/api/boards", {
       method: "GET",
       withCredentials: true,
@@ -125,7 +126,7 @@ class App extends React.Component {
         return response.json();
     })
     .then(result => {
-      console.log("result:");
+      console.log("board result:");
       console.log(result);
 
       this.setState({boards: result});
@@ -133,6 +134,31 @@ class App extends React.Component {
   }
 
   fetchLists = () => {
+    let bearer = "Bearer " + localStorage.getItem("jwt");
+    console.log(bearer);
+
+    fetch("/api/lists", {
+      method: "GET",
+      withCredentials: true,
+      credentials: "include",
+      headers: {
+        "Authorization": bearer,
+        "Content-Type": "application/json"
+      }
+    })
+    .then(async(response) => {
+      console.log("lists response:");
+      console.log(response);
+      
+      return response.json();
+    })
+    .then(result => {
+      console.log("list result:");
+      console.log(result);
+
+      this.setState({lists: result});
+    })
+    
     // fetch("/api/lists").then(async (response) => {
     //   const { data } = await response.json();
     //   this.setState({ lists: data });

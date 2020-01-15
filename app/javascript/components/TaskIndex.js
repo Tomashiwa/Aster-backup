@@ -52,10 +52,10 @@ class TaskIndex extends React.Component {
   }
 
   componentDidMount() {
-    fetch("/api/lists").then(async (response) => {
-      const { data } = await response.json();
-      this.setState({listName: data[this.props.list_id - 1].attributes.name});
-    });
+    // fetch("/api/lists").then(async (response) => {
+    //   const { data } = await response.json();
+    //   this.setState({listName: data[this.props.list_id - 1].attributes.name});
+    // });
   }
 
   handleAdd = () => {
