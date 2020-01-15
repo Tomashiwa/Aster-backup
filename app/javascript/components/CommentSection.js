@@ -51,12 +51,12 @@ class CommentSection extends React.Component {
           return response.json();
         })
         .then(result => {
-          console.log("Comments result:");
-          console.log(result);
+          let filteredResult =  result.filter(comment => {return comment.task_id === parseInt(this.props.task_id);});
+          console.log("Presort comments result:");
+          console.log(filteredResult);
 
-          const filteredResult =  result.filter(comment => {return comment.task_id === parseInt(this.props.task_id);});
-        
-          console.log("Filtered comments result:");
+          filteredResult = filteredResult.sort((first, second) => first.id > second.id);
+          console.log("Postsort comments result:");
           console.log(filteredResult);
 
           this.setState({comments: filteredResult});
@@ -69,10 +69,6 @@ class CommentSection extends React.Component {
 
     handleAdd = () => {
         let bearer = "Bearer " + localStorage.getItem("jwt");
-        console.log(bearer);
-
-        console.log("user.id:");
-        console.log(this.props.user.id);
 
         const addComment = async() => {
             const csrfToken = document.querySelector("meta[name=csrf-token").content;
@@ -86,14 +82,6 @@ class CommentSection extends React.Component {
                     "Content-Type": "application/json",
                     "X-CSRF-Token": csrfToken
                 },
-                // body: JSON.stringify({data: {
-                //     type: "comments",
-                //     attributes: {
-                //         "user-id": this.props.user.id,
-                //         "task-id": this.props.task_id,
-                //         body: this.state.newComment,
-                //         "updated-at": new Date(Date.now()).toUTCString()
-                //     }
                 body: JSON.stringify({comment: {
                     "user_id": this.props.user.id,
                     "task_id": this.props.task_id,
@@ -101,11 +89,7 @@ class CommentSection extends React.Component {
                 }})
             });
 
-            console.log("response:");
-            console.log(response);
-
             if(response.status === 201) {
-                console.log("POST comment success");
                 this.setState({newComment: ""});
                 this.fetchComments();
             }
@@ -119,27 +103,39 @@ class CommentSection extends React.Component {
     }
 
     handleSave = () => {
+        let bearer = "Bearer " + localStorage.getItem("jwt");
+
         const saveComment = async() => {
             const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
             const response = await fetch("/api/comments/" + this.state.editingCommentID, {
                 method: "PATCH",
+                withCredentials: true,
                 credentials: "include",
                 headers: {
-                    "Content-Type": "application/vnd.api+json",
+                    "Authorization": bearer,
+                    "Content-Type": "application/json",
                     "X-CSRF-Token": csrfToken
                 },
-                body: JSON.stringify({data:{
-                    id: this.state.editingCommentID,
-                    type: "comments",
-                    attributes: {
-                        "user-id": this.props.user.id,
-                        "task-id": this.props.task_id,
-                        body: this.state.editedComment,
-                        "updated-at": new Date(Date.now()).toUTCString()
-                    }
+                body: JSON.stringify({comment: {
+                    "user_id": this.props.user.id,
+                    "task_id": this.props.task_id,
+                    "body": this.state.editedComment
                 }})
+                // body: JSON.stringify({data:{
+                //     id: this.state.editingCommentID,
+                //     type: "comments",
+                //     attributes: {
+                //         "user-id": this.props.user.id,
+                //         "task-id": this.props.task_id,
+                //         body: this.state.editedComment,
+                //         "updated-at": new Date(Date.now()).toUTCString()
+                //     }
+                // }})
             })
+
+            console.log("SAVE Comment response:");
+            console.log(response);
 
             if(response.status === 200) {
                 this.setState({editingCommentID: -1, editedComment: ""});
@@ -155,16 +151,24 @@ class CommentSection extends React.Component {
     }
 
     handleDelete = comment => {
+        let bearer = "Bearer " + localStorage.getItem("jwt");
+
         const deleteComment = async() => {
-            const csrfToken = document.querySelector("meta[name=csrf-token").textContent;
+            // const csrfToken = document.querySelector("meta[name=csrf-token").textContent;
 
             const response = await fetch("/api/comments/" + comment.id, {
                 method: "DELETE",
+                withCredentials: true,
                 credentials: "include",
                 headers: {
-                    "X-CSRF-Token": csrfToken
-                }
+                    "Authorization": bearer,
+                    "Content-Type": "application/json",
+                    // "X-CSRF-Token": csrfToken
+                },
             });
+
+            console.log("DELETE comment response:");
+            console.log(response);
 
             if(response.status === 204) {
                 this.fetchComments();
