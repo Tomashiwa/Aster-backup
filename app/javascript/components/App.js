@@ -111,9 +111,7 @@ class App extends React.Component {
 
   fetchBoards = () => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
-
-    console.log(bearer);
-
+    
     fetch("/api/boards", {
       method: "GET",
       withCredentials: true,
@@ -124,20 +122,13 @@ class App extends React.Component {
       }
     })
     .then(async(response) => {
-        console.log("Board fetch response:");
-        console.log(response);
-
         return response.json();
     })
     .then(result => {
-      // const filteredResults = result.filter(board => board.user_id === this.state.user.id);
       console.log("result:");
       console.log(result);
-      // console.log("filteredResults:");
-      // console.log(filteredResults);
 
       this.setState({boards: result});
-      // this.setState({boards: filteredResults});
     })
   }
 

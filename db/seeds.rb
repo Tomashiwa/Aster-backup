@@ -8,8 +8,8 @@ User.create!(name: "user", password: "pass", password_confirmation: "pass", admi
 # User.create!(name:"Kaya Yoshiyuki", password: "345");
 # User.create!(name:"Nii Shigeru", password: "678");
 
-Board.create!(user_id: 1, name: "default");
-Board.create!(user_id: 2, name: "placeholder");
+Board.create!(user_id: 2, name: "default");
+Board.create!(user_id: 1, name: "placeholder");
 # Board.create!(user_id: 3, name: "placeholder 2");
 
 List.create!(board_id: 1, name: "Backlog");
