@@ -44,14 +44,6 @@ class RegisterLoginPopup extends React.Component {
                     }
                 </DialogContent>
             </Dialog>
-
-            // <div>
-            //     {
-            //         this.props.isOpened
-            //             ? "REGISTER OR LOGIN"
-            //             : ""
-            //     }
-            // </div>
         );
     }
 }

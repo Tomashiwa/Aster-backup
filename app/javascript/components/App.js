@@ -14,33 +14,14 @@ class App extends React.Component {
       tasks: [],
       tags: [],
       user: null,
-      // userId: 1,
       boardId: 1,
       filterTagId: "",
-      filterSearchTerm: "",
-      isRegistering: false
+      filterSearchTerm: ""
     };
   }
 
   componentDidMount() {
-    // this.fetchUsers();
-
-    // fetch("/api/boards").then(async (response) => {
-    //   const { data } = await response.json();
-    //   this.setState({ boards: data });
-    // })
-
-    // fetch("/api/lists").then(async (response) => {
-    //   const { data } = await response.json();
-    //   this.setState({ lists: data });
-    // })
-
-    // this.fetchTasks();
-
-    // fetch("/api/tags").then(async (response) => {
-    //   const { data } = await response.json();
-    //   this.setState({tags: data, filterTagId: data[0].id});
-    // });
+    
   }
 
   onFilter = (event) => {
@@ -110,13 +91,6 @@ class App extends React.Component {
         });
 
         this.setState({users: filteredResults, user: filteredResults.filter(user => user.name === name)[0]});
-        
-        // console.log("users:");
-        // console.log(filteredResults);
-        // console.log("selectedName:");
-        // console.log(name);
-        // console.log("selectedUser:");
-        // console.log(filteredResults.filter(user => user.name === name)[0]);
       })
     }
 
@@ -133,11 +107,18 @@ class App extends React.Component {
     console.log("Register");
   }
 
-  fetchUsers = () => {
-    fetch("/api/users").then(async (response) => {
-      const { data } = await response.json();
-      this.setState({ users: data });
-    })
+  fetchBoards = () => {
+    // fetch("/api/boards").then(async (response) => {
+    //   const { data } = await response.json();
+    //   this.setState({ boards: data });
+    // })
+  }
+
+  fetchLists = () => {
+    // fetch("/api/lists").then(async (response) => {
+    //   const { data } = await response.json();
+    //   this.setState({ lists: data });
+    // })
   }
 
   fetchTasks = callback => {
