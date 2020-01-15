@@ -6,8 +6,13 @@ class Api::TasksController < ApiController
     def index
         if current_user.admin?
             @tasks = Task.all
-            render json: @tasks
+        else
+            @board = Board.where(:user_id => current_user.id).first
+            @lists = List.where(:board_id => @board.id)
+            @tasks = Task.where(:list_id => @lists.ids)
         end
+
+        render json: @tasks
     end
 
     #GET /tasks/#

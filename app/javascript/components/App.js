@@ -59,6 +59,7 @@ class App extends React.Component {
             this.fetchBoards();
             this.fetchLists();
             this.fetchTags();
+            this.fetchTasks();
             console.log("Logged in successfully");
         }
       })
@@ -186,18 +187,38 @@ class App extends React.Component {
 
       this.setState({tags: result});
     })
-
-    // fetch("/api/tags").then(async (response) => {
-    //   const { data } = await response.json();
-    //   this.setState({tags: data});
-    // });
   }
   
-  fetchTasks = callback => {
-    fetch("/api/tasks").then(async (response) => {
-      const { data } = await response.json();
-      this.setState({tasks: data}, callback);
-    });
+  fetchTasks = () => {//callback => {
+    let bearer = "Bearer " + localStorage.getItem("jwt");
+    console.log(bearer);
+
+    fetch("/api/tasks", {
+      method: "GET",
+      withCredentials: true,
+      credentials: "include",
+      headers: {
+        "Authorization": bearer,
+        "Content-Type": "application/json"
+      }
+    })
+    .then(async(response) => {
+      console.log("tasks response:");
+      console.log(response);
+
+      return response.json();
+    })
+    .then(result => {
+      console.log("tasks result:");
+      console.log(result);
+
+      this.setState({tasks: result});
+    })
+
+    // fetch("/api/tasks").then(async (response) => {
+    //   const { data } = await response.json();
+    //   this.setState({tasks: data}, callback);
+    // });
   }
 
 
