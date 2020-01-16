@@ -39,10 +39,10 @@ class App extends React.Component {
     this.setState({filterSearchTerm: searchTerm});
   }
 
-  onLogin = () => {
-    const name = document.getElementById("field_name").value;
-    const password = document.getElementById("field_password").value;
-    const request = {"auth": {"name": name, "password": password}};
+  onLogin = (givenName, givenPassword) => {
+    const request = {"auth": {"name": givenName, "password": givenPassword}};
+    console.log("Login request:");
+    console.log(request);
 
     const attemptLogin = async() => {
       const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -57,13 +57,19 @@ class App extends React.Component {
         body: JSON.stringify(request)
       })
       .then(response => {
+        console.log("login response:");
+        console.log(response);
+        
         return response.status === 201 ? response.json() : null;
       })
       .then(result => {
+        console.log("login result:");
+        console.log(result);
+
         if(result !== null) {
-          localStorage.setItem("name", name);
+          localStorage.setItem("name", givenName);
           localStorage.setItem("jwt", result.jwt);
-          this.fetchUsers(name);
+          this.fetchUsers(givenName);
           this.fetchBoards();
           this.fetchLists();
           this.fetchTags();
@@ -85,6 +91,30 @@ class App extends React.Component {
 
   onRegister = () => {
     console.log("Register");
+
+    fetch("/api/users", {
+      method: "POST",
+      withCredentials: true,
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({user: {
+        "name": document.getElementById("field_name").value,
+        "password": document.getElementById("field_password").value,
+        "password_confirmation": document.getElementById("field_password").value,
+        "admin": false
+      }})
+    })
+    .then(async(response) => {
+      return response.json();
+    })
+    .then(result => {
+      console.log("result:");
+      console.log(result);
+      console.log("Registered successfully");
+      this.onLogin(document.getElementById("field_name").value, document.getElementById("field_password").value);
+    })
   }
 
   fetchUsers = (name) => {
@@ -167,7 +197,7 @@ class App extends React.Component {
     })
   }
   
-  fetchTasks = callback => {//() => {
+  fetchTasks = callback => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
     console.log(bearer);
 
@@ -215,7 +245,7 @@ class App extends React.Component {
 
             <RegisterLoginPopup 
               isOpened={localStorage.getItem("jwt") === null}
-              onRegister={this.onLogout}
+              onRegister={this.onRegister}
               onLogin={this.onLogin}               
             />
           </div>

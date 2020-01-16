@@ -38,8 +38,14 @@ class RegisterLoginPopup extends React.Component {
                                 <Button variant="outlined" onClick={() => this.setState({isRegistering: false})}>Cancel</Button>                                    
                             </div>
                             : <div className="buttonArea">
-                                <Button variant="outlined" onClick={this.props.onLogin}>Login</Button>
-                                <Button variant="outlined" onClick={() => this.setState({isRegistering: true})}>Register</Button>                                    
+                                <Button variant="outlined" onClick={() => this.props.onLogin(
+                                    document.getElementById("field_name").value, 
+                                    document.getElementById("field_password").value)}>
+                                    Login
+                                </Button>
+                                <Button variant="outlined" onClick={() => this.setState({isRegistering: true})}>
+                                    Register
+                                </Button>                                    
                             </div>
                     }
                 </DialogContent>

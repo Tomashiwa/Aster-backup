@@ -5,7 +5,6 @@ class Api::CommentsController < ApiController
     #GET /comments
     def index
         @comments = Comment.order("created_at").all
-        # @comments = Comment.all
         render json: @comments 
     end
 

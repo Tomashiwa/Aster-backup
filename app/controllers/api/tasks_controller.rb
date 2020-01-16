@@ -8,8 +8,13 @@ class Api::TasksController < ApiController
             @tasks = Task.all
         else
             @board = Board.where(:user_id => current_user.id).first
-            @lists = List.where(:board_id => @board.id)
-            @tasks = Task.where(:list_id => @lists.ids)
+
+            if(@board != nil) 
+                @lists = List.where(:board_id => @board.id)
+                @tasks = Task.where(:list_id => @lists.ids)
+            else
+                @tasks = []
+            end
         end
 
         render json: @tasks

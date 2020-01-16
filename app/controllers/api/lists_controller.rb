@@ -8,7 +8,12 @@ class Api::ListsController < ApiController
             @lists = List.all
         else
             @board = Board.where(:user_id => current_user.id).first
-            @lists = List.where(:board_id => @board.id)
+
+            if(@board != nil) 
+                @lists = List.where(:board_id => @board.id)
+            else
+                @lists = []
+            end
         end
         
         render json: @lists
