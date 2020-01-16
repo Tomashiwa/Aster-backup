@@ -15,7 +15,7 @@ class App extends React.Component {
       tags: [],
       user: null,
       boardId: 1,
-      filterTagId: "",
+      filterTagId: 1,
       filterSearchTerm: ""
     };
   }
@@ -89,7 +89,6 @@ class App extends React.Component {
 
   fetchUsers = (name) => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
-    // console.log(bearer);
 
     fetch("/api/users", {
       method: "GET",
@@ -101,15 +100,9 @@ class App extends React.Component {
       }
     })
     .then(async(response) => {
-        // console.log("Users fetch response:");
-        // console.log(response);
         return response.json();
     })
     .then(result => {
-      // console.log("result:");
-      // console.log(result);
-      // console.log("filtered result:");
-      // console.log(result.filter(user => user.name === name));
       this.setState({users: result, user: result.filter(user => user.name === name)[0]});
     })
   }
@@ -130,15 +123,12 @@ class App extends React.Component {
         return response.json();
     })
     .then(result => {
-      // console.log("board result:");
-      // console.log(result);
       this.setState({boards: result});
     })
   }
 
   fetchLists = () => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
-    // console.log(bearer);
 
     fetch("/api/lists", {
       method: "GET",
@@ -150,20 +140,15 @@ class App extends React.Component {
       }
     })
     .then(async(response) => {
-      // console.log("lists response:");
-      // console.log(response);
       return response.json();
     })
     .then(result => {
-      // console.log("list result:");
-      // console.log(result);
       this.setState({lists: result});
     })
   }
 
   fetchTags = () => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
-    // console.log(bearer);
 
     fetch("/api/tags", {
       method: "GET",
@@ -175,13 +160,9 @@ class App extends React.Component {
       }
     })
     .then(async(response) => {
-      // console.log("tags response:");
-      // console.log(response);
       return response.json();
     })
     .then(result => {
-      // console.log("tags result:");
-      // console.log(result);
       this.setState({tags: result});
     })
   }
@@ -200,13 +181,9 @@ class App extends React.Component {
       }
     })
     .then(async(response) => {
-      // console.log("tasks response:");
-      // console.log(response);
       return response.json();
     })
     .then(result => {
-      // console.log("tasks result:");
-      // console.log(result);
       this.setState({tasks: result}, callback);
     })
   }
@@ -237,8 +214,8 @@ class App extends React.Component {
               fetchTasks={this.fetchTasks} />
 
             <RegisterLoginPopup 
-              isOpened={localStorage.getItem("jwt") === null}//this.state.user === null}
-              onRegister={this.onLogout/*onRegister*/}
+              isOpened={localStorage.getItem("jwt") === null}
+              onRegister={this.onLogout}
               onLogin={this.onLogin}               
             />
           </div>
