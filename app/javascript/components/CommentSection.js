@@ -41,7 +41,8 @@ class CommentSection extends React.Component {
           credentials: "include",
           headers: {
             "Authorization": bearer,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector("meta[name=csrf-token").content
           }
         })
         .then(async(response) => {
@@ -154,7 +155,7 @@ class CommentSection extends React.Component {
         let bearer = "Bearer " + localStorage.getItem("jwt");
 
         const deleteComment = async() => {
-            // const csrfToken = document.querySelector("meta[name=csrf-token").textContent;
+            const csrfToken = document.querySelector("meta[name=csrf-token").textContent;
 
             const response = await fetch("/api/comments/" + comment.id, {
                 method: "DELETE",
@@ -163,7 +164,7 @@ class CommentSection extends React.Component {
                 headers: {
                     "Authorization": bearer,
                     "Content-Type": "application/json",
-                    // "X-CSRF-Token": csrfToken
+                    "X-CSRF-Token": csrfToken
                 },
             });
 

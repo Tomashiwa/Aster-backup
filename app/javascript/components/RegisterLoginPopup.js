@@ -26,7 +26,7 @@ class RegisterLoginPopup extends React.Component {
                         {this.state.isRegistering ? "Please fill in your particulars:" : "Kindly login with your particulars:"}
                     </DialogContentText>
 
-                    <TextField required={true} margin="dense" id="field_name" label="Username" fullWidth />
+                    <TextField required={true} autoFocus margin="dense" id="field_name" label="Username" fullWidth />
                     <TextField required={true} margin="dense" type="password" id="field_password" label="Password" fullWidth />                    
                 
                     <br /><br />
