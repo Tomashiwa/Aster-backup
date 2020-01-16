@@ -34,8 +34,10 @@ class Api::TasksController < ApiController
     #PATCH/PUT /tasks/#
     def update
         if @task.update(task_params)
-            render json: @task
+            puts "SUCCESS UPDATE"
+            render json: @task, status: :ok
         else 
+            puts "FAIL UPDATE"
             render json: @task.errors, status: :unprocessable_entity
         end
     end
@@ -51,6 +53,6 @@ class Api::TasksController < ApiController
         end
 
         def task_params
-            params.require(:task).permit(:list_id, :title, :description, :tag_id, :due_date, :participants)
+            params.require(:task).permit(:list_id, :title, :description, :tag_id, :due_date, :participants => [])
         end
 end

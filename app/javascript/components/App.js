@@ -80,8 +80,7 @@ class App extends React.Component {
 
   fetchUsers = (name) => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
-
-    console.log(bearer);
+    // console.log(bearer);
 
     fetch("/api/users", {
       method: "GET",
@@ -93,18 +92,15 @@ class App extends React.Component {
       }
     })
     .then(async(response) => {
-        console.log("Users fetch response:");
-        console.log(response);
-
+        // console.log("Users fetch response:");
+        // console.log(response);
         return response.json();
     })
     .then(result => {
-      console.log("result:");
-      console.log(result);
-
-      console.log("filtered result:");
-      console.log(result.filter(user => user.name === name));
-
+      // console.log("result:");
+      // console.log(result);
+      // console.log("filtered result:");
+      // console.log(result.filter(user => user.name === name));
       this.setState({users: result, user: result.filter(user => user.name === name)[0]});
     })
   }
@@ -125,16 +121,15 @@ class App extends React.Component {
         return response.json();
     })
     .then(result => {
-      console.log("board result:");
-      console.log(result);
-
+      // console.log("board result:");
+      // console.log(result);
       this.setState({boards: result});
     })
   }
 
   fetchLists = () => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
-    console.log(bearer);
+    // console.log(bearer);
 
     fetch("/api/lists", {
       method: "GET",
@@ -146,22 +141,20 @@ class App extends React.Component {
       }
     })
     .then(async(response) => {
-      console.log("lists response:");
-      console.log(response);
-
+      // console.log("lists response:");
+      // console.log(response);
       return response.json();
     })
     .then(result => {
-      console.log("list result:");
-      console.log(result);
-
+      // console.log("list result:");
+      // console.log(result);
       this.setState({lists: result});
     })
   }
 
   fetchTags = () => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
-    console.log(bearer);
+    // console.log(bearer);
 
     fetch("/api/tags", {
       method: "GET",
@@ -173,20 +166,18 @@ class App extends React.Component {
       }
     })
     .then(async(response) => {
-      console.log("tags response:");
-      console.log(response);
-
+      // console.log("tags response:");
+      // console.log(response);
       return response.json();
     })
     .then(result => {
-      console.log("tags result:");
-      console.log(result);
-
+      // console.log("tags result:");
+      // console.log(result);
       this.setState({tags: result});
     })
   }
   
-  fetchTasks = () => {//callback => {
+  fetchTasks = callback => {//() => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
     console.log(bearer);
 
@@ -200,16 +191,14 @@ class App extends React.Component {
       }
     })
     .then(async(response) => {
-      console.log("tasks response:");
-      console.log(response);
-
+      // console.log("tasks response:");
+      // console.log(response);
       return response.json();
     })
     .then(result => {
-      console.log("tasks result:");
-      console.log(result);
-
-      this.setState({tasks: result});
+      // console.log("tasks result:");
+      // console.log(result);
+      this.setState({tasks: result}, callback);
     })
   }
 

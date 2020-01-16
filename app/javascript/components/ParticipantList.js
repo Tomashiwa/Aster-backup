@@ -40,10 +40,17 @@ class ParticipantList extends React.Component {
     }
 
     refreshParticipants = () => {
+        console.log("Refreshing participants with:");
+        console.log(this.props.task.participants);
+
         this.setState({participants: this.props.task.participants});
     }
     
     handleAdd = () => {
+        console.log("Adding participant as button clicked");
+        console.log("New participant ID:");
+        console.log(this.state.newPartiId);
+
         this.props.onAdd(this.state.newPartiId, this.refreshParticipants);
         this.handleClose();
     }
@@ -110,7 +117,7 @@ class ParticipantList extends React.Component {
                                 >
                                     {
                                         this.state.potentialParticipants.map(potentialParticipant =>
-                                            <MenuItem key={potentialParticipant.id} value={potentialParticipant.id}>{potentialParticipant.attributes.name}</MenuItem>
+                                            <MenuItem key={potentialParticipant.id} value={potentialParticipant.id}>{potentialParticipant.name}</MenuItem>
                                         )
                                     }
                                 </Select>

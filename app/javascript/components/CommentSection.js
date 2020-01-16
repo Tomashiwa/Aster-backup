@@ -155,7 +155,7 @@ class CommentSection extends React.Component {
                     "Authorization": bearer,
                     "Content-Type": "application/json",
                     "X-CSRF-Token": csrfToken
-                },
+                }
             });
 
             console.log("DELETE comment response:");
@@ -171,9 +171,6 @@ class CommentSection extends React.Component {
     
     render() {
         const { classes } = this.props;
-
-        console.log("Comment section owner's admin?");
-        console.log(this.props.user);
 
         return (
             <div>

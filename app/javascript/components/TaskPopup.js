@@ -22,30 +22,32 @@ class TaskPopup extends React.Component {
     }
 
     addParticipant = (userId, callback) => {
+        console.log("Adding Participantts via Fetch API")
+        let bearer = "Bearer " + localStorage.getItem("jwt");
+
         const addParti = async() => {
-            const csrfToken = document.querySelector("meta[name=csrf-token").content;
+            const csrfToken = document.querySelector("meta[name=csrf-token]").content;
 
             const response = await fetch("/api/tasks/" + this.props.selectedTask.id, {
                 method: "PATCH",
+                withCredentials: true,
                 credentials: "include",
                 headers: {
-                    "Content-Type": "application/vnd.api+json",
-                    "X-CSRF-Token": csrfToken
+                  "Authorization": bearer,
+                  "Content-Type": "application/json",
+                  "X-CSRF-Token": csrfToken
                 },
-                body: JSON.stringify ({data: {
-                    id: this.props.selectedTask.id,
-                    type: "tasks",
-                    attributes: {
-                        title: this.props.selectedTask.attributes.title,
-                        description: this.props.selectedTask.attributes.description,
-                        "tag-id": this.props.selectedTask.attributes["tag-id"],
-                        "due-date": this.props.selectedTask.attributes["due-date"],
-                        participants: this.props.selectedTask.attributes.participants.concat([userId])
-                    }
+                body: JSON.stringify({task: {
+                    "title": this.props.selectedTask.title,
+                    "description": this.props.selectedTask.description,
+                    "tag_id": this.props.selectedTask.tag_id,
+                    "due_date": this.props.selectedTask.due_date,
+                    "participants": this.props.selectedTask.participants.concat([userId])
                 }})
             });
 
             if(response.status === 200) {
+                console.log("Added participant successfully");
                 this.props.fetchTasks(() => this.props.refreshSelected(this.props.selectedTask, callback));
             }
         }
@@ -54,27 +56,39 @@ class TaskPopup extends React.Component {
     }
 
     deleteParticipant = (userId, callback) => {
+        let bearer = "Bearer " + localStorage.getItem("jwt");
+        console.log(bearer);
+
         const deleteParti = async() => {
             const csrfToken = document.querySelector("meta[name=csrf-token").content;
 
             const response = await fetch("/api/tasks/" + this.props.selectedTask.id, {
                 method: "PATCH",
+                withCredentials: true,
                 credentials: "include",
                 headers: {
-                    "Content-Type": "application/vnd.api+json",
-                    "X-CSRF-Token": csrfToken
+                  "Authorization": bearer,
+                  "Content-Type": "application/json",
+                  "X-CSRF-Token": csrfToken
                 },
-                body: JSON.stringify ({data: {
-                    id: this.props.selectedTask.id,
-                    type: "tasks",
-                    attributes: {
-                        title: this.props.selectedTask.attributes.title,
-                        description: this.props.selectedTask.attributes.description,
-                        "tag-id": this.props.selectedTask.attributes["tag-id"],
-                        "due-date": this.props.selectedTask.attributes["due-date"],
-                        participants: this.props.selectedTask.attributes.participants.filter(participant => {return participant !== userId})
-                    }
+                body: JSON.stringify({task: {
+                    "title": this.props.selectedTask.title,
+                    "description": this.props.selectedTask.description,
+                    "tag_id": this.props.selectedTask.tag_id,
+                    "due_date": this.props.selectedTask.due_date,
+                    "participants": this.props.selectedTask.participants.filter(participant => {return participant !== userId})
                 }})
+                // body: JSON.stringify ({data: {
+                //     id: this.props.selectedTask.id,
+                //     type: "tasks",
+                //     attributes: {
+                //         title: this.props.selectedTask.title,
+                //         description: this.props.selectedTask.description,
+                //         "tag-id": this.props.selectedTask.tag_id,
+                //         "due-date": this.props.selectedTask.due_date,
+                //         participants: this.props.selectedTask.participants.filter(participant => {return participant !== userId})
+                //     }
+                // }})
             });
 
             if(response.status === 200) {
