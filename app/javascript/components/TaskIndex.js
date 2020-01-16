@@ -67,6 +67,7 @@ class TaskIndex extends React.Component {
   handleEdit = task => {
     this.setState({
       selectedTask: task,
+      newTagId: task.tag_id,
       isEditing: true
     });
   };
@@ -87,16 +88,13 @@ class TaskIndex extends React.Component {
           "Content-Type": "application/json",
           "X-CSRF-Token": csrfToken
         },
-        body: JSON.stringify({data: {
-          type: "tasks",
-          attributes: {
-            "list-id": this.props.list_id,
-            title: newTitle,
-            description: newDescription,
-            "tag-id": this.state.newTagId,
-            "due-date": this.state.newDueDate,
-            participants: []
-          }
+        body: JSON.stringify({task: {
+          "list_id": this.props.list_id,
+          "title": newTitle,
+          "description": newDescription,
+          "tag_id": this.state.newTagId,
+          "due_date": this.state.newDueDate,
+          "participants": []
         }})
       });
 
@@ -198,17 +196,13 @@ class TaskIndex extends React.Component {
             "Content-Type": "application/json",
             "X-CSRF-Token": csrfToken
           },
-          body: JSON.stringify({data: {
-            id: task.id,
-            type: "tasks",
-            attributes: {
-              "list-id": this.props.list_id - 1,
-              title: task.title,
-              description: task.description,
-              "due-date": task.due_date,
-              "tag-id": task.tag_id,
-              participants: task.participants
-            }
+          body: JSON.stringify({task: {
+            "list_id": this.props.list_id - 1,
+            "title": task.title,
+            "description": task.description,
+            "due_date": task.due_date,
+            "tag_id": task.tag_id,
+            "participants": task.participants
           }})
         });
   
@@ -247,17 +241,13 @@ class TaskIndex extends React.Component {
             "Content-Type": "application/json",
             "X-CSRF-Token": csrfToken
           },
-          body: JSON.stringify({data: {
-            id: task.id,
-            type: "tasks",
-            attributes: {
-              "list-id": this.props.list_id + 1,
-              title: task.title,
-              description: task.description,
-              "due-date": task.due_date,
-              "tag-id": task.tag_id,
-              participants: task.participants
-            }
+          body: JSON.stringify({task: {
+            "list_id": this.props.list_id + 1,
+            "title": task.title,
+            "description": task.description,
+            "due_date": task.due_date,
+            "tag_id": task.tag_id,
+            "participants": task.participants
           }})
         });
   
@@ -299,15 +289,14 @@ class TaskIndex extends React.Component {
         credentials: "include",
         headers: {
           "Authorization": bearer,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken
         },
-        body: JSON.stringify({data: {
-          type: "tags",
-          attributes: {
-            name: document.getElementById("field_new_add_tag") !== null 
-              ? document.getElementById("field_new_add_tag").value
-              : document.getElementById("field_edit_add_tag").value
-          }
+        body: JSON.stringify({tag: {
+          "name": document.getElementById("field_new_add_tag") !== null 
+                ? document.getElementById("field_new_add_tag").value
+                : document.getElementById("field_edit_add_tag").value,
+          "user_id": this.props.user.id
         }})
       });
 
@@ -328,6 +317,7 @@ class TaskIndex extends React.Component {
   onClickTask = task => {
     this.setState({
       selectedTask: task,
+      newTagId: task.tag_id,
       isInspecting: true
     })
   }
