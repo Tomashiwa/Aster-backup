@@ -55,7 +55,7 @@ class AddEditPopup extends React.Component {
                     <br></br>
                     <br></br>
 
-                    <TagSelect tags={this.props.tags} tag_id={this.props.isAdding ? this.props.newTagId : this.props.selectedTask.tag_id} onChange={this.props.onTagChange} />
+                    <TagSelect tags={this.props.tags} tag_id={this.props.newTagId} onChange={this.props.onTagChange} />
 
                     <IconButton color="primary" onClick={this.props.onNewTag}>
                       <AddIcon />

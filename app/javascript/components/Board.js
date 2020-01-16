@@ -24,7 +24,7 @@ class Board extends React.Component {
                                     list_id={parseInt(list.id)} 
                                     tasks={this.props.tasks.filter(task => {
                                         const hasPassFilter = this.props.filterTagId > 1
-                                            ? parseInt(this.props.filterTagId) === task.tag._id
+                                            ? parseInt(this.props.filterTagId) === task.tag_id
                                             : true;
 
                                         const hasPassSearch = this.props.filterSearchTerm !== ""

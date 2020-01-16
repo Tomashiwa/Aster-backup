@@ -281,7 +281,7 @@ class TaskIndex extends React.Component {
     console.log(bearer);
 
     const addTag = async() => {
-      const csrfToken = document.querySelector("meta[name=csrf-token").content;
+      const csrfToken = document.querySelector("meta[name=csrf-token]").content;
 
       const response = await fetch("/api/tags", {
         method: "POST",
@@ -301,8 +301,7 @@ class TaskIndex extends React.Component {
       });
 
       if(response.status === 201) {
-        this.props.onUpdateTags();
-        this.setState({newTagId: this.props.tags.length + 1});
+        this.setState({newTagId: this.props.tags[this.props.tags.length - 1].id + 1});
       }
     }
     
@@ -345,7 +344,7 @@ class TaskIndex extends React.Component {
                       secondary={
                         <React.Fragment>
                           <Typography component={"span"} align="left" variant="subtitle2" className={this.state.classes.inline} color="textPrimary">
-                            {this.props.tags.length > 0 ? this.props.tags[task.tag_id - 1].name : "Tags not loaded"}
+                            {this.props.tags.length > 0 ? this.props.tags.filter(tag => tag.id === task.tag_id)[0].name : "Tags not loaded"}
                           </Typography>
                           <Typography component={"span"} style={{whiteSpace:"pre-line"}}>
                             {"\n" + task.description}
