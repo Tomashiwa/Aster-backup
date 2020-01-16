@@ -15,9 +15,12 @@ class TaskPopup extends React.Component {
         };
     }
 
-    handleTagChange = (event, index, value) => {
-        console.log("Called handleTagChange");
-        this.props.onTagChange(event, index, value);
+    handleTagChange = event => {
+        console.log("Called handleTagChange from TaskPopup");
+        console.log("event:");
+        console.log(event);
+
+        this.props.onTagChange(event);
         this.setState({hasChanged: true});
     }
 
@@ -78,17 +81,6 @@ class TaskPopup extends React.Component {
                     "due_date": this.props.selectedTask.due_date,
                     "participants": this.props.selectedTask.participants.filter(participant => {return participant !== userId})
                 }})
-                // body: JSON.stringify ({data: {
-                //     id: this.props.selectedTask.id,
-                //     type: "tasks",
-                //     attributes: {
-                //         title: this.props.selectedTask.title,
-                //         description: this.props.selectedTask.description,
-                //         "tag-id": this.props.selectedTask.tag_id,
-                //         "due-date": this.props.selectedTask.due_date,
-                //         participants: this.props.selectedTask.participants.filter(participant => {return participant !== userId})
-                //     }
-                // }})
             });
 
             if(response.status === 200) {
@@ -126,7 +118,7 @@ class TaskPopup extends React.Component {
 
                         <div id="tags_participants">
                             <div id="tags">
-                                <TagSelect tags={this.props.tags} tag_id={this.props.selectedTask.tag_id} onChange={this.handleTagChange} />                    
+                                <TagSelect tags={this.props.tags} tag_id={this.props.newTagId} onChange={this.handleTagChange} />                    
                             </div>
                             <div id="participants">
                                 <ParticipantList task={this.props.selectedTask} users={this.props.users} onAdd={this.addParticipant} onDelete={this.deleteParticipant}/>

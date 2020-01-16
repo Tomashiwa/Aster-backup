@@ -125,17 +125,13 @@ class TaskIndex extends React.Component {
           "Content-Type": "application/json",
           "X-CSRF-Token": csrfToken
         },
-        body: JSON.stringify({data: {
-          id: this.state.task_id,
-          type: "tasks",
-          attributes: {
-            "list-id": this.props.list_id,
-            title: modifiedTitle,
-            description: modifiedDescription,
-            "tag-id": this.state.selectedTask.tag_id,
-            "due-date": this.state.selectedTask.due_date,
-            participants: this.state.participants
-          }
+        body: JSON.stringify({task: {
+          "list_id": this.props.list_id,
+          "title": modifiedTitle,
+          "description": modifiedDescription,
+          "tag_id": this.state.newTagId,
+          "due_date": this.state.newDueDate,
+          "participants": this.state.participants
         }})
       });
 
@@ -278,7 +274,11 @@ class TaskIndex extends React.Component {
     this.setState({newDueDate: dateTime.toUTCString()});
   };
 
-  handleTagChange = (event, index, value) => {
+  handleTagChange = event => {
+    console.log("Called handleTagChange from TaskIndex");
+    console.log("event:");
+    console.log(event);
+
     this.setState({newTagId: event.target.value});
   };
 
@@ -423,6 +423,7 @@ class TaskIndex extends React.Component {
               ? <TaskPopup selectedTask={this.state.selectedTask}
                   user={this.props.user}
                   users={this.props.users}
+                  newTagId={this.state.newTagId}
                   tags={this.props.tags}
                   isOpened={this.state.isInspecting}
                   onTagChange={this.handleTagChange}

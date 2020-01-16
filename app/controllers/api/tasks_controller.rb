@@ -34,10 +34,8 @@ class Api::TasksController < ApiController
     #PATCH/PUT /tasks/#
     def update
         if @task.update(task_params)
-            puts "SUCCESS UPDATE"
             render json: @task, status: :ok
-        else 
-            puts "FAIL UPDATE"
+        else
             render json: @task.errors, status: :unprocessable_entity
         end
     end
