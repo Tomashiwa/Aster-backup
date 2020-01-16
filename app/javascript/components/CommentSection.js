@@ -123,16 +123,6 @@ class CommentSection extends React.Component {
                     "task_id": this.props.task_id,
                     "body": this.state.editedComment
                 }})
-                // body: JSON.stringify({data:{
-                //     id: this.state.editingCommentID,
-                //     type: "comments",
-                //     attributes: {
-                //         "user-id": this.props.user.id,
-                //         "task-id": this.props.task_id,
-                //         body: this.state.editedComment,
-                //         "updated-at": new Date(Date.now()).toUTCString()
-                //     }
-                // }})
             })
 
             console.log("SAVE Comment response:");
@@ -182,6 +172,9 @@ class CommentSection extends React.Component {
     render() {
         const { classes } = this.props;
 
+        console.log("Comment section owner's admin?");
+        console.log(this.props.user);
+
         return (
             <div>
                 <div id="title">
@@ -223,7 +216,7 @@ class CommentSection extends React.Component {
                                 }
 
                                 {
-                                    parseInt(this.props.user.id) === comment.user_id && this.state.editingCommentID === -1
+                                    this.props.user.admin || (parseInt(this.props.user.id) === comment.user_id && this.state.editingCommentID === -1)
                                         ? <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
                                               <IconButton size="small" color="primary" onClick={() => this.handleEdit(comment)}>
                                                   <CreateIcon />

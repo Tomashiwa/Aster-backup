@@ -4,7 +4,7 @@ class Api::UsersController < ApiController
     # GET /users
     def index
       @users = User.all
-      render :json => @users.to_json( :only => [:id, :name] ) 
+      render :json => @users.to_json( :only => [:id, :name, :admin] ) 
     end
 
     # GET /users/1
