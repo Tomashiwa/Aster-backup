@@ -21,7 +21,14 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-
+    if(localStorage.getItem("jwt") !== null) {
+      this.fetchUsers(localStorage.getItem("name"));
+      this.fetchBoards();
+      this.fetchLists();
+      this.fetchTags();
+      this.fetchTasks();
+      console.log("Remain logged in");
+    }
   }
 
   onFilter = (event) => {
@@ -54,13 +61,14 @@ class App extends React.Component {
       })
       .then(result => {
         if(result !== null) {
-            localStorage.setItem("jwt", result.jwt);
-            this.fetchUsers(name);
-            this.fetchBoards();
-            this.fetchLists();
-            this.fetchTags();
-            this.fetchTasks();
-            console.log("Logged in successfully");
+          localStorage.setItem("name", name);
+          localStorage.setItem("jwt", result.jwt);
+          this.fetchUsers(name);
+          this.fetchBoards();
+          this.fetchLists();
+          this.fetchTags();
+          this.fetchTasks();
+          console.log("Logged in successfully");
         }
       })
     }
@@ -69,6 +77,7 @@ class App extends React.Component {
   }
 
   onLogout = () => {    
+    localStorage.removeItem("name");
     localStorage.removeItem("jwt");
     this.setState({user: null});
     console.log("Logout successfully");
@@ -228,7 +237,7 @@ class App extends React.Component {
               fetchTasks={this.fetchTasks} />
 
             <RegisterLoginPopup 
-              isOpened={this.state.user === null}
+              isOpened={localStorage.getItem("jwt") === null}//this.state.user === null}
               onRegister={this.onLogout/*onRegister*/}
               onLogin={this.onLogin}               
             />

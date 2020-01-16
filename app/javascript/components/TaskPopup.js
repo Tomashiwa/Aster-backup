@@ -16,16 +16,11 @@ class TaskPopup extends React.Component {
     }
 
     handleTagChange = event => {
-        console.log("Called handleTagChange from TaskPopup");
-        console.log("event:");
-        console.log(event);
-
         this.props.onTagChange(event);
         this.setState({hasChanged: true});
     }
 
     addParticipant = (userId, callback) => {
-        console.log("Adding Participantts via Fetch API")
         let bearer = "Bearer " + localStorage.getItem("jwt");
 
         const addParti = async() => {
