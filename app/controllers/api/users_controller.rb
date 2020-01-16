@@ -1,7 +1,7 @@
 class Api::UsersController < ApiController
   require 'jwt'
   before_action :set_user, only: [:show, :update, :destroy]
-
+ 
   # GET /users
   def index
     @users = User.all
@@ -27,8 +27,13 @@ class Api::UsersController < ApiController
     # params[:user][:password_digest] = token
 
     @user = User.new(user_params)
-
+    
     if @user.save
+      @board = Board.create(user_id: @user.id, name: @user.name);
+      @list1 = List.create(board_id: @board.id, name: "Backlog");
+      @list2 = List.create(board_id: @board.id, name: "To-do");
+      @list3 = List.create(board_id: @board.id, name: "In progress");
+      @list4 = List.create(board_id: @board.id, name: "Completed");
       render :json => @user.to_json( :only => [:id, :name, :admin] ), status: :created
     else
       render json: @user.errors, status: :unprocessable_entity
