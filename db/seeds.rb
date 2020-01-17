@@ -22,7 +22,7 @@ List.create!(board_id: 3, name: "PLACEHOLDER 3");
 List.create!(board_id: 3, name: "PLACEHOLDER 4");
 List.create!(board_id: 3, name: "PLACEHOLDER 5");
 
-Tag.create!(name: "NIL", user_id: nil)
+Tag.create!(name: "Empty", user_id: nil)
 Tag.create!(name: "Red", user_id: nil)
 Tag.create!(name: "Yellow", user_id: nil)
 Tag.create!(name: "Green", user_id: nil)

@@ -1,0 +1,9 @@
+#addTask_Item {
+    display: flex;
+    justify-content: center;
+    /* background-color: orchid; */
+}
+
+#addTask_Item > #addTask_Icon {
+    /* background-color: yellow; */
+}

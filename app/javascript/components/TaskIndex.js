@@ -1,8 +1,9 @@
 import React from "react";
-import { Button, IconButton, ListItemText, Typography, withStyles } from "@material-ui/core";
+import { IconButton, ListItemText, Typography, withStyles } from "@material-ui/core";
 import { List, ListItem, ListItemSecondaryAction   } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -10,6 +11,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import AddEditPopup from "./AddEditPopup";
 import TaskPopup from "./TaskPopup";
+
+import "./styles/TaskIndex.css"
 
 const styles = {
   editDelete: {
@@ -52,10 +55,6 @@ class TaskIndex extends React.Component {
   }
 
   componentDidMount() {
-    // fetch("/api/lists").then(async (response) => {
-    //   const { data } = await response.json();
-    //   this.setState({listName: data[this.props.list_id - 1].attributes.name});
-    // });
   }
 
   handleAdd = () => {
@@ -377,12 +376,14 @@ class TaskIndex extends React.Component {
                 </React.Fragment>
               ))
             }
+
+            <ListItem id="addTask_Item" key={this.props.tasks.length + 1} disableGutters={true}>
+              <IconButton id="addTask_Icon" onClick={this.handleAdd}>
+                <AddIcon />
+              </IconButton>
+            </ListItem>
           </List>
           <br></br>
-
-          <Button variant="outlined" color="primary" onClick={this.handleAdd}>
-            Add Task
-          </Button>
 
           {
               (this.state.selectedTask && this.state.isEditing) || (this.state.isAdding)
