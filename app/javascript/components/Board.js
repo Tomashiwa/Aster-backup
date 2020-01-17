@@ -21,7 +21,7 @@ class Board extends React.Component {
                             <article key={list.id}>
                                 <TaskIndex 
                                     board_id={this.props.id} 
-                                    list_id={parseInt(list.id)} 
+                                    list={list}
                                     tasks={this.props.tasks.filter(task => {
                                         const hasPassFilter = this.props.filterTagId > 1
                                             ? parseInt(this.props.filterTagId) === task.tag_id

@@ -50,7 +50,6 @@ class TaskIndex extends React.Component {
       newDescription: "",
       newDueDate: new Date(Date.now()).toUTCString(),
       newTagId: 1,
-      listName: ""
     };
   }
 
@@ -88,7 +87,7 @@ class TaskIndex extends React.Component {
           "X-CSRF-Token": csrfToken
         },
         body: JSON.stringify({task: {
-          "list_id": this.props.list_id,
+          "list_id": this.props.list.id,
           "title": newTitle,
           "description": newDescription,
           "tag_id": this.state.newTagId,
@@ -123,7 +122,7 @@ class TaskIndex extends React.Component {
           "X-CSRF-Token": csrfToken
         },
         body: JSON.stringify({task: {
-          "list_id": this.props.list_id,
+          "list_id": this.props.list.id,
           "title": modifiedTitle,
           "description": modifiedDescription,
           "tag_id": this.state.newTagId,
@@ -175,10 +174,10 @@ class TaskIndex extends React.Component {
     console.log("Demoting task:");
     console.log(task);
 
-    if(this.props.list_id <= 1) {
+    if(this.props.list.id <= 1) {
       console.log("Reached lowest list");
     } else {
-      console.log("Demoting to list " + (this.props.list_id - 1));
+      console.log("Demoting to list " + (this.props.list.id - 1));
 
       let bearer = "Bearer " + localStorage.getItem("jwt");
       console.log(bearer);
@@ -196,7 +195,7 @@ class TaskIndex extends React.Component {
             "X-CSRF-Token": csrfToken
           },
           body: JSON.stringify({task: {
-            "list_id": this.props.list_id - 1,
+            "list_id": this.props.list.id - 1,
             "title": task.title,
             "description": task.description,
             "due_date": task.due_date,
@@ -218,12 +217,12 @@ class TaskIndex extends React.Component {
     console.log("Promoting task:");
     console.log(task);
 
-    console.log("Currently at list " + this.props.list_id);
+    console.log("Currently at list " + this.props.list.id);
 
-    if(this.props.list_id >= 4) {
+    if(this.props.list.id >= 4) {
       console.log("Reached highest list");
     } else {
-      console.log("Promoting to list " + (this.props.list_id + 1));
+      console.log("Promoting to list " + (this.props.list.id + 1));
 
       let bearer = "Bearer " + localStorage.getItem("jwt");
       console.log(bearer);
@@ -241,7 +240,7 @@ class TaskIndex extends React.Component {
             "X-CSRF-Token": csrfToken
           },
           body: JSON.stringify({task: {
-            "list_id": this.props.list_id + 1,
+            "list_id": this.props.list.id + 1,
             "title": task.title,
             "description": task.description,
             "due_date": task.due_date,
@@ -336,7 +335,7 @@ class TaskIndex extends React.Component {
 
     return (
       <div>
-          <h1 align="center">{this.state.listName}</h1>
+          <h1 align="center">{this.props.list.name}</h1>
           
           <List className={this.state.classes.root}>
             {
