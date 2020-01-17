@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, IconButton } from "@material-ui/core";
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, IconButton } from "@material-ui/core";
 import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
@@ -9,6 +9,8 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import TagSelect from "./TagSelect";
 
+import "./styles/AddEditPopup.css"
+
 class AddEditPopup extends React.Component {
     constructor(props) {
       super(props);
@@ -16,72 +18,82 @@ class AddEditPopup extends React.Component {
 
     render() {
         return(
-            <Dialog open={this.props.isOpened} onClose={this.props.onClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="dialogTitle_addTask">
-                    {this.props.isAdding ? "Add Task" : "Edit Task"}
+            <Dialog fullWidth={true} maxWidth={"sm"} open={this.props.isOpened} onClose={this.props.onClose} aria-labelledby="form-dialog-title"
+                PaperProps={{ style: {
+                  backgroundImage: "linear-gradient(to bottom, #e2a3ad, #ffe4e1)"
+              }}}
+            >
+                <DialogTitle id="addEdit_title">
+                  {this.props.isAdding ? "Create new task" : "Edit task"}
                 </DialogTitle>
                 
-                <DialogContent>
-                    <DialogContentText> 
-                        Please fill in the information below
-                    </DialogContentText>
+                <DialogContent id="addEdit_content">
+                  <TextField 
+                    id="addEdit_titleField" 
+                    autoFocus 
+                    required={true} 
+                    margin="dense"
+                    label="Title" 
+                    fullWidth 
+                    defaultValue={this.props.selectedTask ? this.props.selectedTask.title : this.props.newTitle}/>
 
-                    {
-                      this.props.selectedTask
-                        ? <div>
-                            <TextField autoFocus required={true} margin="dense" id="field_addEdit_title" label="Title" fullWidth defaultValue={this.props.selectedTask.title}/>
-                            <TextField multiline required={true} margin="dense" id="field_addEdit_description" label="Description" fullWidth defaultValue={this.props.selectedTask.description}/>
-                        </div>
-                        : <div>
-                            <TextField autoFocus required={true} margin="dense" id="field_addEdit_title" label="Title" fullWidth defaultValue={this.props.newTitle}/>
-                            <TextField multiline required={true} margin="dense" id="field_addEdit_description" label="Description" fullWidth defaultValue={this.props.newDescription}/>
-                        </div>
-                    }
-                    
-                    <br></br>
-                    
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <div id="addEdit_dateTags">
+                    <MuiPickersUtilsProvider id="addEdit_date" utils={DateFnsUtils}>
                       <KeyboardDateTimePicker
                         required={true}
                         ampm={false}
                         showTodayButton
                         value={this.props.selectedTask ? this.props.selectedTask.due_date : this.props.newDueDate}
                         onChange={this.props.onDateChange}
-                        id="dateTimePicker_dueDate"
                         format="dd/MM/yyyy HH:mm"
                         label="Due date"
                       />
                     </MuiPickersUtilsProvider>
-                    <br></br>
-                    <br></br>
 
-                    <TagSelect tags={this.props.tags} tag_id={this.props.newTagId} onChange={this.props.onTagChange} />
+                    <div id="addEdit_tags">
+                      <TagSelect tags={this.props.tags} tag_id={this.props.newTagId} onChange={this.props.onTagChange} />
 
-                    <IconButton color="primary" onClick={this.props.onNewTag}>
-                      <AddIcon />
-                    </IconButton>
+                      <IconButton color="primary" onClick={this.props.onNewTag}>
+                        <AddIcon />
+                      </IconButton>
 
-                    {this.props.isAddingTag 
-                        ? <div>
-                            <TextField margin="dense" id="field_new_add_tag" label="New Tag" />
-                            <IconButton color="primary" onClick={this.props.onAddTag}>
-                              <DoneIcon />
-                            </IconButton> 
-                            <IconButton color="primary" onClick={this.props.onCancelTag}>
-                              <CloseIcon />
-                            </IconButton> 
-                          </div> 
-                        : <div></div>}
+                      {
+                        this.props.isAddingTag 
+                          ? <div>
+                              <TextField margin="dense" id="addEdit_newTag" label="New Tag" />
+                              <IconButton color="primary" onClick={this.props.onAddTag}>
+                                <DoneIcon />
+                              </IconButton> 
+                              <IconButton color="primary" onClick={this.props.onCancelTag}>
+                                <CloseIcon />
+                              </IconButton> 
+                            </div> 
+                          : <div></div>
+                      }
+                    </div>
+                  </div>
+                  
+                  <TextField
+                    id="addEdit_descriptionField" 
+                    multiline 
+                    required={true} 
+                    margin="dense" 
+                    label="Description" 
+                    fullWidth 
+                    rows={15}
+                    defaultValue={this.props.selectedTask ? this.props.selectedTask.description : this.props.newDescription} />
                 </DialogContent>
-                <DialogActions>
+
+                <DialogActions id="addEdit_buttons">
+                  {
+                    this.props.isAdding
+                      ? <Button onClick={() => this.props.onSubmit(document.getElementById("addEdit_titleField").value, document.getElementById("addEdit_descriptionField").value)} color="primary">Submit</Button>
+                      : <Button onClick={() => this.props.onConfirm(document.getElementById("addEdit_titleField").value, document.getElementById("addEdit_descriptionField").value)()} color="primary">Confirm</Button>
+                  }
+
                   <Button onClick={this.props.onClose} color="primary">
                     Cancel
                   </Button>
-                  {
-                    this.props.isAdding
-                      ? <Button onClick={() => this.props.onSubmit(document.getElementById("field_addEdit_title").value, document.getElementById("field_addEdit_description").value)} color="primary">Submit</Button>
-                      : <Button onClick={() => this.props.onConfirm(document.getElementById("field_addEdit_title").value, document.getElementById("field_addEdit_description").value)()} color="primary">Confirm</Button>
-                  }
                 </DialogActions>
             </Dialog>
         );

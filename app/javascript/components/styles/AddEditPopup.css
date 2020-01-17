@@ -1,0 +1,15 @@
+#addEdit_content {
+    display: flex;
+    flex-direction: column;
+}
+
+#addEdit_content > #addEdit_dateTags {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#addEdit_dateTags > #addEdit_tags {
+    display: flex;
+    flex-direction: row;
+}

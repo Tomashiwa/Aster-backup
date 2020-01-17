@@ -37,7 +37,11 @@ class RegisterLoginPopup extends React.Component {
 
     render() {
         return (
-            <Dialog open={this.props.isOpened} onClose={this.props.onClose}>
+            <Dialog open={this.props.isOpened} onClose={this.props.onClose}
+                PaperProps={{ style: {
+                    backgroundImage: "linear-gradient(to bottom, #e2a3ad, #ffe4e1)"
+                }}}
+            >
                 <DialogTitle id="title">
                     {this.state.isRegistering ? "Create an account" : "Login"}
                 </DialogTitle>
