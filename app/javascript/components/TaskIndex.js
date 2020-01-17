@@ -299,8 +299,14 @@ class TaskIndex extends React.Component {
         }})
       });
 
+      console.log("Response:");
+      console.log(response);
+
       if(response.status === 201) {
+        this.props.onUpdateTags();
         this.setState({newTagId: this.props.tags[this.props.tags.length - 1].id + 1});
+        console.log("newTagId:");
+        console.log(this.state.newTagId);
       }
     }
     
