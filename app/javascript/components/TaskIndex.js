@@ -345,18 +345,18 @@ class TaskIndex extends React.Component {
                           <Typography component={"span"} align="left" variant="subtitle2" className={this.state.classes.inline} color="textPrimary">
                             {this.props.tags.length > 0 ? this.props.tags.filter(tag => tag.id === task.tag_id)[0].name : "Tags not loaded"}
                           </Typography>
+                          <br />
+                          <Typography component={"span"} align="left" variant="subtitle1" className={this.state.classes.inline} color="textPrimary">
+                            {"Due by: " + new Date(task.due_date).toUTCString()}
+                          </Typography>
+                          <br />
                           <Typography component={"span"} style={{whiteSpace:"pre-line"}}>
                             {"\n" + task.description}
                           </Typography>
+                          <br /> <br />
                         </React.Fragment>
                       }
                     />
-  
-                    <ListItemSecondaryAction classes={{ root: classes.dueDate }}>
-                      <Typography align="right" variant="subtitle1" className={this.state.classes.inline} color="textPrimary">
-                        {"By: " + new Date(task.due_date).toUTCString()}
-                      </Typography>
-                    </ListItemSecondaryAction>
   
                     <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
                       <IconButton size="small" color="primary" onClick={() => this.handleDemote(task)} classes={{root: classes.taskButtons}}>
