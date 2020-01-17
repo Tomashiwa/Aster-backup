@@ -236,6 +236,8 @@ class App extends React.Component {
               onFilter={this.onFilter} 
               onSearch={this.onSearch} />
 
+            <br />  
+            
             <Board 
               id={this.state.boardId} 
               tasks={this.state.tasks} 

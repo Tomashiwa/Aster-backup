@@ -1,5 +1,5 @@
 import React from "react";
-import { List, ListItem, Button, Typography, ListItemText, IconButton, ListItemSecondaryAction, withStyles, TextField } from "@material-ui/core";
+import { List, ListItem, Button, Typography, ListItemText, IconButton, ListItemSecondaryAction, withStyles, TextField, Box } from "@material-ui/core";
 
 import UserInfo from "./UserInfo";
 
@@ -175,65 +175,75 @@ class CommentSection extends React.Component {
         return (
             <div>
                 <div id="title">
-                    <Typography id="titleText">
+                    <Typography id="titleText" variant="h6">
                         Comments
                     </Typography>
                 </div>
 
-                <List>
-                    {
-                       this.state.comments.map(comment => (
-                            <ListItem className="comment" key={comment.id} divider={true} classes={{ root: classes.removePadding }}>
-                                <ListItemText
-                                    style={{textAlign:"justify"}}
-                                    primary={
-                                        <div className="userDate">
-                                            <UserInfo user={this.props.users[comment.user_id - 1]} textVariant="h6"/>
-                                            <Typography> {new Date(comment.updated_at).toUTCString()} </Typography>
-                                        </div>
-                                    }
-                                    secondary={
-                                        this.state.editingCommentID !== comment.id ? comment.body : null
-                                } />
+                <br />
 
-                                {
-                                    this.state.editingCommentID == comment.id
-                                        ? <div>
-                                            <TextField className="field_editComment" autoFocus={true} fullWidth={true} value={this.state.editedComment} onChange={event => {this.setState({editedComment: event.target.value})}} multiline={true} size="small" fullWidth={true} variant="outlined" />
-                                            <div className="saveCancelButtons">
-                                                <Button variant="outlined" onClick={this.handleSave}>
-                                                    Save
-                                                </Button>
-                                                <Button variant="outlined" onClick={this.handleCancel}>
-                                                    Cancel
-                                                </Button>
+                <Box id="commentBox" borderRadius={8} border={1} borderColor="white" style={{maxWidth: "700px"}}>
+                    <List>
+                        {
+                           this.state.comments.map(comment => (
+                                <ListItem className="comment" key={comment.id} divider={true} classes={{ root: classes.removePadding }}>
+                                    <ListItemText
+                                        style={{textAlign:"justify"}}
+                                        primary={
+                                            <div className="userDate">
+                                                <UserInfo user={this.props.users[comment.user_id - 1]} textVariant="h6"/>
+                                                <Typography> {new Date(comment.updated_at).toUTCString()} </Typography>
                                             </div>
-                                        </div>
-                                        : null
-                                }
+                                        }
+                                        secondary={
+                                            this.state.editingCommentID !== comment.id ? comment.body : null
+                                    } />
 
-                                {
-                                    this.props.user.admin || (parseInt(this.props.user.id) === comment.user_id && this.state.editingCommentID === -1)
-                                        ? <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
-                                              <IconButton size="small" color="primary" onClick={() => this.handleEdit(comment)}>
-                                                  <CreateIcon />
-                                              </IconButton>
-                                              <IconButton size="small" color="secondary" onClick={() => this.handleDelete(comment)}>
-                                                  <DeleteIcon />
-                                              </IconButton>
-                                          </ListItemSecondaryAction>
-                                        : null
-                                }
-                            </ListItem>
-                       ))
-                    }
-                </List>
+                                    {
+                                        this.state.editingCommentID == comment.id
+                                            ? <div>
+                                                <TextField className="field_editComment" autoFocus={true} fullWidth={true} value={this.state.editedComment} onChange={event => {this.setState({editedComment: event.target.value})}} multiline={true} size="small" fullWidth={true} variant="outlined" />
+                                                <div className="saveCancelButtons">
+                                                    <Button variant="outlined" onClick={this.handleSave}>
+                                                        Save
+                                                    </Button>
+                                                    <Button variant="outlined" onClick={this.handleCancel}>
+                                                        Cancel
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                            : null
+                                    }
+
+                                    {
+                                        this.props.user.admin || (parseInt(this.props.user.id) === comment.user_id && this.state.editingCommentID === -1)
+                                            ? <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
+                                                  <IconButton size="small" onClick={() => this.handleEdit(comment)}>
+                                                      <CreateIcon />
+                                                  </IconButton>
+                                                  <IconButton size="small" onClick={() => this.handleDelete(comment)}>
+                                                      <DeleteIcon />
+                                                  </IconButton>
+                                              </ListItemSecondaryAction>
+                                            : null
+                                    }
+                                </ListItem>
+                           ))
+                        }
+                    </List>
+                </Box>
+
+                <br />
 
                 <div id="input">
-                    <Typography>
+                    <Typography variant="h6">
                         Post new comment:
                     </Typography>
-                    <TextField id="field_newComment" value={this.state.newComment} onChange={event => {this.setState({newComment: event.target.value})}} multiline={true} size="small" fullWidth={true} variant="outlined" />
+
+                    <br/>
+                    
+                    <TextField id="field_newComment" variant="filled" value={this.state.newComment} onChange={event => {this.setState({newComment: event.target.value})}} multiline={true} size="small" fullWidth={true} variant="outlined" />
+                    
                     <div id="submitButton">
                         <Button variant="outlined" onClick={this.handleAdd}>
                             Submit

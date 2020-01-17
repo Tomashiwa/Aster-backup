@@ -1,6 +1,6 @@
 import React from "react";
 import { IconButton, ListItemText, Typography, withStyles } from "@material-ui/core";
-import { List, ListItem, ListItemSecondaryAction   } from '@material-ui/core';
+import { List, ListItem, ListItemSecondaryAction, Box} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -334,14 +334,16 @@ class TaskIndex extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div>
-          <h1 align="center">{this.props.list.name}</h1>
-          
+      <Box id="index" border={1} borderColor="white" borderRadius={16}>
+          <br/>
+          <Typography id="indexTitle" align="center" variant="h6">{this.props.list.name}</Typography>
+          <br/>
+
           <List className={this.state.classes.root}>
             {
               this.props.tasks.map(task => (
                 <React.Fragment key={task.id}>
-                  <ListItem alignItems="flex-start" button={true} divider={true} onClick={() => this.onClickTask(task)}>
+                  <ListItem className="taskItem" alignItems="flex-start" button={true} divider={true} onClick={() => this.onClickTask(task)}>
                     <ListItemText
                       style={{textAlign:"justify"}}
                       primary={task.title}
@@ -364,16 +366,16 @@ class TaskIndex extends React.Component {
                     />
   
                     <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
-                      <IconButton size="small" color="primary" onClick={() => this.handleDemote(task)} classes={{root: classes.taskButtons}}>
+                      <IconButton size="small" onClick={() => this.handleDemote(task)} classes={{root: classes.taskButtons}}>
                         <ChevronLeftIcon />
                       </IconButton>
-                      <IconButton size="small" color="primary" onClick={() => this.handlePromote(task)} classes={{root: classes.taskButtons}}>
+                      <IconButton size="small" onClick={() => this.handlePromote(task)} classes={{root: classes.taskButtons}}>
                         <ChevronRightIcon />
                       </IconButton>
-                      <IconButton size="small" color="primary" onClick={() => this.handleEdit(task)} classes={{ root: classes.taskButtons }}>
+                      <IconButton size="small" onClick={() => this.handleEdit(task)} classes={{ root: classes.taskButtons }}>
                         <EditIcon />
                       </IconButton>
-                      <IconButton size="small" color="secondary" onClick={() => this.handleDelete(task)} classes={{ root: classes.taskButtons }}>
+                      <IconButton size="small" onClick={() => this.handleDelete(task)} classes={{ root: classes.taskButtons }}>
                         <DeleteIcon />
                       </IconButton>
                     </ListItemSecondaryAction>
@@ -429,7 +431,7 @@ class TaskIndex extends React.Component {
               : null
           }
 
-      </div>
+      </Box>
     );
   }
 }

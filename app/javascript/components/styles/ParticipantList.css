@@ -1,9 +1,12 @@
 #addpart_item {
     display: flex;
     justify-content: center;
-    /* background-color: orchid; */
 }
 
-#addpart_item > #addpart_icon {
-    /* background-color: yellow; */
+#title {
+    text-align: center;
+}
+
+#listBox {
+    background-image: linear-gradient(0deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,1) 100%);
 }

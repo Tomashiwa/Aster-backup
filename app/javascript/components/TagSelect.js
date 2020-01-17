@@ -16,6 +16,7 @@ class TagSelect extends React.Component {
                 value={this.props.tag_id}
                 onChange={this.props.onChange}
                 required={true}
+                autoWidth={true}
               >
                 {
                   this.props.tags.map(tag => 

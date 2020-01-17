@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, IconButton, Typography, Button} from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 

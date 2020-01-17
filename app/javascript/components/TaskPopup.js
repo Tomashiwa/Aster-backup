@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, IconButton } from "@material-ui/core";
+import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, Box } from "@material-ui/core";
 
 import TagSelect from "./TagSelect";
 import ParticipantList from "./ParticipantList";
@@ -88,23 +88,35 @@ class TaskPopup extends React.Component {
 
     render() {
         return(
-            <Dialog id="popup" fullWidth={true} maxWidth={"md"} open={this.props.isOpened} onClose={this.props.onClose} >
-                <DialogTitle id="titleDate">
-                    <div id="titleDateBox">
-                        <div id="title">
-                            {this.props.selectedTask.title}
+            <Dialog id="popup" fullWidth={true} maxWidth={"md"} open={this.props.isOpened} onClose={this.props.onClose} 
+                PaperProps={{ style: {
+                    backgroundImage: "linear-gradient(to bottom, #e2a3ad, #ffe4e1)"
+                }}}
+            >
+                <DialogTitle>
+                    <Box id="titleDateTagsBox" borderRadius={8} border={1} borderColor="white">
+                        <div id="titleDate">
+                            <div id="title">
+                                {this.props.selectedTask.title}
+                            </div>
+                            <div id="date">
+                                {"Due by: " + new Date(this.props.selectedTask.due_date).toUTCString()}
+                            </div>
                         </div>
-
-                        <div id="date">
-                            {"Due by: " + new Date(this.props.selectedTask.due_date).toUTCString()}
+                        <div id="tags">
+                            <TagSelect tags={this.props.tags} tag_id={this.props.newTagId} onChange={this.handleTagChange} />                    
                         </div>
-                    </div>
+                    </Box>
                 </DialogTitle>
 
                 <DialogContent>
-                    <DialogContentText id="description">
-                        {this.props.selectedTask.description}
-                    </DialogContentText>
+                    <Box id="description" borderRadius={8} border={1} borderColor="white">
+                        <DialogContentText id="description_text">
+                            {this.props.selectedTask.description}
+                        </DialogContentText>
+                    </Box>
+
+                    <br />
 
                     <div id="comments_tags_participants">
                         <div id="comments">
@@ -112,18 +124,15 @@ class TaskPopup extends React.Component {
                         </div>
 
                         <div id="tags_participants">
-                            <div id="tags">
-                                <TagSelect tags={this.props.tags} tag_id={this.props.newTagId} onChange={this.handleTagChange} />                    
-                            </div>
                             <div id="participants">
                                 <ParticipantList task={this.props.selectedTask} users={this.props.users} onAdd={this.addParticipant} onDelete={this.deleteParticipant}/>
                             </div>
                             <div id="confirmClose" >
-                                <Button variant="outlined" disabled={!this.state.hasChanged} onClick={this.props.onConfirm}>
+                                <Button variant="contained" disabled={!this.state.hasChanged} onClick={this.props.onConfirm}>
                                     Confirm Changes
                                 </Button>
                                 <br></br>
-                                <Button variant="outlined" onClick={this.props.onClose}>
+                                <Button variant="contained" onClick={this.props.onClose}>
                                     Close
                                 </Button>
                             </div>

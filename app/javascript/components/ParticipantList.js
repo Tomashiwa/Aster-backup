@@ -1,5 +1,5 @@
 import React from "react";
-import { List, ListItem, IconButton, Typography, Select, FormControl, MenuItem, InputLabel, Button, ListItemSecondaryAction } from "@material-ui/core";
+import { List, ListItem, IconButton, Typography, Select, FormControl, MenuItem, InputLabel, Box, ListItemSecondaryAction } from "@material-ui/core";
 
 import AddIcon from '@material-ui/icons/Add';
 import DoneIcon from '@material-ui/icons/Done';
@@ -75,70 +75,74 @@ class ParticipantList extends React.Component {
     render() {
         return (
             <div>
-                <Typography>
+                <Typography id="title" variant="h6">
                     Participants
                 </Typography>
 
-                <List dense={true} disablePadding={true}>
-                  {
-                    this.state.participants.map((participant) => {
-                      return (
-                        <ListItem 
-                          key={participant} 
-                          divider={true} 
-                          disableGutters={true} 
-                          onMouseOver={() => this.handleEnterHover(participant)} 
-                          onMouseLeave={() => this.handleExitHover()}>
-                            <UserInfo user={this.props.users.filter(user => {return parseInt(user.id) === participant;})[0]} />
-                            {
-                                this.state.hovered === participant
-                                    ? <ListItemSecondaryAction>
-                                        <IconButton size="small" onClick={() => this.handleDelete(participant)}>
-                                          <CloseIcon />
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                    : null
-                            }
-                        </ListItem>
-                      )
-                    })
-                  }
+                <br />
 
-                  {
-                      this.state.isAdding && this.state.potentialParticipants.length >= 1
-                        ? <ListItem id="field_part" key={this.props.users.length + 1} disableGutters={true}>
-                            <FormControl style={{display: "flex"}}>
-                                <InputLabel shrink id="inputLabel_add_part">New participant</InputLabel>
-                                <Select
-                                    labelId="select_new_partId"
-                                    id="select_new_part"
-                                    value={this.state.newPartiId}
-                                    onChange={this.handlePartiChange}
-                                >
-                                    {
-                                        this.state.potentialParticipants.map(potentialParticipant =>
-                                            <MenuItem key={potentialParticipant.id} value={potentialParticipant.id}>{potentialParticipant.name}</MenuItem>
-                                        )
-                                    }
-                                </Select>
-                            </FormControl>
-                            <IconButton size="small" onClick={this.handleAdd}>
-                                <DoneIcon />
-                            </IconButton>
-                            <IconButton size="small" onClick={this.handleClose}>
-                                <CloseIcon />
-                            </IconButton>
-                        </ListItem> 
-
-                        : this.props.users.length > this.state.participants.length
-                            ? <ListItem id="addpart_item" key={this.props.users.length + 1} disableGutters={true}>
-                                <IconButton id="addpart_icon" onClick={this.handleClick}>
-                                    <AddIcon />
-                                </IconButton>
+                <Box id="listBox" borderRadius={8} border={1} borderColor="white">
+                    <List dense={true} disablePadding={true}>
+                    {
+                        this.state.participants.map((participant) => {
+                        return (
+                            <ListItem 
+                            key={participant} 
+                            divider={true} 
+                            disableGutters={true} 
+                            onMouseOver={() => this.handleEnterHover(participant)} 
+                            onMouseLeave={() => this.handleExitHover()}>
+                                <UserInfo user={this.props.users.filter(user => {return parseInt(user.id) === participant;})[0]} />
+                                {
+                                    this.state.hovered === participant
+                                        ? <ListItemSecondaryAction>
+                                            <IconButton size="small" onClick={() => this.handleDelete(participant)}>
+                                            <CloseIcon />
+                                            </IconButton>
+                                        </ListItemSecondaryAction>
+                                        : null
+                                }
                             </ListItem>
-                            : null
-                  }
-                </List>
+                        )
+                        })
+                    }
+
+                    {
+                        this.state.isAdding && this.state.potentialParticipants.length >= 1
+                            ? <ListItem id="field_part" key={this.props.users.length + 1} disableGutters={true}>
+                                <FormControl style={{display: "flex"}}>
+                                    <InputLabel shrink id="inputLabel_add_part">New participant</InputLabel>
+                                    <Select
+                                        labelId="select_new_partId"
+                                        id="select_new_part"
+                                        value={this.state.newPartiId}
+                                        onChange={this.handlePartiChange}
+                                    >
+                                        {
+                                            this.state.potentialParticipants.map(potentialParticipant =>
+                                                <MenuItem key={potentialParticipant.id} value={potentialParticipant.id}>{potentialParticipant.name}</MenuItem>
+                                            )
+                                        }
+                                    </Select>
+                                </FormControl>
+                                <IconButton size="small" onClick={this.handleAdd}>
+                                    <DoneIcon />
+                                </IconButton>
+                                <IconButton size="small" onClick={this.handleClose}>
+                                    <CloseIcon />
+                                </IconButton>
+                            </ListItem> 
+
+                            : this.props.users.length > this.state.participants.length
+                                ? <ListItem id="addpart_item" key={this.props.users.length + 1} disableGutters={true}>
+                                    <IconButton id="addpart_icon" onClick={this.handleClick}>
+                                        <AddIcon />
+                                    </IconButton>
+                                </ListItem>
+                                : null
+                    }
+                    </List>
+                </Box>
             </div>
         );
     }
