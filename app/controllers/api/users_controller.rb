@@ -15,21 +15,10 @@ class Api::UsersController < ApiController
 
   # POST /users
   def create
-    # puts "pre-hash"
-    # puts params[:user][:password_digest]
-
-    # payload = {password: params[:user][:password_digest]}
-    # token = JWT.encode(payload, Rails.application.secrets.secret_key_base, 'HS256')
-    
-    # puts "post-hash"
-    # puts token
-    
-    # params[:user][:password_digest] = token
-
     @user = User.new(user_params)
     
     if @user.save
-      @board = Board.create(user_id: @user.id, name: @user.name);
+      @board = Board.create(user_id: @user.id, name: @user.name + "'s board");
       @list1 = List.create(board_id: @board.id, name: "Backlog");
       @list2 = List.create(board_id: @board.id, name: "To-do");
       @list3 = List.create(board_id: @board.id, name: "In progress");
