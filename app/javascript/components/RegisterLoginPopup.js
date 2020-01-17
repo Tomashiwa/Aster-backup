@@ -7,11 +7,32 @@ class RegisterLoginPopup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isRegistering: false
+            isRegistering: false,
+            newName: "",
+            newPassword: ""
         }
     }
 
     componentDidMount() {
+        console.log("mount loginregi popup");
+    }
+
+    handleRegister = async() => {
+        await this.props.onRegister(this.state.newName, this.state.newPassword);
+        this.setState({newName: "", newPassword: ""});
+    }
+
+    handleLogin = async() => {
+        await this.props.onLogin(this.state.newName, this.state.newPassword);
+        this.setState({newName: "", newPassword: ""});
+    }
+
+    handleSwitch = () => {
+        this.setState({
+            isRegistering: !this.state.isRegistering,
+            newName: "",
+            newPassword: ""
+        })
     }
 
     render() {
@@ -26,24 +47,22 @@ class RegisterLoginPopup extends React.Component {
                         {this.state.isRegistering ? "Please fill in your particulars:" : "Kindly login with your particulars:"}
                     </DialogContentText>
 
-                    <TextField required={true} autoFocus margin="dense" id="field_name" label="Username" fullWidth />
-                    <TextField required={true} margin="dense" type="password" id="field_password" label="Password" fullWidth />                    
+                    <TextField required={true} autoFocus value={this.state.newName} onChange={input => this.setState({newName: input.target.value})} margin="dense" id="field_name" label="Username" fullWidth />
+                    <TextField required={true} value={this.state.newPassword} onChange={input => this.setState({newPassword: input.target.value})} margin="dense" type="password" id="field_password" label="Password" fullWidth />                    
                 
                     <br /><br />
 
                     {
                         this.state.isRegistering
                             ? <div className="buttonArea">
-                                <Button variant="outlined" onClick={this.props.onRegister}>Submit</Button>
-                                <Button variant="outlined" onClick={() => this.setState({isRegistering: false})}>Cancel</Button>                                    
+                                <Button variant="outlined" onClick={this.handleRegister}>Submit</Button>
+                                <Button variant="outlined" onClick={this.handleSwitch}>Cancel</Button>                                    
                             </div>
                             : <div className="buttonArea">
-                                <Button variant="outlined" onClick={() => this.props.onLogin(
-                                    document.getElementById("field_name").value, 
-                                    document.getElementById("field_password").value)}>
+                                <Button variant="outlined" onClick={this.handleLogin}>
                                     Login
                                 </Button>
-                                <Button variant="outlined" onClick={() => this.setState({isRegistering: true})}>
+                                <Button variant="outlined" onClick={this.handleSwitch}>
                                     Register
                                 </Button>                                    
                             </div>

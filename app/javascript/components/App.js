@@ -89,8 +89,13 @@ class App extends React.Component {
     console.log("Logout successfully");
   }
 
-  onRegister = () => {
+  onRegister = (givenName, givenPassword) => {
     console.log("Register");
+
+    console.log("givenName");
+    console.log(givenName);
+    console.log("givenPassword");
+    console.log(givenPassword);
 
     fetch("/api/users", {
       method: "POST",
@@ -100,9 +105,9 @@ class App extends React.Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({user: {
-        "name": document.getElementById("field_name").value,
-        "password": document.getElementById("field_password").value,
-        "password_confirmation": document.getElementById("field_password").value,
+        "name": givenName,
+        "password": givenPassword,
+        "password_confirmation": givenPassword,
         "admin": false
       }})
     })
@@ -113,7 +118,7 @@ class App extends React.Component {
       console.log("result:");
       console.log(result);
       console.log("Registered successfully");
-      this.onLogin(document.getElementById("field_name").value, document.getElementById("field_password").value);
+      this.onLogin(givenName, givenPassword);
     })
   }
 
