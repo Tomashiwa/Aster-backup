@@ -13,18 +13,20 @@ class RegisterLoginPopup extends React.Component {
         }
     }
 
-    componentDidMount() {
-        console.log("mount loginregi popup");
+    resetForm = () => {
+        this.setState({
+            isRegistering: false,
+            newName: "",
+            newPassword: ""
+        })
     }
 
     handleRegister = async() => {
-        await this.props.onRegister(this.state.newName, this.state.newPassword);
-        this.setState({newName: "", newPassword: ""});
+        await this.props.onRegister(this.state.newName, this.state.newPassword, this.resetForm);
     }
 
     handleLogin = async() => {
-        await this.props.onLogin(this.state.newName, this.state.newPassword);
-        this.setState({newName: "", newPassword: ""});
+        await this.props.onLogin(this.state.newName, this.state.newPassword, this.resetForm);
     }
 
     handleSwitch = () => {
@@ -48,7 +50,7 @@ class RegisterLoginPopup extends React.Component {
 
                 <DialogContent>
                     <DialogContentText>
-                        {this.state.isRegistering ? "Please fill in your particulars:" : "Kindly login with your particulars:"}
+                        {this.state.isRegistering ? "Please fill in your account details" : "Kindly login with your account:"}
                     </DialogContentText>
 
                     <TextField required={true} autoFocus value={this.state.newName} onChange={input => this.setState({newName: input.target.value})} margin="dense" id="field_name" label="Username" fullWidth />
@@ -59,15 +61,19 @@ class RegisterLoginPopup extends React.Component {
                     {
                         this.state.isRegistering
                             ? <div className="buttonArea">
-                                <Button variant="outlined" onClick={this.handleRegister}>Submit</Button>
-                                <Button variant="outlined" onClick={this.handleSwitch}>Cancel</Button>                                    
+                                <Button variant="outlined" onClick={this.handleRegister}>
+                                    Confirm
+                                </Button>
+                                <Button variant="outlined" onClick={this.handleSwitch}>
+                                    Sign in
+                                </Button>                                    
                             </div>
                             : <div className="buttonArea">
                                 <Button variant="outlined" onClick={this.handleLogin}>
                                     Login
                                 </Button>
                                 <Button variant="outlined" onClick={this.handleSwitch}>
-                                    Register
+                                    Sign up
                                 </Button>                                    
                             </div>
                     }

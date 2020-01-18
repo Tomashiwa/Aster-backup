@@ -39,7 +39,7 @@ class App extends React.Component {
     this.setState({filterSearchTerm: searchTerm});
   }
 
-  onLogin = (givenName, givenPassword) => {
+  onLogin = (givenName, givenPassword, callback) => {
     const request = {"auth": {"name": givenName, "password": givenPassword}};
     console.log("Login request:");
     console.log(request);
@@ -75,6 +75,9 @@ class App extends React.Component {
           this.fetchTags();
           this.fetchTasks();
           console.log("Logged in successfully");
+
+          callback();
+          console.log("callback from login executed");
         }
       })
     }
@@ -89,7 +92,7 @@ class App extends React.Component {
     console.log("Logout successfully");
   }
 
-  onRegister = (givenName, givenPassword) => {
+  onRegister = (givenName, givenPassword, callback) => {
     console.log("Register");
 
     console.log("givenName");
@@ -118,7 +121,7 @@ class App extends React.Component {
       console.log("result:");
       console.log(result);
       console.log("Registered successfully");
-      this.onLogin(givenName, givenPassword);
+      this.onLogin(givenName, givenPassword, callback);
     })
   }
 

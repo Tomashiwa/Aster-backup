@@ -38,8 +38,6 @@ class AddEditPopup extends React.Component {
                       fullWidth 
                       defaultValue={this.props.selectedTask ? this.props.selectedTask.title : this.props.newTitle}/>
 
-                    <br />
-
                     <div id="addEdit_dateTags">
                       <MuiPickersUtilsProvider id="addEdit_date" utils={DateFnsUtils}>
                         <KeyboardDateTimePicker
@@ -75,13 +73,10 @@ class AddEditPopup extends React.Component {
                           </div>
                       }
                     </div>
-
-                    <br />
                     
                     <div id="addEdit_descriptionBox">
                       <TextField
                         id="addEdit_descriptionField" 
-                        // variant="outlined"
                         multiline 
                         required={true} 
                         margin="dense" 
