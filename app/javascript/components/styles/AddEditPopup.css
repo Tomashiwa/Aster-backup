@@ -7,9 +7,25 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 }
 
-#addEdit_dateTags > #addEdit_tags {
+#addEdit_dateTags > #addEdit_tags_new {
+    display: flex;
+    flex-direction: column;
+}
+
+#addEdit_tags_new > #addEdit_tags_newBox {
     display: flex;
     flex-direction: row;
+}
+
+#addEdit_dateTags > #addEdit_tags_choosing {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#addEdit_descriptionBox {
+    /* background-image: linear-gradient(0deg, #ffffff4d 0%, #ffffff 100%); */
 }

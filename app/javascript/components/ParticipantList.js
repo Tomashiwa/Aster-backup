@@ -109,9 +109,8 @@ class ParticipantList extends React.Component {
 
                     {
                         this.state.isAdding && this.state.potentialParticipants.length >= 1
-                            ? <ListItem id="field_part" key={this.props.users.length + 1} disableGutters={true}>
+                            ? <ListItem id="addPart_item" key={this.props.users.length + 1} disableGutters={true}>
                                 <FormControl style={{display: "flex"}}>
-                                    <InputLabel shrink id="inputLabel_add_part">New participant</InputLabel>
                                     <Select
                                         labelId="select_new_partId"
                                         id="select_new_part"
@@ -134,8 +133,8 @@ class ParticipantList extends React.Component {
                             </ListItem> 
 
                             : this.props.users.length > this.state.participants.length
-                                ? <ListItem id="addpart_item" key={this.props.users.length + 1} disableGutters={true}>
-                                    <IconButton id="addpart_icon" onClick={this.handleClick}>
+                                ? <ListItem id="addPart_button" key={this.props.users.length + 1} disableGutters={true}>
+                                    <IconButton id="addPart_icon" onClick={this.handleClick}>
                                         <AddIcon />
                                     </IconButton>
                                 </ListItem>

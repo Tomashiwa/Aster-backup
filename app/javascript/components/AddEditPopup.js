@@ -29,6 +29,7 @@ class AddEditPopup extends React.Component {
                 
                 <DialogContent id="addEdit_content">
                   <TextField 
+                    style={{backgroundImage: "linear-gradient(to bottom, #ffffff, #ffffff4d)"}}
                     id="addEdit_titleField" 
                     autoFocus 
                     required={true} 
@@ -36,6 +37,8 @@ class AddEditPopup extends React.Component {
                     label="Title" 
                     fullWidth 
                     defaultValue={this.props.selectedTask ? this.props.selectedTask.title : this.props.newTitle}/>
+
+                  <br />
 
                   <div id="addEdit_dateTags">
                     <MuiPickersUtilsProvider id="addEdit_date" utils={DateFnsUtils}>
@@ -50,38 +53,44 @@ class AddEditPopup extends React.Component {
                       />
                     </MuiPickersUtilsProvider>
 
-                    <div id="addEdit_tags">
-                      <TagSelect tags={this.props.tags} tag_id={this.props.newTagId} onChange={this.props.onTagChange} />
-
-                      <IconButton color="primary" onClick={this.props.onNewTag}>
-                        <AddIcon />
-                      </IconButton>
-
-                      {
-                        this.props.isAddingTag 
-                          ? <div>
+                    {
+                      this.props.isAddingTag
+                        ? <div id="addEdit_tags_new">
+                            <TagSelect tags={this.props.tags} tag_id={this.props.newTagId} onChange={this.props.onTagChange} />  
+                            <div id="addEdit_tags_newBox">
                               <TextField margin="dense" id="addEdit_newTag" label="New Tag" />
-                              <IconButton color="primary" onClick={this.props.onAddTag}>
+                              <IconButton onClick={this.props.onAddTag}>
                                 <DoneIcon />
                               </IconButton> 
-                              <IconButton color="primary" onClick={this.props.onCancelTag}>
+                              <IconButton onClick={this.props.onCancelTag}>
                                 <CloseIcon />
                               </IconButton> 
                             </div> 
-                          : <div></div>
-                      }
-                    </div>
+                        </div>
+                        : <div id="addEdit_tags_choosing">
+                            <TagSelect tags={this.props.tags} tag_id={this.props.newTagId} onChange={this.props.onTagChange} />
+                            <IconButton onClick={this.props.onNewTag}>
+                              <AddIcon />
+                            </IconButton>
+                        </div>
+                    }
                   </div>
+
+                  <br />
                   
-                  <TextField
-                    id="addEdit_descriptionField" 
-                    multiline 
-                    required={true} 
-                    margin="dense" 
-                    label="Description" 
-                    fullWidth 
-                    rows={15}
-                    defaultValue={this.props.selectedTask ? this.props.selectedTask.description : this.props.newDescription} />
+                  <div id="addEdit_descriptionBox">
+                    <TextField
+                      style={{backgroundImage: "linear-gradient(to bottom, #ffffff, #ffffff4d)"}}
+                      id="addEdit_descriptionField" 
+                      variant="outlined"
+                      multiline 
+                      required={true} 
+                      margin="dense" 
+                      label="Description" 
+                      fullWidth 
+                      rows={15}
+                      defaultValue={this.props.selectedTask ? this.props.selectedTask.description : this.props.newDescription} />
+                  </div>
                 </DialogContent>
 
                 <DialogActions id="addEdit_buttons">

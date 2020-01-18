@@ -1,5 +1,11 @@
-#addpart_item {
+#addPart_button {
     display: flex;
+    justify-content: center;
+}
+
+#addPart_item {
+    display: flex;
+    flex-direction: row;
     justify-content: center;
 }
 

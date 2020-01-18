@@ -291,9 +291,7 @@ class TaskIndex extends React.Component {
           "X-CSRF-Token": csrfToken
         },
         body: JSON.stringify({tag: {
-          "name": document.getElementById("field_new_add_tag") !== null 
-                ? document.getElementById("field_new_add_tag").value
-                : document.getElementById("field_edit_add_tag").value,
+          "name": document.getElementById("addEdit_newTag").value,
           "user_id": this.props.user.id
         }})
       });
