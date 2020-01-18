@@ -14,7 +14,7 @@ class App extends React.Component {
       tasks: [],
       tags: [],
       user: null,
-      boardId: 1,
+      board: 1,
       filterTagId: 1,
       filterSearchTerm: "",
       errorMsg: ""
@@ -170,7 +170,10 @@ class App extends React.Component {
         return response.json();
     })
     .then(result => {
-      this.setState({boards: result});
+      this.setState({
+        boards: result,
+        board: result.filter(board => board.user_id == this.state.user.id)[0]
+      });
     })
   }
 
@@ -251,7 +254,7 @@ class App extends React.Component {
             <br />  
             
             <Board 
-              id={this.state.boardId} 
+              id={this.state.board.id} 
               tasks={this.state.tasks} 
               lists={this.state.lists} 
               user={this.state.user} 

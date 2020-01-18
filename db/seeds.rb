@@ -9,19 +9,22 @@ User.create!(name: "dummy", password: "password", password_confirmation: "passwo
 # User.create!(name:"Kaya Yoshiyuki", password: "345");
 # User.create!(name:"Nii Shigeru", password: "678");
 
+Board.create!(user_id: 1, name: "default");
 Board.create!(user_id: 2, name: "default");
-Board.create!(user_id: 1, name: "placeholder");
-Board.create!(user_id: 3, name: "placeholder 2");
+Board.create!(user_id: 3, name: "default");
 
 List.create!(board_id: 1, name: "Backlog");
 List.create!(board_id: 1, name: "To-do");
 List.create!(board_id: 1, name: "In progress");
 List.create!(board_id: 1, name: "Completed");
-List.create!(board_id: 2, name: "PLACEHOLDER 1");
-List.create!(board_id: 2, name: "PLACEHOLDER 2");
-List.create!(board_id: 3, name: "PLACEHOLDER 3");
-List.create!(board_id: 3, name: "PLACEHOLDER 4");
-List.create!(board_id: 3, name: "PLACEHOLDER 5");
+List.create!(board_id: 2, name: "Backlog");
+List.create!(board_id: 2, name: "To-do");
+List.create!(board_id: 2, name: "In progress");
+List.create!(board_id: 2, name: "Completed");
+List.create!(board_id: 3, name: "Backlog");
+List.create!(board_id: 3, name: "To-do");
+List.create!(board_id: 3, name: "In progress");
+List.create!(board_id: 3, name: "Completed");
 
 Tag.create!(name: "Any", user_id: nil)
 Tag.create!(name: "Red", user_id: nil)

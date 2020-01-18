@@ -174,7 +174,7 @@ class TaskIndex extends React.Component {
     console.log("Demoting task:");
     console.log(task);
 
-    if(this.props.list.id <= 1) {
+    if(this.props.list.id <= (4 * this.props.board_id) + 1) {
       console.log("Reached lowest list");
     } else {
       console.log("Demoting to list " + (this.props.list.id - 1));
@@ -219,8 +219,9 @@ class TaskIndex extends React.Component {
 
     console.log("Currently at list " + this.props.list.id);
 
-    if(this.props.list.id >= 4) {
+    if(this.props.list.id >= 4 * this.props.board_id) {
       console.log("Reached highest list");
+      console.log("MAX: " + (4 * this.props.board_id));
     } else {
       console.log("Promoting to list " + (this.props.list.id + 1));
 
