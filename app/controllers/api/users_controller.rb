@@ -1,5 +1,7 @@
 class Api::UsersController < ApiController
   require 'jwt'
+  require "pp"
+  require 'json'
   before_action :set_user, only: [:show, :update, :destroy]
  
   # GET /users
@@ -25,7 +27,7 @@ class Api::UsersController < ApiController
       @list4 = List.create(board_id: @board.id, name: "Completed");
       render :json => @user.to_json( :only => [:id, :name, :admin] ), status: :created
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: @user.errors.to_json() , status: :unprocessable_entity
     end
   end
 

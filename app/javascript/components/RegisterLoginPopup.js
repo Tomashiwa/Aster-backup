@@ -14,6 +14,7 @@ class RegisterLoginPopup extends React.Component {
     }
 
     resetForm = () => {
+        this.props.resetErrorMsg();
         this.setState({
             isRegistering: false,
             newName: "",
@@ -30,6 +31,7 @@ class RegisterLoginPopup extends React.Component {
     }
 
     handleSwitch = () => {
+        this.props.resetErrorMsg();
         this.setState({
             isRegistering: !this.state.isRegistering,
             newName: "",
@@ -53,8 +55,30 @@ class RegisterLoginPopup extends React.Component {
                         {this.state.isRegistering ? "Please fill in your account details" : "Kindly login with your account:"}
                     </DialogContentText>
 
-                    <TextField required={true} autoFocus value={this.state.newName} onChange={input => this.setState({newName: input.target.value})} margin="dense" id="field_name" label="Username" fullWidth />
-                    <TextField required={true} value={this.state.newPassword} onChange={input => this.setState({newPassword: input.target.value})} margin="dense" type="password" id="field_password" label="Password" fullWidth />                    
+                    <TextField 
+                        id="field_name" 
+                        label="Username" 
+                        margin="dense" 
+                        required 
+                        autoFocus 
+                        fullWidth 
+                        value={this.state.newName}
+                        inputProps={{ maxLength: 16 }}
+                        error={this.props.errorMsg !== ""}
+                        helperText={this.props.errorMsg}
+                        onChange={input => this.setState({newName: input.target.value})} 
+                    />
+                    <TextField 
+                        id="field_password" 
+                        label="Password" 
+                        type="password" 
+                        margin="dense" 
+                        required 
+                        fullWidth
+                        value={this.state.newPassword} 
+                        inputProps={{ maxLength: 20 }}
+                        onChange={input => this.setState({newPassword: input.target.value})} 
+                    />                    
                 
                     <br /><br />
 

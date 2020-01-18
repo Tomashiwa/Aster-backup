@@ -14,6 +14,9 @@ import "./styles/AddEditPopup.css"
 class AddEditPopup extends React.Component {
     constructor(props) {
       super(props);
+      this.state = {
+        newTag: ""
+      }
     }
 
     render() {
@@ -56,10 +59,23 @@ class AddEditPopup extends React.Component {
                           ? <div id="addEdit_tags_new">
                               <TagSelect tags={this.props.tags} tag_id={this.props.newTagId} onChange={this.props.onTagChange} />  
                               <div id="addEdit_tags_newBox">
-                                <TextField margin="dense" id="addEdit_newTag" label="New Tag" />
-                                <IconButton size="small" onClick={this.props.onAddTag}>
-                                  <DoneIcon />
-                                </IconButton> 
+                                <TextField 
+                                  id="addEdit_newTag" 
+                                  label="New Tag" 
+                                  margin="dense"
+                                  value={this.state.newTag}
+                                  inputProps={{ maxLength: 20 }}
+                                  error={this.state.newTag.length <= 2}
+                                  helperText={"Must be more than 2 characters."} 
+                                  onChange={input => this.setState({newTag: input.target.value})}
+                                />
+                                {
+                                  this.state.newTag.length <= 2
+                                  ? null
+                                  : <IconButton size="small" onClick={this.props.onAddTag}>
+                                      <DoneIcon />
+                                  </IconButton> 
+                                }
                                 <IconButton size="small" onClick={this.props.onCancelTag}>
                                   <CloseIcon />
                                 </IconButton> 

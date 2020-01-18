@@ -281,7 +281,7 @@ class TaskIndex extends React.Component {
     const addTag = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token]").content;
 
-      const response = await fetch("/api/tags", {
+      fetch("/api/tags", {
         method: "POST",
         withCredentials: true,
         credentials: "include",
@@ -294,17 +294,27 @@ class TaskIndex extends React.Component {
           "name": document.getElementById("addEdit_newTag").value,
           "user_id": this.props.user.id
         }})
-      });
+      })
+      .then(async(response) => {
+        console.log("new tag response:");
+        console.log(response);
 
-      console.log("Response:");
-      console.log(response);
+        const responseJson = await response.json();
+        return [response.status, responseJson];
+      })
+      .then(result => {
+        if(result[0] === 201) {
+          this.props.onUpdateTags();
+          this.setState({newTagId: this.props.tags[this.props.tags.length - 1].id + 1});
+          console.log("newTagId:");
+          console.log(this.state.newTagId);  
+        } else {
+          const errorMessage = result[1];
 
-      if(response.status === 201) {
-        this.props.onUpdateTags();
-        this.setState({newTagId: this.props.tags[this.props.tags.length - 1].id + 1});
-        console.log("newTagId:");
-        console.log(this.state.newTagId);
-      }
+          console.log("error:");
+          console.log(errorMessage[Object.keys(errorMessage)[0]][0]);
+        }
+      })
     }
     
     addTag();

@@ -16,7 +16,8 @@ class App extends React.Component {
       user: null,
       boardId: 1,
       filterTagId: 1,
-      filterSearchTerm: ""
+      filterSearchTerm: "",
+      errorMsg: ""
     };
   }
 
@@ -59,7 +60,7 @@ class App extends React.Component {
       .then(response => {
         console.log("login response:");
         console.log(response);
-        
+
         return response.status === 201 ? response.json() : null;
       })
       .then(result => {
@@ -75,9 +76,12 @@ class App extends React.Component {
           this.fetchTags();
           this.fetchTasks();
           console.log("Logged in successfully");
-
+  
           callback();
           console.log("callback from login executed");
+        } else {
+          console.log("Invalid username or password");
+          this.setState({errorMsg: "Invalid username or password."});
         }
       })
     }
@@ -95,11 +99,6 @@ class App extends React.Component {
   onRegister = (givenName, givenPassword, callback) => {
     console.log("Register");
 
-    console.log("givenName");
-    console.log(givenName);
-    console.log("givenPassword");
-    console.log(givenPassword);
-
     fetch("/api/users", {
       method: "POST",
       withCredentials: true,
@@ -115,13 +114,23 @@ class App extends React.Component {
       }})
     })
     .then(async(response) => {
-      return response.json();
+      console.log("register response:");
+      console.log(response);
+
+      const responseJson = await response.json();
+      return [response.status, responseJson];
     })
     .then(result => {
-      console.log("result:");
-      console.log(result);
-      console.log("Registered successfully");
-      this.onLogin(givenName, givenPassword, callback);
+      if(result[0] === 201) {
+        this.onLogin(givenName, givenPassword, callback);
+      } else {
+        const errorMessage = result[1];
+
+        console.log("error:");
+        console.log(errorMessage[Object.keys(errorMessage)[0]][0]);
+
+        this.setState({errorMsg: errorMessage[Object.keys(errorMessage)[0]][0] + "."});
+      }
     })
   }
 
@@ -138,7 +147,7 @@ class App extends React.Component {
       }
     })
     .then(async(response) => {
-        return response.json();
+      return response.json();
     })
     .then(result => {
       this.setState({users: result, user: result.filter(user => user.name === name)[0]});
@@ -256,7 +265,9 @@ class App extends React.Component {
             <RegisterLoginPopup 
               isOpened={localStorage.getItem("jwt") === null}
               onRegister={this.onRegister}
-              onLogin={this.onLogin}               
+              onLogin={this.onLogin}
+              errorMsg={this.state.errorMsg}
+              resetErrorMsg={() => this.setState({errorMsg: ""})}               
             />
           </div>
         : <div>LOADING...</div>

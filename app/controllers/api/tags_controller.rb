@@ -25,7 +25,8 @@ class Api::TagsController < ApiController
         if @tag.save
             render json: @tag, status: :created
         else
-            render json: @tag.errors, status: :unprocessable_entity
+            puts "error in submit tag"
+            render json: @tag.errors.to_json(), status: :unprocessable_entity
         end
     end
 
