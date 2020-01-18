@@ -182,7 +182,7 @@ class CommentSection extends React.Component {
 
                 <br />
 
-                <Box id="commentBox" borderRadius={8} border={1} borderColor="white" style={{maxWidth: "700px"}}>
+                <Box id="commentBox" borderRadius={8} style={{maxWidth: "700px"}}>
                     <List>
                         {
                            this.state.comments.map(comment => (

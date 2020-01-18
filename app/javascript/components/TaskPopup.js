@@ -94,7 +94,7 @@ class TaskPopup extends React.Component {
                 }}}
             >
                 <DialogTitle>
-                    <Box id="titleDateTagsBox" borderRadius={8} border={1} borderColor="white">
+                    <Box id="titleDateTagsBox" borderRadius={8}>
                         <div id="titleDate">
                             <div id="title">
                                 {this.props.selectedTask.title}
@@ -110,7 +110,7 @@ class TaskPopup extends React.Component {
                 </DialogTitle>
 
                 <DialogContent>
-                    <Box id="description" borderRadius={8} border={1} borderColor="white">
+                    <Box id="description" borderRadius={8}>
                         <DialogContentText id="description_text">
                             {this.props.selectedTask.description}
                         </DialogContentText>

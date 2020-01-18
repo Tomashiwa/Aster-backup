@@ -81,7 +81,7 @@ class ParticipantList extends React.Component {
 
                 <br />
 
-                <Box id="listBox" borderRadius={8} border={1} borderColor="white">
+                <Box id="listBox" borderRadius={8}>
                     <List dense={true} disablePadding={true}>
                     {
                         this.state.participants.map((participant) => {
