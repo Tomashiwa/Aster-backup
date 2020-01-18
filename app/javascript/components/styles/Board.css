@@ -7,4 +7,5 @@ section {
 section article {
     flex-grow: 1;
     flex-basis: 0;
+    max-width: 25%;
 }
