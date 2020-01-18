@@ -1,6 +1,7 @@
 User.create!(name: "superuser", password: "superpass", password_confirmation: "superpass", admin: true)
-User.create!(name: "user", password: "pass", password_confirmation: "pass", admin: false)
-User.create!(name: "dummy", password: "pass", password_confirmation: "pass", admin: false)
+User.create!(name: "user", password: "password", password_confirmation: "password", admin: false)
+User.create!(name: "dummy", password: "password", password_confirmation: "password", admin: false)
+
 # User.create!(name:"Matsuoka Tamotsu", password: "123");
 # User.create!(name:"Noguchi Cho", password: "456");
 # User.create!(name:"Nakamoto Kyoko", password: "789");
