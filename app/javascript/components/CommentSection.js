@@ -242,7 +242,16 @@ class CommentSection extends React.Component {
 
                     <br/>
                     
-                    <TextField id="field_newComment" variant="filled" value={this.state.newComment} onChange={event => {this.setState({newComment: event.target.value})}} multiline={true} size="small" fullWidth={true} variant="outlined" />
+                    <TextField 
+                        id="field_newComment" 
+                        multiline
+                        fullWidth 
+                        size="small" 
+                        rows={5}
+                        variant="outlined" 
+                        value={this.state.newComment} 
+                        onChange={event => {this.setState({newComment: event.target.value})}} 
+                    />
                     
                     <div id="submitButton">
                         <Button variant="outlined" onClick={this.handleAdd}>
