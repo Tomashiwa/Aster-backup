@@ -29,7 +29,6 @@ class AddEditPopup extends React.Component {
                 
                 <DialogContent id="addEdit_content">
                   <TextField 
-                    style={{backgroundImage: "linear-gradient(to bottom, #ffffff, #ffffff4d)"}}
                     id="addEdit_titleField" 
                     autoFocus 
                     required={true} 
@@ -59,10 +58,10 @@ class AddEditPopup extends React.Component {
                             <TagSelect tags={this.props.tags} tag_id={this.props.newTagId} onChange={this.props.onTagChange} />  
                             <div id="addEdit_tags_newBox">
                               <TextField margin="dense" id="addEdit_newTag" label="New Tag" />
-                              <IconButton onClick={this.props.onAddTag}>
+                              <IconButton size="small" onClick={this.props.onAddTag}>
                                 <DoneIcon />
                               </IconButton> 
-                              <IconButton onClick={this.props.onCancelTag}>
+                              <IconButton size="small" onClick={this.props.onCancelTag}>
                                 <CloseIcon />
                               </IconButton> 
                             </div> 
@@ -96,11 +95,21 @@ class AddEditPopup extends React.Component {
                 <DialogActions id="addEdit_buttons">
                   {
                     this.props.isAdding
-                      ? <Button onClick={() => this.props.onSubmit(document.getElementById("addEdit_titleField").value, document.getElementById("addEdit_descriptionField").value)} color="primary">Submit</Button>
-                      : <Button onClick={() => this.props.onConfirm(document.getElementById("addEdit_titleField").value, document.getElementById("addEdit_descriptionField").value)()} color="primary">Confirm</Button>
+                      ? <Button
+                          variant="outlined"
+                          onClick={() => this.props.onSubmit(document.getElementById("addEdit_titleField").value, document.getElementById("addEdit_descriptionField").value)} 
+                        >
+                          Submit
+                        </Button>
+                      : <Button
+                          variant="outlined"
+                          onClick={() => this.props.onConfirm(document.getElementById("addEdit_titleField").value, document.getElementById("addEdit_descriptionField").value)()}
+                        >
+                          Confirm
+                        </Button>
                   }
 
-                  <Button onClick={this.props.onClose} color="primary">
+                  <Button variant="outlined" onClick={this.props.onClose}>
                     Cancel
                   </Button>
                 </DialogActions>

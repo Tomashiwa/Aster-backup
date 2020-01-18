@@ -14,8 +14,8 @@ const styles = {
         right: 0
     },
     removePadding: {
-        paddingLeft: 0,
-        paddingRight: 15,
+        paddingLeft: 8,
+        paddingRight: 8,
         alignItems: "stretch"
     }
 };

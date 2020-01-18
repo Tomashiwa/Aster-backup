@@ -128,11 +128,11 @@ class TaskPopup extends React.Component {
                                 <ParticipantList task={this.props.selectedTask} users={this.props.users} onAdd={this.addParticipant} onDelete={this.deleteParticipant}/>
                             </div>
                             <div id="confirmClose" >
-                                <Button variant="contained" disabled={!this.state.hasChanged} onClick={this.props.onConfirm}>
+                                <Button variant="outlined" disabled={!this.state.hasChanged} onClick={this.props.onConfirm}>
                                     Confirm Changes
                                 </Button>
                                 <br></br>
-                                <Button variant="contained" onClick={this.props.onClose}>
+                                <Button variant="outlined" onClick={this.props.onClose}>
                                     Close
                                 </Button>
                             </div>
