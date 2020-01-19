@@ -10,7 +10,8 @@ class Api::ListsController < ApiController
             @board = Board.where(:user_id => current_user.id).first
 
             if(@board != nil) 
-                @lists = List.where(:board_id => @board.id)
+                @tasks = Task.where("?=ANY(participants)", current_user.id)
+                @lists = List.where(:id => @tasks.pluck(:list_id)).or(List.where(:board_id => @board.id))
             else
                 @lists = []
             end

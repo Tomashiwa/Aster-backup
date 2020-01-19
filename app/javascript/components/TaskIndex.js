@@ -92,7 +92,7 @@ class TaskIndex extends React.Component {
           "description": newDescription,
           "tag_id": this.state.newTagId,
           "due_date": this.state.newDueDate,
-          "participants": []
+          "participants": [this.props.user.id]
         }})
       });
 
