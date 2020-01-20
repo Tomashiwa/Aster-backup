@@ -69,7 +69,6 @@ class TaskIndex extends React.Component {
 
   handleSubmit = (newTitle, newDescription) => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
-    console.log(bearer);
 
     const addTask = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
@@ -104,7 +103,6 @@ class TaskIndex extends React.Component {
 
   handleConfirm = (modifiedTitle, modifiedDescription) => event => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
-    console.log(bearer);
 
     const saveTask = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
@@ -143,7 +141,6 @@ class TaskIndex extends React.Component {
 
   handleDelete = task => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
-    console.log(bearer);
 
     const deleteTask = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token").content;
@@ -177,7 +174,6 @@ class TaskIndex extends React.Component {
       console.log("Demoting to list " + (this.props.list.id - 1));
 
       let bearer = "Bearer " + localStorage.getItem("jwt");
-      console.log(bearer);
 
       const demoteTask = async() => {
         const csrfToken = document.querySelector("meta[name=csrf-token").content;
@@ -223,7 +219,6 @@ class TaskIndex extends React.Component {
       console.log("Promoting to list " + (this.props.list.id + 1));
 
       let bearer = "Bearer " + localStorage.getItem("jwt");
-      console.log(bearer);
 
       const promoteTask = async() => {
         const csrfToken = document.querySelector("meta[name=csrf-token").content;
@@ -261,10 +256,6 @@ class TaskIndex extends React.Component {
   };
 
   handleTagChange = event => {
-    console.log("Called handleTagChange from TaskIndex");
-    console.log("event:");
-    console.log(event);
-
     this.setState({newTagId: event.target.value});
   };
 
@@ -274,7 +265,6 @@ class TaskIndex extends React.Component {
 
   handleSubmitTag = () => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
-    console.log(bearer);
 
     const addTag = async() => {
       const csrfToken = document.querySelector("meta[name=csrf-token]").content;
@@ -294,9 +284,6 @@ class TaskIndex extends React.Component {
         }})
       })
       .then(async(response) => {
-        console.log("new tag response:");
-        console.log(response);
-
         const responseJson = await response.json();
         return [response.status, responseJson];
       })
@@ -304,13 +291,6 @@ class TaskIndex extends React.Component {
         if(result[0] === 201) {
           this.props.onUpdateTags();
           this.setState({newTagId: this.props.tags[this.props.tags.length - 1].id + 1});
-          console.log("newTagId:");
-          console.log(this.state.newTagId);  
-        } else {
-          const errorMessage = result[1];
-
-          console.log("error:");
-          console.log(errorMessage[Object.keys(errorMessage)[0]][0]);
         }
       })
     }

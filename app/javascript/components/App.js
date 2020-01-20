@@ -80,14 +80,14 @@ class App extends React.Component {
           callback();
           console.log("callback from login executed");
 
-          console.log("Fetched Users:");
-          console.log(this.state.users);
-          console.log("Fetched boards:");
-          console.log(this.state.boards);
-          console.log("Fetched lists:");
-          console.log(this.state.lists);
-          console.log("Fetched tasks:");
-          console.log(this.state.tasks);
+          // console.log("Fetched Users:");
+          // console.log(this.state.users);
+          // console.log("Fetched boards:");
+          // console.log(this.state.boards);
+          // console.log("Fetched lists:");
+          // console.log(this.state.lists);
+          // console.log("Fetched tasks:");
+          // console.log(this.state.tasks);
         } else {
           console.log("Invalid username or password");
           this.setState({errorMsg: "Invalid username or password."});
@@ -113,8 +113,6 @@ class App extends React.Component {
   }
 
   onRegister = (givenName, givenPassword, callback) => {
-    console.log("Register");
-
     fetch("/api/users", {
       method: "POST",
       withCredentials: true,
@@ -130,9 +128,6 @@ class App extends React.Component {
       }})
     })
     .then(async(response) => {
-      console.log("register response:");
-      console.log(response);
-
       const responseJson = await response.json();
       return [response.status, responseJson];
     })
@@ -141,10 +136,6 @@ class App extends React.Component {
         this.onLogin(givenName, givenPassword, callback);
       } else {
         const errorMessage = result[1];
-
-        console.log("error:");
-        console.log(errorMessage[Object.keys(errorMessage)[0]][0]);
-
         this.setState({errorMsg: errorMessage[Object.keys(errorMessage)[0]][0] + "."});
       }
     })
@@ -235,7 +226,6 @@ class App extends React.Component {
   
   fetchTasks = callback => {
     let bearer = "Bearer " + localStorage.getItem("jwt");
-    console.log(bearer);
 
     fetch("/api/tasks", {
       method: "GET",

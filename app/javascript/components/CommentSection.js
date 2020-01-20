@@ -33,7 +33,6 @@ class CommentSection extends React.Component {
 
     fetchComments = () => {
         let bearer = "Bearer " + localStorage.getItem("jwt");
-        console.log(bearer);
         
         fetch("/api/comments", {
           method: "GET",
@@ -46,19 +45,11 @@ class CommentSection extends React.Component {
           }
         })
         .then(async(response) => {
-          console.log("Comments response:");
-          console.log(response);
-        
           return response.json();
         })
         .then(result => {
           let filteredResult =  result.filter(comment => {return comment.task_id === parseInt(this.props.task_id);});
-          console.log("Presort comments result:");
-          console.log(filteredResult);
-
           filteredResult = filteredResult.sort((first, second) => first.id > second.id);
-          console.log("Postsort comments result:");
-          console.log(filteredResult);
 
           this.setState({comments: filteredResult});
         })
@@ -125,9 +116,6 @@ class CommentSection extends React.Component {
                 }})
             })
 
-            console.log("SAVE Comment response:");
-            console.log(response);
-
             if(response.status === 200) {
                 this.setState({editingCommentID: -1, editedComment: ""});
                 this.fetchComments();
@@ -157,9 +145,6 @@ class CommentSection extends React.Component {
                     "X-CSRF-Token": csrfToken
                 }
             });
-
-            console.log("DELETE comment response:");
-            console.log(response);
 
             if(response.status === 204) {
                 this.fetchComments();

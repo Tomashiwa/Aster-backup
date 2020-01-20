@@ -14,12 +14,6 @@ class Board extends React.Component {
 
     render() {
         const listsOwned = this.props.lists.filter(list => list.board_id === this.props.id);
-        console.log("tasks:");
-        console.log(this.props.tasks);
-        console.log("lists:");
-        console.log(this.props.lists);
-        console.log("listsOwned:");
-        console.log(listsOwned);
 
         return (
             <div>

@@ -45,7 +45,6 @@ class TaskPopup extends React.Component {
             });
 
             if(response.status === 200) {
-                console.log("Added participant successfully");
                 this.props.fetchTasks(() => this.props.refreshSelected(this.props.selectedTask, callback));
             }
         }
@@ -55,7 +54,6 @@ class TaskPopup extends React.Component {
 
     deleteParticipant = (userId, callback) => {
         let bearer = "Bearer " + localStorage.getItem("jwt");
-        console.log(bearer);
 
         const deleteParti = async() => {
             const csrfToken = document.querySelector("meta[name=csrf-token").content;
