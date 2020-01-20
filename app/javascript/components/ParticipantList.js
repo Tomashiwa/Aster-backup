@@ -125,7 +125,7 @@ class ParticipantList extends React.Component {
                                 </IconButton>
                             </ListItem> 
 
-                            : this.props.users.length > this.state.participants.length
+                            : parseInt(this.props.user.id) === this.state.participants[0] && this.props.users.length > this.state.participants.length
                                 ? <ListItem id="addPart_button" key={this.props.users.length + 1} disableGutters={true}>
                                     <IconButton id="addPart_icon" onClick={this.handleClick}>
                                         <AddIcon />

@@ -370,21 +370,26 @@ class TaskIndex extends React.Component {
                         </React.Fragment>
                       }
                     />
-  
-                    <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
-                      <IconButton size="small" onClick={() => this.handleDemote(task)} classes={{root: classes.taskButtons}}>
-                        <ChevronLeftIcon />
-                      </IconButton>
-                      <IconButton size="small" onClick={() => this.handlePromote(task)} classes={{root: classes.taskButtons}}>
-                        <ChevronRightIcon />
-                      </IconButton>
-                      <IconButton size="small" onClick={() => this.handleEdit(task)} classes={{ root: classes.taskButtons }}>
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton size="small" onClick={() => this.handleDelete(task)} classes={{ root: classes.taskButtons }}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
+
+                    {
+                      parseInt(this.props.user.id) === task.participants[0]
+                        ? <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
+                            <IconButton size="small" onClick={() => this.handleDemote(task)} classes={{root: classes.taskButtons}}>
+                              <ChevronLeftIcon />
+                            </IconButton>
+                            <IconButton size="small" onClick={() => this.handlePromote(task)} classes={{root: classes.taskButtons}}>
+                              <ChevronRightIcon />
+                            </IconButton>
+                            <IconButton size="small" onClick={() => this.handleEdit(task)} classes={{ root: classes.taskButtons }}>
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton size="small" onClick={() => this.handleDelete(task)} classes={{ root: classes.taskButtons }}>
+                              <DeleteIcon />
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        : null
+                    }
+
                   </ListItem>
                 </React.Fragment>
               ))
