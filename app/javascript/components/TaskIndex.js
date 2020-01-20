@@ -436,7 +436,8 @@ class TaskIndex extends React.Component {
                   onConfirm={this.handleConfirm(this.state.title, this.state.description)}
                   onClose={this.handleClose}
                   fetchTasks={this.props.fetchTasks}
-                  refreshSelected={this.refreshSelected} />
+                  refreshSelected={this.refreshSelected}
+                  deleteSelf={() => this.handleDelete(this.state.selectedTask)} />
               : null
           }
 

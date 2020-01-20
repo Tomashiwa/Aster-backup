@@ -59,27 +59,31 @@ class TaskPopup extends React.Component {
 
         const deleteParti = async() => {
             const csrfToken = document.querySelector("meta[name=csrf-token").content;
-
-            const response = await fetch("/api/tasks/" + this.props.selectedTask.id, {
-                method: "PATCH",
-                withCredentials: true,
-                credentials: "include",
-                headers: {
-                  "Authorization": bearer,
-                  "Content-Type": "application/json",
-                  "X-CSRF-Token": csrfToken
-                },
-                body: JSON.stringify({task: {
-                    "title": this.props.selectedTask.title,
-                    "description": this.props.selectedTask.description,
-                    "tag_id": this.props.selectedTask.tag_id,
-                    "due_date": this.props.selectedTask.due_date,
-                    "participants": this.props.selectedTask.participants.filter(participant => {return participant !== userId})
-                }})
-            });
-
-            if(response.status === 200) {
-                this.props.fetchTasks(() => this.props.refreshSelected(this.props.selectedTask, callback));
+            
+            if(this.props.selectedTask.participants.length > 1) {
+                const response = await fetch("/api/tasks/" + this.props.selectedTask.id, {
+                    method: "PATCH",
+                    withCredentials: true,
+                    credentials: "include",
+                    headers: {
+                      "Authorization": bearer,
+                      "Content-Type": "application/json",
+                      "X-CSRF-Token": csrfToken
+                    },
+                    body: JSON.stringify({task: {
+                        "title": this.props.selectedTask.title,
+                        "description": this.props.selectedTask.description,
+                        "tag_id": this.props.selectedTask.tag_id,
+                        "due_date": this.props.selectedTask.due_date,
+                        "participants": this.props.selectedTask.participants.filter(participant => {return participant !== userId})
+                    }})
+                });
+    
+                if(response.status === 200) {
+                    this.props.fetchTasks(() => this.props.refreshSelected(this.props.selectedTask, callback));
+                }
+            } else {
+                this.props.deleteSelf();
             }
         }
 

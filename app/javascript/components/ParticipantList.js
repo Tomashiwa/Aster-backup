@@ -40,17 +40,10 @@ class ParticipantList extends React.Component {
     }
 
     refreshParticipants = () => {
-        console.log("Refreshing participants with:");
-        console.log(this.props.task.participants);
-
         this.setState({participants: this.props.task.participants});
     }
     
     handleAdd = () => {
-        console.log("Adding participant as button clicked");
-        console.log("New participant ID:");
-        console.log(this.state.newPartiId);
-
         this.props.onAdd(this.state.newPartiId, this.refreshParticipants);
         this.handleClose();
     }
