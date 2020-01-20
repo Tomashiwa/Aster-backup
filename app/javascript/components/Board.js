@@ -31,11 +31,12 @@ class Board extends React.Component {
                                     board_id={this.props.id} 
                                     list={list}
                                     tasks={this.props.tasks.filter(task => {
-                                        const listIndex = parseInt(list.id) % (4 * (parseInt(this.props.id - 1)));
-                                        const task_listIndex = parseInt(task.list_id) % (4 * (parseInt(this.props.lists.find(searchedList => searchedList.id === task.list_id).board_id - 1)));
+                                        const listIndex = (this.props.id - 1) <= 0 
+                                            ? list.id
+                                            : parseInt(list.id) - (4 * (parseInt(this.props.id - 1))) 
 
-                                        // console.log("Finding Task:");
-                                        // console.log(task);
+                                        const task_listIndex = parseInt(task.list_id) - (4 * (parseInt(this.props.lists.find(searchedList => searchedList.id === task.list_id).board_id - 1)));
+                                        const hasViewRight = listIndex === task_listIndex;
 
                                         const hasPassFilter = this.props.filterTagId > 1
                                             ? parseInt(this.props.filterTagId) === task.tag_id
@@ -46,8 +47,7 @@ class Board extends React.Component {
                                                 || task.description.toLowerCase().includes(this.props.filterSearchTerm.toLowerCase())
                                             : true;
 
-                                        return listIndex == task_listIndex && hasPassFilter && hasPassSearch;
-                                        // return parseInt(list.id) === task.list_id && hasPassFilter && hasPassSearch;
+                                        return hasViewRight && hasPassFilter && hasPassSearch;
                                     })}
                                     user={this.props.user}
                                     users={this.props.users}

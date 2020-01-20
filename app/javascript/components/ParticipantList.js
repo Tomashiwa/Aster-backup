@@ -94,13 +94,13 @@ class ParticipantList extends React.Component {
                             onMouseLeave={() => this.handleExitHover()}>
                                 <UserInfo user={this.props.users.filter(user => {return parseInt(user.id) === participant;})[0]} />
                                 {
-                                    this.state.hovered === participant
-                                        ? <ListItemSecondaryAction>
+                                    this.state.hovered === participant && (this.props.user.admin || parseInt(this.props.user.id) === this.state.participants[0] || parseInt(this.props.user.id) === participant)
+                                    ? <ListItemSecondaryAction>
                                             <IconButton size="small" onClick={() => this.handleDelete(participant)}>
-                                            <CloseIcon />
+                                                <CloseIcon />
                                             </IconButton>
-                                        </ListItemSecondaryAction>
-                                        : null
+                                    </ListItemSecondaryAction>
+                                    : null
                                 }
                             </ListItem>
                         )
