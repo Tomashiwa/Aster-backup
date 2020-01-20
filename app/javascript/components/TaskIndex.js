@@ -94,7 +94,7 @@ class TaskIndex extends React.Component {
       });
 
       if(response.status === 201) {
-        window.location.reload();
+        this.props.fetchTasks();
       }
     }
 
@@ -129,7 +129,7 @@ class TaskIndex extends React.Component {
       });
 
       if(response.status === 200) {
-        window.location.reload();
+        this.props.fetchTasks();
       }
     }
 
@@ -160,7 +160,7 @@ class TaskIndex extends React.Component {
       });
 
       if (response.status === 204) {
-          window.location.reload();
+        this.props.fetchTasks();
       }
     }
 
@@ -202,7 +202,7 @@ class TaskIndex extends React.Component {
         });
   
         if(response.status === 200) {
-          window.location.reload();
+          this.props.fetchTasks();
         }
       }
   
@@ -248,7 +248,7 @@ class TaskIndex extends React.Component {
         });
   
         if(response.status === 200) {
-          window.location.reload();
+          this.props.fetchTasks();
         }
       }
   
