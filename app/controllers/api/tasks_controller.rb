@@ -12,7 +12,15 @@ class Api::TasksController < ApiController
             if(@board != nil) 
                 # @lists = List.where(:board_id => @board.id)
                 # @tasks = Task.where(:list_id => @lists.ids).or(Task.where("?=ANY(participants)", current_user.id))
+
+                puts "current user id:"
+                puts current_user.id
+
                 @tasks = Task.where("?=ANY(participants)", current_user.id)
+                puts "tasks"
+                @tasks.each do |task|
+                    puts "task title: " + task.title
+                end
             else
                 @tasks = []
             end

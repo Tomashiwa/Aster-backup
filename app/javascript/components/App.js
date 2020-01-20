@@ -79,6 +79,15 @@ class App extends React.Component {
   
           callback();
           console.log("callback from login executed");
+
+          console.log("Fetched Users:");
+          console.log(this.state.users);
+          console.log("Fetched boards:");
+          console.log(this.state.boards);
+          console.log("Fetched lists:");
+          console.log(this.state.lists);
+          console.log("Fetched tasks:");
+          console.log(this.state.tasks);
         } else {
           console.log("Invalid username or password");
           this.setState({errorMsg: "Invalid username or password."});
@@ -92,7 +101,14 @@ class App extends React.Component {
   onLogout = () => {    
     localStorage.removeItem("name");
     localStorage.removeItem("jwt");
-    this.setState({user: null});
+    this.setState({
+      users: [],
+      boards: [],
+      lists: [],
+      tasks: [],
+      tags: [],
+      user: null
+    });
     console.log("Logout successfully");
   }
 
@@ -243,28 +259,42 @@ class App extends React.Component {
     return (
       this.state
         ? <div>
-            <Navigator 
-              tags={this.state.tags} 
-              user={this.state.user} 
-              filterTagId={this.state.filterTagId} 
-              onLogout={this.onLogout} 
-              onFilter={this.onFilter} 
-              onSearch={this.onSearch} />
+            {/* this.fetchUsers(givenName);
+          this.fetchBoards();
+          this.fetchLists();
+          this.fetchTags();
+          this.fetchTasks(); */}
 
-            <br />  
+            {
+              this.state.users && this.state.tags
+                ? <Navigator 
+                    tags={this.state.tags} 
+                    user={this.state.user} 
+                    filterTagId={this.state.filterTagId} 
+                    onLogout={this.onLogout} 
+                    onFilter={this.onFilter} 
+                    onSearch={this.onSearch} />
+                : null              
+            }
+
+            <br />
+
+            {
+              this.state.users && this.state.lists && this.state.tags && this.state.tags
+                ? <Board 
+                    id={this.state.board.id} 
+                    tasks={this.state.tasks} 
+                    lists={this.state.lists} 
+                    user={this.state.user} 
+                    users={this.state.users} 
+                    tags={this.state.tags} 
+                    filterTagId={this.state.filterTagId} 
+                    filterSearchTerm={this.state.filterSearchTerm}
+                    onUpdateTags={this.fetchTags}
+                    fetchTasks={this.fetchTasks} /> 
+                : null
+            }
             
-            <Board 
-              id={this.state.board.id} 
-              tasks={this.state.tasks} 
-              lists={this.state.lists} 
-              user={this.state.user} 
-              users={this.state.users} 
-              tags={this.state.tags} 
-              filterTagId={this.state.filterTagId} 
-              filterSearchTerm={this.state.filterSearchTerm}
-              onUpdateTags={this.fetchTags}
-              fetchTasks={this.fetchTasks} />
-
             <RegisterLoginPopup 
               isOpened={localStorage.getItem("jwt") === null}
               onRegister={this.onRegister}

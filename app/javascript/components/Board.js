@@ -14,6 +14,8 @@ class Board extends React.Component {
 
     render() {
         const listsOwned = this.props.lists.filter(list => list.board_id === this.props.id);
+        console.log("tasks:");
+        console.log(this.props.tasks);
         console.log("lists:");
         console.log(this.props.lists);
         console.log("listsOwned:");
@@ -31,6 +33,9 @@ class Board extends React.Component {
                                     tasks={this.props.tasks.filter(task => {
                                         const listIndex = parseInt(list.id) % (4 * (parseInt(this.props.id - 1)));
                                         const task_listIndex = parseInt(task.list_id) % (4 * (parseInt(this.props.lists.find(searchedList => searchedList.id === task.list_id).board_id - 1)));
+
+                                        // console.log("Finding Task:");
+                                        // console.log(task);
 
                                         const hasPassFilter = this.props.filterTagId > 1
                                             ? parseInt(this.props.filterTagId) === task.tag_id

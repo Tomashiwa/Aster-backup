@@ -17,10 +17,12 @@ List.create!(board_id: 1, name: "Backlog");
 List.create!(board_id: 1, name: "To-do");
 List.create!(board_id: 1, name: "In progress");
 List.create!(board_id: 1, name: "Completed");
+
 List.create!(board_id: 2, name: "Backlog");
 List.create!(board_id: 2, name: "To-do");
 List.create!(board_id: 2, name: "In progress");
 List.create!(board_id: 2, name: "Completed");
+
 List.create!(board_id: 3, name: "Backlog");
 List.create!(board_id: 3, name: "To-do");
 List.create!(board_id: 3, name: "In progress");
