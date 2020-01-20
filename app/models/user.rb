@@ -14,4 +14,9 @@ class User < ApplicationRecord
     validates_length_of :password_confirmation, maximum: 20, message: "Password confirmation must be less than 21 characters."
     
     validates_length_of :password_digest, minimum: 6, message: "Encrypted password must be more than 5 characters."
+
+    def self.from_token_request request
+        name = request.params["auth"] && request.params["auth"]["name"]
+        self.find_by name: name
+    end
 end

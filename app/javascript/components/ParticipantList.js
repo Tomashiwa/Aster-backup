@@ -26,7 +26,7 @@ class ParticipantList extends React.Component {
     }
 
     handleClick = () => {
-        const potentialParticipants = this.props.users.filter(user => {return this.state.participants.filter(participant => {return parseInt(user.id) === participant}).length === 0})
+        const potentialParticipants = this.props.users.filter(user => {return (this.state.participants.filter(participant => {return parseInt(user.id) === participant}).length === 0 && !user.admin)});
 
         this.setState({
             isAdding: true, 
