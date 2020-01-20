@@ -23,11 +23,12 @@ class Board extends React.Component {
                             <article key={list.id}>
                                 <TaskIndex 
                                     board_id={this.props.id} 
+                                    lists={this.props.lists}
                                     list={list}
                                     tasks={this.props.tasks.filter(task => {
                                         const listIndex = (this.props.id - 1) <= 0 
                                             ? list.id
-                                            : parseInt(list.id) - (4 * (parseInt(this.props.id - 1))) 
+                                            : parseInt(list.id) - (4 * (parseInt(this.props.id - 1))); 
 
                                         const task_listIndex = parseInt(task.list_id) - (4 * (parseInt(this.props.lists.find(searchedList => searchedList.id === task.list_id).board_id - 1)));
                                         const hasViewRight = listIndex === task_listIndex;

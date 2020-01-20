@@ -168,7 +168,11 @@ class TaskIndex extends React.Component {
     console.log("Demoting task:");
     console.log(task);
 
-    if(this.props.list.id <= (4 * this.props.board_id) + 1) {
+    const listIndex = (this.props.board_id - 1) <= 0 
+      ? this.props.list.id
+      : parseInt(this.props.list.id) - (4 * (parseInt(this.props.board_id - 1)));
+
+    if(listIndex <= 1) {
       console.log("Reached lowest list");
     } else {
       console.log("Demoting to list " + (this.props.list.id - 1));
@@ -210,11 +214,13 @@ class TaskIndex extends React.Component {
     console.log("Promoting task:");
     console.log(task);
 
-    console.log("Currently at list " + this.props.list.id);
+    const listIndex = (this.props.board_id - 1) <= 0 
+      ? this.props.list.id
+      : parseInt(this.props.list.id) - (4 * (parseInt(this.props.board_id - 1)));
 
-    if(this.props.list.id >= 4 * this.props.board_id) {
+    if(listIndex >= 4) {
       console.log("Reached highest list");
-      console.log("MAX: " + (4 * this.props.board_id));
+      // console.log("MAX: " + (4 * this.props.board_id));
     } else {
       console.log("Promoting to list " + (this.props.list.id + 1));
 
@@ -352,7 +358,7 @@ class TaskIndex extends React.Component {
                     />
 
                     {
-                      parseInt(this.props.user.id) === task.participants[0]
+                      this.props.user.admin || parseInt(this.props.user.id) === task.participants[0]
                         ? <ListItemSecondaryAction classes={{ root: classes.editDelete }}>
                             <IconButton size="small" onClick={() => this.handleDemote(task)} classes={{root: classes.taskButtons}}>
                               <ChevronLeftIcon />
