@@ -35,10 +35,7 @@ class TaskIndex extends React.Component {
 
             maxWidth: 360,
             backgroundColor: theme.palette.background.paper
-        },
-        table: {
-            minWidth: 650
-        },
+        }
       })),
       isAdding: false, 
       isEditing: false, 

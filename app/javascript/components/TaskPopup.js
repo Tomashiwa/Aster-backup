@@ -94,7 +94,8 @@ class TaskPopup extends React.Component {
         return(
             <Dialog id="popup" fullWidth={true} maxWidth={"md"} open={this.props.isOpened} onClose={this.props.onClose} 
                 PaperProps={{ style: {
-                    backgroundImage: "linear-gradient(to bottom, #e2a3ad, #ffe4e1)"
+                    backgroundImage: "linear-gradient(to bottom, #e2a3ad, #ffe4e1)",
+                    minWidth: "700px"
                 }}}
             >
                 <DialogTitle>

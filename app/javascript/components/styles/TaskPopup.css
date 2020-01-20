@@ -7,7 +7,6 @@
 #titleDate {
     display: flex;
     flex-direction: column;
-    /* align-content: row; */
 }
 
 #titleDateTagsBox {
@@ -17,14 +16,6 @@
     justify-content: space-between;
     padding: 5px;
     background-image: linear-gradient(0deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) 100%);
-}
-
-#titleDateTagsBox #title {
-    /* color: white */
-}
-
-#titleDateTagsBox #date {
-    /* color: white */
 }
 
 #popup #description {
@@ -67,8 +58,6 @@
 
 #tags_participants > #participants {
     flex-grow: 0;
-    /* margin-top: 20px; */
-    /* background-image: linear-gradient(0deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,1) 100%); */
 }
 
 #tags_participants > #confirmClose {
