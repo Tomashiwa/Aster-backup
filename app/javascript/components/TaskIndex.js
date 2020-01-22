@@ -45,7 +45,7 @@ class TaskIndex extends React.Component {
       task_id: 1,
       newTitle: "",
       newDescription: "",
-      newDueDate: new Date(Date.now()).toUTCString(),
+      newDueDate: new Date(Date.now()),
       newTagId: 1,
     };
   }
@@ -258,7 +258,7 @@ class TaskIndex extends React.Component {
   }
 
   handleDateChange = (dateTime, value) => {
-    this.setState({newDueDate: dateTime.toUTCString()});
+    this.setState({newDueDate: dateTime});
   };
 
   handleTagChange = event => {
@@ -324,6 +324,11 @@ class TaskIndex extends React.Component {
 
   render() {
     const { classes } = this.props;
+    
+    let taskLoaded = this.props.tasks;    
+    taskLoaded.sort((first, second) => {
+      return first.due_date <= second.due_date ? -1 : 1;
+    });
 
     return (
       <Box id="index" border={1} borderColor="white" borderRadius={16}>
@@ -333,7 +338,7 @@ class TaskIndex extends React.Component {
 
           <List className={this.state.classes.root}>
             {
-              this.props.tasks.map(task => (
+              taskLoaded.map(task => (
                 <React.Fragment key={task.id}>
                   <ListItem className="taskItem" alignItems="flex-start" button={true} divider={true} onClick={() => this.onClickTask(task)}>
                     <ListItemText
