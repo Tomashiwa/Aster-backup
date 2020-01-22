@@ -103,7 +103,14 @@ class TaskPopup extends React.Component {
                                 {this.props.selectedTask.title}
                             </div>
                             <div id="date">
-                                {"Due by: " + new Date(this.props.selectedTask.due_date).toUTCString()}
+                                {"Due by: " + new Date(this.props.selectedTask.due_date).toLocaleDateString("en-GB", {
+                                    weekday: "short", 
+                                    year: "numeric", 
+                                    month: "short", 
+                                    day: "numeric", 
+                                    hour: "numeric", 
+                                    minute: "numeric", 
+                                    hour12: true})}
                             </div>
                         </div>
                         <div id="tags">

@@ -177,7 +177,16 @@ class CommentSection extends React.Component {
                                         primary={
                                             <div className="userDate">
                                                 <UserInfo user={this.props.users[comment.user_id - 1]} textVariant="h6"/>
-                                                <Typography> {new Date(comment.updated_at).toUTCString()} </Typography>
+                                                <Typography> 
+                                                    {new Date(comment.updated_at).toLocaleDateString("en-GB", {
+                                                        weekday: "short", 
+                                                        year: "numeric", 
+                                                        month: "short", 
+                                                        day: "numeric", 
+                                                        hour: "numeric", 
+                                                        minute: "numeric", 
+                                                        hour12: true})} 
+                                                </Typography>
                                             </div>
                                         }
                                         secondary={

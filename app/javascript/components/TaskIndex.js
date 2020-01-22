@@ -353,7 +353,14 @@ class TaskIndex extends React.Component {
                           </Typography>
                           <br />
                           <Typography component={"span"} align="left" variant="subtitle1" className={this.state.classes.inline} color="textPrimary">
-                            {"Due by: " + new Date(task.due_date).toUTCString()}
+                            {"Due by: " + new Date(task.due_date).toLocaleDateString("en-GB", {
+                              weekday: "short", 
+                              year: "2-digit", 
+                              month: "numeric", 
+                              day: "numeric", 
+                              hour: "numeric", 
+                              minute: "numeric", 
+                              hour12: true})}
                           </Typography>
                           <br />
                           <Typography component={"span"} style={{whiteSpace:"pre-line"}}>
