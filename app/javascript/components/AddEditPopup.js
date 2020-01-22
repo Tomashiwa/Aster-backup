@@ -47,7 +47,7 @@ class AddEditPopup extends React.Component {
                           required={true}
                           ampm={false}
                           showTodayButton
-                          value={this.props.selectedTask ? this.props.selectedTask.due_date : this.props.newDueDate}
+                          value={this.props.newDueDate}
                           onChange={this.props.onDateChange}
                           format="dd/MM/yyyy HH:mm"
                           label="Due date"

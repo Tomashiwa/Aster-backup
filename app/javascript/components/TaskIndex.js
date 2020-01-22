@@ -62,6 +62,7 @@ class TaskIndex extends React.Component {
   handleEdit = task => {
     this.setState({
       selectedTask: task,
+      newDueDate: task.due_date,
       newTagId: task.tag_id,
       isEditing: true
     });
@@ -258,6 +259,7 @@ class TaskIndex extends React.Component {
   }
 
   handleDateChange = (dateTime, value) => {
+    console.log("Changed date to " + dateTime);
     this.setState({newDueDate: dateTime});
   };
 
