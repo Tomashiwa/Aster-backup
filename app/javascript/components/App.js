@@ -28,7 +28,6 @@ class App extends React.Component {
       this.fetchLists();
       this.fetchTasks();
       this.fetchTags();
-      console.log("Remain logged in");
     }
   }
 
@@ -42,8 +41,6 @@ class App extends React.Component {
 
   onLogin = (givenName, givenPassword, callback) => {
     const request = {"auth": {"name": givenName, "password": givenPassword}};
-    console.log("Login request:");
-    console.log(request);
 
     const attemptLogin = async() => {
       const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -58,15 +55,9 @@ class App extends React.Component {
         body: JSON.stringify(request)
       })
       .then(response => {
-        console.log("login response:");
-        console.log(response);
-
         return response.status === 201 ? response.json() : null;
       })
       .then(result => {
-        console.log("login result:");
-        console.log(result);
-
         if(result !== null) {
           localStorage.setItem("name", givenName);
           localStorage.setItem("jwt", result.jwt);
@@ -75,21 +66,8 @@ class App extends React.Component {
           this.fetchLists();
           this.fetchTags();
           this.fetchTasks();
-          console.log("Logged in successfully");
-  
           callback();
-          console.log("callback from login executed");
-
-          // console.log("Fetched Users:");
-          // console.log(this.state.users);
-          // console.log("Fetched boards:");
-          // console.log(this.state.boards);
-          // console.log("Fetched lists:");
-          // console.log(this.state.lists);
-          // console.log("Fetched tasks:");
-          // console.log(this.state.tasks);
         } else {
-          console.log("Invalid username or password");
           this.setState({errorMsg: "Invalid username or password."});
         }
       })
@@ -109,7 +87,6 @@ class App extends React.Component {
       tags: [],
       user: null
     });
-    console.log("Logout successfully");
   }
 
   onRegister = (givenName, givenPassword, callback) => {

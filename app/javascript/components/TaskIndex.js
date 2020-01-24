@@ -166,18 +166,12 @@ class TaskIndex extends React.Component {
   };
 
   handleDemote = task => {
-    console.log("Demoting task:");
-    console.log(task);
-
     const listIndex = (this.props.board_id - 1) <= 0 
       ? this.props.list.id
       : parseInt(this.props.list.id) - (4 * (parseInt(this.props.board_id - 1)));
 
     if(listIndex <= 1) {
-      console.log("Reached lowest list");
     } else {
-      console.log("Demoting to list " + (this.props.list.id - 1));
-
       let bearer = "Bearer " + localStorage.getItem("jwt");
 
       const demoteTask = async() => {
@@ -212,19 +206,12 @@ class TaskIndex extends React.Component {
   }
 
   handlePromote = task => {
-    console.log("Promoting task:");
-    console.log(task);
-
     const listIndex = (this.props.board_id - 1) <= 0 
       ? this.props.list.id
       : parseInt(this.props.list.id) - (4 * (parseInt(this.props.board_id - 1)));
 
     if(listIndex >= 4) {
-      console.log("Reached highest list");
-      // console.log("MAX: " + (4 * this.props.board_id));
     } else {
-      console.log("Promoting to list " + (this.props.list.id + 1));
-
       let bearer = "Bearer " + localStorage.getItem("jwt");
 
       const promoteTask = async() => {
@@ -259,7 +246,6 @@ class TaskIndex extends React.Component {
   }
 
   handleDateChange = (dateTime, value) => {
-    console.log("Changed date to " + dateTime);
     this.setState({newDueDate: dateTime});
   };
 
