@@ -7,7 +7,8 @@ class Api::TagsController < ApiController
         if current_user.admin?
             @tags = Tag.all
         else
-            @tags = Tag.where(:user_id => [current_user.id, nil])
+            @tasks = Task.where("?=ANY(participants)", current_user.id)
+            @tags = Tag.where(:user_id => [current_user.id, nil]).or(Tag.where(:id => @tasks.pluck(:tag_id)));
         end
 
         render json: @tags

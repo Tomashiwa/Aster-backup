@@ -26,8 +26,8 @@ class App extends React.Component {
       this.fetchUsers(localStorage.getItem("name"));
       this.fetchBoards();
       this.fetchLists();
-      this.fetchTags();
       this.fetchTasks();
+      this.fetchTags();
       console.log("Remain logged in");
     }
   }

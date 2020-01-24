@@ -327,8 +327,8 @@ class TaskIndex extends React.Component {
   render() {
     const { classes } = this.props;
     
-    let taskLoaded = this.props.tasks;    
-    taskLoaded.sort((first, second) => {
+    let tasksLoaded = this.props.tasks;    
+    tasksLoaded.sort((first, second) => {
       return first.due_date <= second.due_date ? -1 : 1;
     });
 
@@ -340,7 +340,7 @@ class TaskIndex extends React.Component {
 
           <List className={this.state.classes.root}>
             {
-              taskLoaded.map(task => (
+              tasksLoaded.map(task => (
                 <React.Fragment key={task.id}>
                   <ListItem className="taskItem" alignItems="flex-start" button={true} divider={true} onClick={() => this.onClickTask(task)}>
                     <ListItemText
