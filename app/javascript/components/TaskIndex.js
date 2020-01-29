@@ -12,7 +12,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import AddEditPopup from "./AddEditPopup";
 import TaskPopup from "./TaskPopup";
 
-import "./styles/TaskIndex.css"
+// import "./styles/TaskIndex.css"
 
 const styles = {
   editDelete: {
