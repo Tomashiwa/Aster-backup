@@ -60,3 +60,5 @@ gem "react-rails", "~> 2.6"
 gem 'jsonapi-resources'
 
 gem 'sprockets-rails', :require => 'sprockets/railtie'
+
+gem 'airbrake'
